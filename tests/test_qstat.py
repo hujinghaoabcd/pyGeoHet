@@ -47,9 +47,7 @@ def test_q_equals_dummy_regression_r_squared() -> None:
     )
     coefficients, *_ = np.linalg.lstsq(design, y, rcond=None)
     residuals = y - design @ coefficients
-    r_squared = 1.0 - np.dot(residuals, residuals) / np.dot(
-        y - y.mean(), y - y.mean()
-    )
+    r_squared = 1.0 - np.dot(residuals, residuals) / np.dot(y - y.mean(), y - y.mean())
     assert result.q == pytest.approx(r_squared)
 
 
