@@ -63,7 +63,7 @@ Repository = "https://github.com/hujinghaoabcd/pyGeoHet"
 Issues = "https://github.com/hujinghaoabcd/pyGeoHet/issues"
 
 [tool.setuptools.dynamic]
-version = {attr = "pygeohet.__version__"}
+version = {attr = "pygeohet._version.__version__"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
