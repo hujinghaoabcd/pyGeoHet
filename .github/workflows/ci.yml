@@ -45,4 +45,5 @@ jobs:
       - run: python examples/04_spatial_scale_opgd.py
       - run: python examples/05_multiscale_discretization.py
       - run: python examples/06_robust_detectors.py
+      - run: python examples/07_spade.py
       - run: python -m build
