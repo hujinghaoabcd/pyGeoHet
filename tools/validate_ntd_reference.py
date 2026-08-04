@@ -75,9 +75,7 @@ def main() -> None:
         .sum()
         .items()
     }
-    if actual_risk != fixture["gdverse_gd_vignette"][
-        "risk_significant_pair_counts"
-    ]:
+    if actual_risk != fixture["gdverse_gd_vignette"]["risk_significant_pair_counts"]:
         raise AssertionError(
             f"risk significant-pair counts differ: actual={actual_risk}"
         )
