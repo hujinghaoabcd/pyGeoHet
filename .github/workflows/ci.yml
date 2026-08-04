@@ -5,42 +5,46 @@ on:
     branches: [main]
   pull_request:
 
-permissions:
-  contents: write
-
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  cleanup-stage5b:
-    if: github.event_name == 'pull_request' && github.head_ref == 'stage-05b-idsa'
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.11", "3.12", "3.13"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -e ".[test]"
+      - run: pytest --cov=pygeohet --cov-report=term-missing
+
+  quality:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: stage-05b-idsa
-          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Run deterministic cleanup
-        run: |
-          if [ ! -f tools/cleanup_stage5b_docs.py ]; then
-            echo "Cleanup script is not present yet"
-            exit 0
-          fi
-          python tools/cleanup_stage5b_docs.py
-      - name: Commit non-workflow cleanup
-        run: |
-          git restore --source=HEAD -- .github/workflows/ci.yml .github/workflows/finalize-stage5b.yml
-          if git diff --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
-            echo "No cleanup changes"
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "docs: normalize and finalize Stage 5B release"
-          git pull --rebase origin stage-05b-idsa
-          git push origin HEAD:stage-05b-idsa
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: ruff check src tests examples tools
+      - run: black --check src tests examples tools
+      - run: mypy src/pygeohet
+      - run: python examples/01_factor_detector.py
+      - run: python examples/02_classic_workflow.py
+      - run: python examples/03_stratification_opgd.py
+      - run: python examples/04_spatial_scale_opgd.py
+      - run: python examples/05_multiscale_discretization.py
+      - run: python examples/06_robust_detectors.py
+      - run: python examples/07_spade.py
+      - run: python examples/08_idsa.py
+      - run: python -m build
