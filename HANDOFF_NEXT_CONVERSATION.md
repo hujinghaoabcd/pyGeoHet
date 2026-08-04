@@ -1,10 +1,10 @@
-# HANDOFF - pyGeoHet Stage 3C baseline
+# HANDOFF - pyGeoHet Stage 4 baseline
 
 Date: 2026-08-05
 
 ## 1. Authoritative continuation source
 
-After PR #5 is merged, the current `main` branch of `hujinghaoabcd/pyGeoHet` is the only authoritative baseline. A new conversation must fetch the latest `main` commit SHA before editing. Do not reconstruct this stage from chat text, old ZIP archives or the superseded pyGeoDetectorX blueprint.
+After PR #6 is merged, the current `main` branch of `hujinghaoabcd/pyGeoHet` is the only authoritative baseline. A new conversation must fetch the latest `main` commit SHA before editing. Do not reconstruct Stage 4 from chat text, old ZIP copies or earlier design sketches.
 
 Read in this order:
 
@@ -12,107 +12,134 @@ Read in this order:
 2. `PROJECT_STATUS.md`;
 3. `DECISIONS.md`;
 4. `docs/theory/numerical-conventions.md`;
-5. `docs/models/stratification-opgd.md`;
-6. `docs/models/spatial-scale-opgd.md`;
-7. `docs/models/msd.md`;
-8. `docs/references/msd-code-audit.md`;
-9. `VALIDATION_MATRIX.md`;
-10. `ROADMAP.md`;
-11. `MODEL_INVENTORY.md`.
+5. `docs/models/robust-rgd-rid.md`;
+6. `docs/references/robust-code-audit.md`;
+7. `VALIDATION_MATRIX.md`;
+8. `ROADMAP.md`;
+9. `MODEL_INVENTORY.md`;
+10. the Stage 5 papers and uploaded reference source selected during the new audit.
 
 ## 2. Completed baseline
 
-Stages 1-3B remain complete: direct q, four classical detectors, integrated GeoDetector, six stratification methods, complete q-guided candidate tables, univariate OPGD and prepared-support spatial-scale OPGD.
+Stages 1-3C remain complete in implementation terms:
 
-Stage 3C adds version `0.0.5` and:
+- direct q and noncentral-F significance;
+- factor, interaction, risk and ecological detectors;
+- integrated `GeoDetector`;
+- six deterministic univariate stratification methods;
+- complete q-guided candidate tables and integrated OPGD;
+- prepared-support spatial-scale OPGD;
+- exact and coarse-to-fine MSD.
 
-- `MSD` and `multiscale_discretize()`;
-- immutable `MSDScaleResult` and `MSDResult`;
-- one joint complete-case sample sorted stably by the explanatory variable;
-- exact global search with `upscale=1`;
-- paper-style coarse-to-fine value-grid search for explicit upscale/buffer sequences;
-- one selected cut from each mapped epsilon neighbourhood during refinement;
-- cached interval within-stratum sums of squares;
-- equivalent q maximization with a deterministic lexicographic cut-tuple tie rule;
-- explicit `origin`, `base_resolution`, `min_stratum_size` and cut-membership contracts;
-- per-scale candidates, selected cuts, combination counts, q and objective evidence;
-- exhaustive-enumeration tests and a 6 -> 3 -> 1 known-threshold recovery;
-- public example, model manual, paper/source-code audit and updated project documents.
+Stage 4 adds version `0.0.6` and:
 
-## 3. Non-negotiable Stage 3 decisions
+- `RobustDiscretizationResult` for one fixed-zone exact robust solution;
+- `RobustCandidateResult` and `RobustOptimizationResult` for complete class-count evidence;
+- `robust_discretize()` for exact ordered least-squares segmentation;
+- `optimize_robust_discretization()` for explicit class-count selection;
+- `RGD`, `rgd`, `RGDResult`;
+- `RID`, `rid`, `RIDResult`;
+- one joint numeric complete-case sample for each response/factor pair;
+- stable ascending explanatory-variable ordering;
+- candidate change points only between distinct explanatory values;
+- prefix-sum segment costs and exact dynamic programming;
+- deterministic break-position ties;
+- B-value represented by the complete q variance decomposition on robust zones;
+- explicit `marginal_gain` and `max_b` selection policies;
+- aligned labels with `None` on dropped rows;
+- reuse of the classical `GeoDetector` and interaction detector rather than duplicate implementations;
+- brute-force, monotone-rank, duplicate-value, missingness and RGD/RID integration tests;
+- a public example, model manual and source-code audit.
 
-- Stage 3B spatial support scale and Stage 3C MSD value-grid scale are different estimands.
-- Geographic support construction remains explicit upstream.
-- MSD is supervised by `y` and uses a fixed user-supplied number of strata.
-- All MSD scales use the same joint complete-case sample.
-- Coarse-to-fine scales are explicit, strictly decreasing and end at 1.
-- Every previous cut contributes one mapped epsilon neighbourhood; refinement chooses exactly one ordered cut from each neighbourhood.
-- Cut values belong to the latter class.
-- `upscale=1` is the exact-search reference mode.
-- Objective ties never depend on container ordering; the lexicographically smallest cut tuple is selected and the rule is stored.
-- Class counts above 10 are rejected under the current paper-derived practical contract.
-- Failed or invalid configurations raise explicit errors; the package does not silently fall back to another estimator.
-- External software is reference-only and is never called at runtime.
+## 3. Non-negotiable Stage 4 decisions
 
-## 4. Reference-code evidence and unresolved MSD gap
+- Robust discretization is an ordered response-segmentation problem, not another generic OPGD method.
+- Strictly monotone transformations of `x` preserve the candidate order and should preserve the solution.
+- Equal `x` values are indivisible and never split by incidental row ordering.
+- Fixed-K segmentation minimizes total within-zone response SSE exactly.
+- `B = 1 - SSW_R / SST`; it is numerically q on the robust labels, but the B name records the robust construction process.
+- Segment costs use prefix sums; the current solver is exact dynamic programming, not a heuristic.
+- Objective ties within `b_tolerance` select the lexicographically smallest break-position tuple.
+- Cut values belong to the latter zone.
+- `min_stratum_size=2` is the package default; users may explicitly request 1 where mathematically acceptable.
+- Class-count selection remains separate from fixed-K segmentation.
+- `marginal_gain` and `max_b` are explicit estimators; no undocumented LOESS fallback exists.
+- RGD reuses the classical detector workflow; RID reuses the collision-safe interaction detector.
+- `ruptures`, R, reticulate, GD and gdverse are not runtime dependencies.
+- Reference implementations are studied for formulas, expected behaviour and validation, not copied mechanically.
 
-The user explicitly requires uploaded code examples to be studied, not only papers. Stage 3C inspected the uploaded `gdverse` and GD source, especially:
+## 4. Source audit completed for Stage 4
 
-- `R/gd_optunidisc.R`;
-- `R/opgd.R`;
-- `R/sesu_opgd.R`;
-- `R/robustdisc.R`;
-- `R/rgd.R`;
-- `R/rid.R`;
-- `inst/python/cpd_disc.py`;
-- package tests and vignettes.
+The Stage 4 audit used all three evidence tracks:
 
-No MSD implementation was found in those uploaded archives. The MSD primary paper reports Figshare DOI `10.6084/m9.figshare.13643318`, but the archive bytes were not retrievable in this development environment. Therefore the current implementation is paper-derived and independently validated, but author-code parity is not claimed.
+1. the primary RGD paper and its B-value/change-point formulas;
+2. the uploaded author archive, especially `CPD_1.ipynb` and bundled documentation;
+3. the uploaded gdverse source, especially:
+   - `R/robustdisc.R`;
+   - `R/rgd.R`;
+   - `R/rid.R`;
+   - `inst/python/cpd_disc.py`;
+   - robust-method vignettes and help pages.
 
-Required future MSD validation:
+The author notebook and gdverse helper use `ruptures.Dynp(model="l2")`. pyGeoHet implements the same core least-squares segmentation estimand independently with prefix sums and dynamic programming.
 
-1. retrieve and pin the Figshare article version and archive files;
-2. record names, sizes, checksums, licence and runtime environment;
-3. run the author example without modification;
-4. compare candidate grids, neighbourhood mapping, boundary membership, ties, q and final cuts;
-5. store a static fixture with provenance;
-6. reproduce one published MSD case;
-7. expose a compatibility mode only when a real, documented discrepancy exists.
+The reviewed gdverse snapshot is GPL-3. The author archive did not expose a licence file in the reviewed snapshot. Neither source was copied or translated line by line.
 
-## 5. Next active stage - robust detector family
+## 5. Known Stage 4 validation gaps
 
-Stage 4 must begin with source and formula audit, not immediate API creation.
+The robust family is **implemented, provisional**, not externally validated. Remaining work:
 
-Mandatory references:
+1. pin an executable author notebook or gdverse release by version and file hashes;
+2. produce static external fixtures for fixed-K break positions, cuts, labels and B-values;
+3. produce a class-count selection fixture;
+4. record tied-`x` behaviour as a deliberate compatibility difference;
+5. reproduce a published RGD case with data provenance;
+6. reproduce an official RID interaction example;
+7. add response-outlier, perturbation and unbalanced-zone simulations;
+8. quantify class-count selection stability and optimism under resampling;
+9. benchmark the exact solver and add pruning only if it preserves the public estimand.
 
-- uploaded `Robust_Geographical_Detector` Python/notebook archive;
-- uploaded `gdverse` files `R/robustdisc.R`, `R/rgd.R`, `R/rid.R` and `inst/python/cpd_disc.py`;
-- RGD and RID primary papers;
-- any bundled examples, tests and data licences.
+Do not delay Stage 5 merely to force superficial numerical parity where source conventions are ambiguous. Preserve these gaps explicitly.
 
-Freeze before coding:
+## 6. Next active stage - Stage 5 spatial-dependence detectors
 
-1. sorted/ranked sample representation;
-2. variance change-point objective and segment cost;
-3. dynamic-programming recursion and backtracking;
-4. minimum segment size and requested/selected change-point count;
-5. candidate pruning and computational complexity;
-6. exact B-value formula and inference/reporting meaning;
-7. RGD factor workflow and RID interaction workflow boundaries;
-8. missing data, ties, duplicate `x`, constant segments and outlier contracts;
-9. independent brute-force fixtures for small problems;
-10. perturbation/outlier simulations and author/reference static fixtures.
+Stage 5 targets SPADE and IDSA. It must start with evidence and numerical-contract work before public API creation.
 
-Do not reuse MSD result types merely because both methods search ordered cut points. Robust discretization needs its own estimator and audit objects.
+### Required source audit
 
-## 6. Known validation gaps
+1. identify the exact SPADE and IDSA primary papers and equations;
+2. locate their official or author implementations in the uploaded archives or current public repositories;
+3. inspect gdverse wrappers, tests, vignettes and any upstream package calls;
+4. audit licences before adapting implementation ideas;
+5. distinguish spatial dependence, spatial support scale, multilevel zoning and fuzzy overlay from Stage 3/4 estimands.
 
-- Stage 3A: stable external fixtures for all six stratification methods and a published OPGD case.
-- Stage 3B: static paper/GD scale fixture, a published multi-scale OPGD case, and pinned gdverse LOESS evidence.
-- Stage 3C: Figshare author-code fixture and published MSD case.
-- Model-selection optimism and stability under resampling remain future work.
+### Freeze before coding
 
-Until these are completed, Stage 3A-3C remain “implemented, provisional”.
+- supported spatial input form: coordinates, adjacency, distance matrix or weights;
+- weight standardization and symmetry policy;
+- disconnected observations and islands;
+- coordinate reference and distance-unit requirements;
+- spatial variance or information-loss formula;
+- neighbourhood order and multilevel aggregation;
+- candidate zoning/discretization construction;
+- deterministic versus fuzzy membership;
+- IDSA overlay and interaction-zone semantics;
+- missing `y`, missing factor, missing neighbour and zero-weight-row handling;
+- minimum zone size and degenerate local neighbourhoods;
+- exact tie rules and any random seeds;
+- immutable result and audit table design;
+- small-lattice analytical fixtures and independent brute-force checks;
+- external static fixtures and at least one published-case reproduction.
+
+### Recommended implementation sequence
+
+1. add internal spatial-weight validation utilities only when the contract is frozen;
+2. implement and test the core spatial variance/dependence statistic;
+3. implement SPADE candidate zoning and audit results;
+4. add integrated SPADE workflow;
+5. audit IDSA separately rather than assuming it is a trivial SPADE overlay;
+6. implement deterministic/fuzzy overlay only after its formula is verified;
+7. update exports, examples, manuals, validation matrix and handoff in the same PR.
 
 ## 7. Required checks
 
@@ -127,6 +154,7 @@ python examples/02_classic_workflow.py
 python examples/03_stratification_opgd.py
 python examples/04_spatial_scale_opgd.py
 python examples/05_multiscale_discretization.py
+python examples/06_robust_detectors.py
 python -m build
 ```
 
@@ -143,7 +171,9 @@ Use a dedicated branch and pull request. Before merge:
 
 - all matrix jobs pass on Ubuntu, Windows and macOS for Python 3.11-3.13;
 - Ruff, Black, mypy, all public examples and package build pass;
-- status, validation, changelog, inventory, roadmap and this handoff match the code;
-- uploaded/reference source use and licence boundaries are documented;
-- disagreements among paper, author code, GD and gdverse remain explicit;
-- no method is marked externally validated without the required fixture and case evidence.
+- new spatial methods have analytical/property tests before public export;
+- status, validation, changelog, inventory, roadmap, structure and handoff match the code;
+- source and licence audits are recorded;
+- external software remains reference-only and never a runtime dependency;
+- disagreements among papers, author code and gdverse remain explicit;
+- no method is labelled externally validated without the required fixture and case evidence.

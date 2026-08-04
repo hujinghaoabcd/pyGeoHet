@@ -95,3 +95,27 @@ For a fixed class count, MSD minimizes within-stratum sum of squares, which is e
 ## D024 - MSD evidence boundary
 
 The implementation is derived from the primary paper and independently checked against exhaustive enumeration. Uploaded GD/gdverse and related source archives inform organisation, ordering, audit tables and separation of estimands, but they are not claimed as an MSD numerical oracle. Author-code parity remains provisional until the reported Figshare archive is pinned by version, file checksum and executable fixture. No undocumented author behaviour is invented.
+
+## D025 - Robust discretization uses ordered response segmentation
+
+For one continuous explanatory factor, robust discretization selects one joint complete-case sample, stably orders the response by ascending explanatory value, and partitions that ordered response into contiguous zones. The method is rank-equivalent: strictly monotone transformations of the explanatory values do not alter the admissible ordering.
+
+## D026 - Equal explanatory values are indivisible
+
+Candidate robust change points exist only between distinct explanatory values. Equal values are never assigned to different robust zones because of incidental row order. This is a deliberate clarification over row-level change-point implementations whose subsequent rank classification can be ambiguous when ties occur.
+
+## D027 - Robust objective, B-value and exact search
+
+For a fixed number of zones, the robust objective is the sum of response squared deviations from zone means. Prefix sums provide constant-time interval costs and dynamic programming finds the exact minimum-cost ordered partition. The reported B-value is `1 - SSW_R / SST`, numerically equal to q evaluated on the selected robust zones. Objective ties within `b_tolerance` choose the lexicographically smallest break-position tuple.
+
+## D028 - Class-count selection is separate from segmentation
+
+The numerical change-point estimator does not silently decide model complexity. `marginal_gain` implements the documented B-increase threshold rule and `max_b` selects the highest B-value with a smaller-zone-count tie break. Candidate counts, failures, gains and selected policy remain visible. LOESS compatibility is not claimed without a pinned reference fixture.
+
+## D029 - RGD and RID reuse the classical detector core
+
+RGD robustly discretizes each continuous factor and passes the selected labels to the existing `GeoDetector` workflow. RID uses the same robust labels and the existing collision-safe interaction detector. The package does not maintain duplicate q, overlay or interaction-classification implementations for robust workflows.
+
+## D030 - Robust source use is conceptual, not mechanical
+
+The RGD paper, uploaded author notebook and gdverse source define the scientific estimand, expected workflow and comparison targets. pyGeoHet independently implements validation, prefix sums, dynamic programming, immutable results and API composition. It does not call `ruptures`, R or gdverse at runtime and does not translate GPL or unlicensed source line by line.

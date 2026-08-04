@@ -42,6 +42,10 @@ Each model family must reproduce at least one documented paper or official-softw
 | gdverse LOESS scale heuristic | source formula audited | pinned gdverse/sdsfun fixture pending | threshold crossings and fallback pending | pending | documented only |
 | MSD exact search | equality with independent exhaustive enumeration | author Figshare fixture pending | cut membership, ties, minimum size and missing sample | MSD case pending | implemented, provisional |
 | MSD coarse-to-fine search | paper-derived 6 -> 3 -> 1 mapping contract | author scale-path fixture pending | known-threshold recovery, invalid scales and audit tables | MSD case pending | implemented, provisional |
+| Robust fixed-K discretization | equality with independent brute-force partitions; B=q identity | author/gdverse cut and B fixture pending | duplicate-x indivisibility, rank invariance, missingness and invalid sizes | RGD case pending | implemented, provisional |
+| Robust class-count optimization | explicit marginal-gain and maximum-B rules | gdverse/author class-count table pending | rejected counts, threshold crossing and deterministic ties | RGD case pending | implemented, provisional |
+| Integrated RGD | robust labels reproduce factor q/B and compose with classical workflow | pinned author/gdverse output pending | one/multi-factor integration and aligned labels | published RGD case pending | implemented, provisional |
+| Integrated RID | robust labels plus collision-safe pairwise interaction | pinned gdverse RID fixture pending | at-least-two-factor, joint sample and interaction integration | published RID case pending | implemented, provisional |
 
 ## NTD fixture
 
@@ -54,5 +58,19 @@ Stage 3A has analytical, boundary, failure-mode and integrated workflow tests bu
 Stage 3B has analytical scale-score tests, significance-policy tests, deterministic ties, common-factor validation, failed-scale retention and integrated prepared-support OPGD tests. It is not labelled fully externally validated until a static GD/gdverse scale fixture and at least one published multi-scale OPGD case are reproduced. Automatic spatial-support construction and the newer gdverse LOESS heuristic are not silently inferred.
 
 Stage 3C has an independent exhaustive-enumeration oracle for exact searches, paper-style scale mapping, a synthetic 6 -> 3 -> 1 threshold recovery, deterministic ties, joint missing-data tests and full scale-path evidence. The paper-reported Figshare archive could not be downloaded in the current development environment. MSD therefore still needs the archive version/file/checksum audit, static author-output fixtures and a published-case reproduction.
+
+## Stage 4 validation gaps
+
+Stage 4 has an independent brute-force oracle for fixed-zone ordered partitions, B=q equality, monotone-rank invariance, duplicate-value safety, missing-row reconstruction, explicit minimum-size failures, multi-factor RGD composition and RID interaction integration.
+
+It is not labelled fully externally validated until all of the following are complete:
+
+1. pin the author notebook and/or a gdverse release with environment, source hashes and arguments;
+2. generate static fixtures for break positions, cut values, labels, B-values and selected class counts;
+3. record the known tied-`x` behavioural difference rather than forcing accidental row-level parity;
+4. reproduce at least one published RGD example with data provenance;
+5. reproduce an official RID interaction example;
+6. add perturbation and response-outlier simulations for cut stability;
+7. quantify model-selection optimism under class-count search and resampling.
 
 “Validated with convention split” means the primary scientific convention and the compatibility convention are both explicit, independently tested, and not numerically conflated.

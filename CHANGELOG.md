@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.0.6 - 2026-08-05
+
+### Added
+
+- exact ordered variance-change-point discretization through `robust_discretize()`;
+- prefix-sum segment costs and dynamic-programming backtracking for a fixed stratum count;
+- distinct-value boundary constraints so equal explanatory values are never split;
+- immutable robust discretization, class-count candidate and optimization result objects;
+- RGD B-value reporting through the same variance decomposition as q;
+- `marginal_gain` and `max_b` class-count selection policies;
+- integrated `RGD` / `rgd` workflow for one or more continuous factors;
+- integrated `RID` / `rid` workflow using robust zones and collision-safe interaction detection;
+- aligned missing-row reconstruction, duplicate-value evidence and deterministic cut ties;
+- independent brute-force, rank-invariance, duplicate-value, missing-data and integration tests;
+- robust detector example, model manual and paper/source-code audit.
+
+### Changed
+
+- package development version advanced to `0.0.6`;
+- public API now exports robust discretization, RGD and RID interfaces and results;
+- CI runs six public examples;
+- Stage 4 uses an independently written numerical core rather than a runtime dependency on `ruptures`, R, GD or gdverse;
+- author/gdverse behaviour is treated as reference evidence, while explicit improvements such as duplicate-value safety are documented;
+- Stage 5 spatial-dependence detector development becomes the next active stage.
+
 ## 0.0.5 - 2026-08-05
 
 ### Added

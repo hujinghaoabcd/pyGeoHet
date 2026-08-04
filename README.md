@@ -1,8 +1,8 @@
 # pyGeoHet
 
-**pyGeoHet** is a research-oriented Python toolkit for spatially stratified heterogeneity (SSH) analysis. It covers the classical Geographical Detector workflow and is being extended to discretization, spatial dependence, robustness, multivariate stratification, local explanation, categorical responses, and information-based SSH measures.
+**pyGeoHet** is a research-oriented Python toolkit for spatially stratified heterogeneity (SSH) analysis. It covers the classical Geographical Detector workflow and extends it with auditable discretization, spatial-scale comparison, multiscale search and robust change-point detection.
 
-> **Status - Stage 3C implemented:** q-statistic, the four classical detectors, the integrated `GeoDetector` workflow, six continuous-variable stratification methods, audited q-guided candidate search, univariate `OPGD`, prepared-support spatial-scale OPGD selection, and supervised multiscale discretization (`MSD`) are available. Stage 4 will develop the robust detector family.
+> **Status - Stage 4 implemented:** q-statistic, the four classical detectors, integrated `GeoDetector`, six continuous-variable stratification methods, univariate `OPGD`, prepared-support spatial-scale OPGD, multiscale discretization (`MSD`), exact robust discretization, `RGD`, and `RID` are available. Stage 5 will develop spatial-dependence detectors such as SPADE and IDSA.
 
 ## Installation for development
 
@@ -25,7 +25,6 @@ frame = pd.DataFrame(
 )
 
 result = GeoDetector().fit(frame["y"], frame[["land_use", "region"]])
-
 print(result.factor.to_frame())
 print(result.interaction.to_frame())
 print(result.risk.comparisons_frame())
@@ -102,7 +101,7 @@ The default follows the 2020 OPGD paper: select the support with the highest 90%
 
 ## Multiscale discretization (MSD)
 
-MSD searches ordered cut points of one continuous explanatory variable using the response and the q-statistic. Its “scale” is the resolution of the explanatory-variable value grid, not the geographic observation support used by `SpatialScaleOPGD`.
+MSD searches ordered cut points of one continuous explanatory variable using the response and q. Its “scale” is the resolution of the explanatory-variable value grid, not geographic observation support.
 
 ```python
 import numpy as np
@@ -125,21 +124,84 @@ result = MSD(
 
 print(result.summary())
 print(result.steps_frame())
-print(result.stratification.to_series())
 ```
 
-Use `upscale=1` for an exact global search over all observed unique-value boundaries. A coarse-to-fine run requires explicitly decreasing `buffer_scales` ending at 1. Each result retains candidate counts, selected cuts, q, within-stratum sum of squares, scale sequence, grid origin and resolution, missing-row count, and tie rule.
+Use `upscale=1` for an exact global search over all observed unique-value boundaries. Coarse-to-fine searches retain each scale's candidates, selected cuts, q, within-stratum sum of squares and failure evidence.
 
-Individual interfaces are also public:
+## Robust discretization, RGD and RID
+
+Robust discretization orders the response by a continuous explanatory variable and finds contiguous variance change-point zones. For fixed zone count `K`, pyGeoHet minimizes total within-zone response SSE exactly by dynamic programming. The resulting B-value is
+
+```text
+B = 1 - robust within-zone SS / total SS
+```
+
+and is numerically equal to q evaluated on the robust labels.
+
+```python
+import numpy as np
+import pandas as pd
+from pygeohet import RGD, RID, robust_discretize
+
+x = np.arange(24, dtype=float)
+y = np.repeat([0.0, 4.0, 9.0, 13.0], 6)
+
+fixed = robust_discretize(y, x, n_strata=4)
+print(fixed.summary())
+print(fixed.cut_points)
+print(fixed.b_value)
+
+factors = pd.DataFrame(
+    {
+        "trend": x,
+        "cycle": np.tile(np.arange(6, dtype=float), 4),
+    }
+)
+
+rgd_result = RGD(
+    n_strata=range(2, 6),
+    selection="marginal_gain",
+    increase_rate=0.05,
+).fit(y, factors)
+print(rgd_result.optimal_frame())
+print(rgd_result.candidates_frame("trend"))
+
+rid_result = RID(
+    n_strata=range(2, 5),
+    selection="max_b",
+).fit(y, factors)
+print(rid_result.interaction.to_frame())
+```
+
+Important robust contracts:
+
+- equal explanatory values are never split across zones;
+- strictly monotone transformations of the explanatory values preserve the ordered problem;
+- `marginal_gain` and `max_b` are explicit class-count policies;
+- cut values belong to the latter zone;
+- missing labels are expanded back to the original rows;
+- RGD and RID reuse the tested classical detector and interaction implementations;
+- `ruptures`, R and gdverse are reference evidence, not runtime dependencies.
+
+The code follows the core published estimator but is independently organized and implemented. It is not a mechanical translation of author or gdverse source.
+
+## Public interfaces
 
 ```python
 from pygeohet import (
+    GeoDetector,
+    OPGD,
+    SpatialScaleOPGD,
     MSD,
+    RGD,
+    RID,
     q_statistic,
     stratify,
     evaluate_stratification,
     optimize_stratification,
     multiscale_discretize,
+    robust_discretize,
+    optimize_robust_discretization,
     compare_spatial_scales,
     factor_detector,
     interaction_detector,
@@ -147,6 +209,8 @@ from pygeohet import (
     ecological_detector,
     geodetector,
     opgd,
+    rgd,
+    rid,
 )
 ```
 
@@ -158,21 +222,23 @@ from pygeohet import (
 - overlays use tuple coding, not collision-prone string concatenation;
 - risk comparisons use two-sided Welch tests;
 - the ecological default is a factor-order-invariant two-sided F test, with an explicit `greater` compatibility mode;
-- singleton overlay cells are retained explicitly, while original factor strata default to a minimum size of two;
+- original factor strata default to a minimum size of two; natural singleton overlay cells remain explicit;
 - stratification records cuts, achieved strata, boundary conventions, collapse and rejection evidence;
-- OPGD evaluates a complete method-by-class candidate table on one joint sample and exposes its tie rule;
-- spatial-scale comparison retains every support, score, factor eligibility decision, failure and tie convention;
-- MSD uses one joint sample, an explicit value grid, one refined cut per mapped neighbourhood, and a deterministic cut-tuple tie rule;
-- geographic support construction remains explicit upstream;
-- external R, Python, QGIS, or spreadsheet implementations are never called at runtime;
-- each method is checked through analytical properties, static references, simulations, and published cases;
-- project status and next-conversation handoff documents are release gates.
+- OPGD retains a complete method-by-class candidate table and its tie rule;
+- spatial-scale comparison retains every support, score, eligibility decision, failure and tie convention;
+- MSD keeps geographic support scale separate from explanatory-value-grid scale;
+- robust discretization uses a stable order, duplicate-value-safe boundaries, exact SSE optimization and deterministic break ties;
+- model-complexity selection is explicit rather than hidden inside numerical kernels;
+- external R, Python, QGIS or notebook implementations are never called at runtime;
+- project status, validation records and next-conversation handoff are merge gates.
 
 ## Validation
 
-The NTD published-case record reproduces the factor q/p-values, all three interaction labels, and risk significance counts from `gdverse`/`GD`. Raw third-party data are not redistributed; a hash-checking validator is provided in `tools/validate_ntd_reference.py`.
+The classical workflow reproduces the NTD factor q/p-values, interaction labels and risk-significance counts from GD/gdverse reference outputs.
 
-Stages 3A and 3B have analytical, boundary, rejection-path and integrated-workflow tests. MSD additionally matches exhaustive enumeration on small problems and recovers known thresholds through a 6 -> 3 -> 1 coarse-to-fine search. Static author-code parity and a published MSD case remain required before Stage 3 methods are labelled fully externally validated.
+Stages 3A-3C have analytical, boundary, rejection-path and integrated-workflow tests. MSD matches an independent exhaustive search on small problems. Stage 4 robust segmentation matches an independent brute-force oracle, preserves rank-equivalent solutions, prevents tied explanatory values from splitting, reconstructs missing rows and verifies that RGD B equals factor q.
+
+Stages 3 and 4 remain **implemented, provisional** until pinned external fixtures and published-case reproductions are complete. Validation gaps are recorded rather than filled by assumed compatibility.
 
 See:
 
@@ -180,7 +246,9 @@ See:
 - [`docs/models/stratification-opgd.md`](docs/models/stratification-opgd.md)
 - [`docs/models/spatial-scale-opgd.md`](docs/models/spatial-scale-opgd.md)
 - [`docs/models/msd.md`](docs/models/msd.md)
+- [`docs/models/robust-rgd-rid.md`](docs/models/robust-rgd-rid.md)
 - [`docs/references/msd-code-audit.md`](docs/references/msd-code-audit.md)
+- [`docs/references/robust-code-audit.md`](docs/references/robust-code-audit.md)
 - [`docs/validation/ntd-reference.md`](docs/validation/ntd-reference.md)
 - [`VALIDATION_MATRIX.md`](VALIDATION_MATRIX.md)
 - [`ROADMAP.md`](ROADMAP.md)
@@ -188,4 +256,4 @@ See:
 
 ## Licence
 
-MIT. Scientific references, reviewed source projects, and implementation-independence rules are recorded in `THIRD_PARTY_NOTICES.md` and the model documentation.
+MIT. Scientific references, reviewed source projects, implementation-independence rules and third-party licence boundaries are recorded in `THIRD_PARTY_NOTICES.md` and the model documentation.
