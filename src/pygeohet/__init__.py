@@ -17,7 +17,18 @@ from pygeohet.detectors import (
     interaction_detector,
     risk_detector,
 )
-from pygeohet.models import OPGD, GeoDetector, OPGDResult, geodetector, opgd
+from pygeohet.models import (
+    OPGD,
+    GeoDetector,
+    OPGDResult,
+    SpatialScaleCandidateResult,
+    SpatialScaleOPGD,
+    SpatialScaleOPGDResult,
+    SpatialScaleResult,
+    compare_spatial_scales,
+    geodetector,
+    opgd,
+)
 from pygeohet.results import (
     EcologicalComparisonResult,
     EcologicalDetectorResult,
@@ -63,11 +74,16 @@ __all__ = [
     "RiskDetector",
     "RiskDetectorResult",
     "RiskStratumSummary",
+    "SpatialScaleCandidateResult",
+    "SpatialScaleOPGD",
+    "SpatialScaleOPGDResult",
+    "SpatialScaleResult",
     "StratificationEvaluationResult",
     "StratificationResult",
     "canonical_method",
     "categorical_overlay",
     "classify_interaction",
+    "compare_spatial_scales",
     "ecological_detector",
     "evaluate_stratification",
     "factor_detector",

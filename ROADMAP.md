@@ -20,15 +20,19 @@ Collision-safe overlays; five interaction classes and common-sample interaction 
 
 Equal interval, quantile, weighted Fisher-Jenks natural breaks, geometric interval, standard-deviation and head/tail breaks; immutable stratification results; joint-sample candidate evaluation; complete audit tables; deterministic q ties; optimal univariate discretization and integrated OPGD.
 
-**Status:** implemented in the Stage 3A pull request; final cross-platform merge gate required.
+**Status:** complete and merged.
 
-### Stage 3B - Spatial-scale optimization
+### Stage 3B - Spatial-scale OPGD (`0.0.4`)
 
-Freeze the primary-source numerical contract for scale candidates, neighborhood construction, edge handling, sample scope and deterministic ties. Implement spatial-scale candidate tables and reference fixtures without conflating scale search with univariate discretization.
+Primary-paper 90% q-quantile scoring across explicitly prepared supports; optional legacy-GD significance eligibility; precomputed-result and integrated OPGD interfaces; common-factor checks; explicit ties and failed-scale evidence. Automatic geographic aggregation remains upstream.
+
+**Status:** implemented in the Stage 3B pull request; final cross-platform merge gate and external fixture remain.
 
 ### Stage 3C - Multiscale discretization (MSD)
 
-Implement MSD only after the paper and reference code establish its objective, candidate construction and relationship to OPGD. Retain failed candidates, complexity information and selection evidence.
+Implement MSD only after the paper and pinned reference code establish its objective, candidate construction and relationship to OPGD. Retain failed candidates, complexity information and selection evidence. Do not infer “multiscale” from the Stage 3B support-comparison implementation.
+
+**Status:** next active batch.
 
 ## Stage 4 - Robust detector family (`0.2.0`)
 

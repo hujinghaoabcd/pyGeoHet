@@ -19,21 +19,24 @@ pyGeoHet/
 │   │   └── results.py           immutable stratification/search evidence
 │   ├── models/
 │   │   ├── geodetector.py       integrated classical workflow
-│   │   └── opgd.py              audited optimal-discretization workflow
+│   │   ├── opgd.py              audited optimal-discretization workflow
+│   │   └── spatial_scale.py     prepared-support OPGD scale comparison
 │   └── py.typed                 inline typing marker
 ├── tests/
 │   ├── fixtures/reference/      static external-output records
 │   ├── test_stratification.py   method, boundary and optimization contracts
 │   ├── test_opgd.py             integrated OPGD workflow tests
+│   ├── test_spatial_scale.py    scale scores, ties, failures and integration
 │   └── test_*.py                classical analytical, edge and workflow tests
 ├── examples/
 │   ├── 01_factor_detector.py
 │   ├── 02_classic_workflow.py
-│   └── 03_stratification_opgd.py
+│   ├── 03_stratification_opgd.py
+│   └── 04_spatial_scale_opgd.py
 ├── tools/                       offline fixture validators/generators
 ├── docs/
 │   ├── theory/                  formulas and numerical conventions
-│   ├── models/                  classic and stratification/OPGD manuals
+│   ├── models/                  classic, OPGD and spatial-scale manuals
 │   ├── validation/              published-case reports
 │   └── development/             testing and handoff policies
 ├── .github/workflows/ci.yml     cross-platform gate with PR concurrency control
@@ -45,4 +48,4 @@ pyGeoHet/
 └── HANDOFF_NEXT_CONVERSATION.md authoritative continuation instructions
 ```
 
-Directories for robust, spatial, information, multivariate, local and experimental-lagged methods are created only when implementation begins. Planned public names remain in the roadmap until working code, tests and documentation exist.
+Automatic geographic-support aggregation is intentionally absent from the core package. Scale-specific datasets are prepared explicitly upstream and compared through `models/spatial_scale.py`. Directories for robust, spatial-dependence, information, multivariate, local and temporal-lagged methods are created only when implementation begins. Planned public names remain in the roadmap until working code, tests and documentation exist.

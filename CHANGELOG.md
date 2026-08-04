@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.0.4 - 2026-08-05
+
+### Added
+
+- immutable spatial-scale candidate, selection and integrated OPGD result objects;
+- primary-paper spatial-scale scoring based on the 90% quantile of factor q values;
+- optional significance filtering matching the legacy `GD::sesu()` eligibility convention;
+- explicit mean-q scale scoring for descriptive and compatibility analysis;
+- deterministic scale-score tie policies;
+- strict common-factor validation across prepared spatial supports;
+- `compare_spatial_scales()` for precomputed factor, GeoDetector or OPGD results;
+- `SpatialScaleOPGD` for running OPGD on explicit scale-specific datasets;
+- scale-level failure retention, tests, documentation and runnable example.
+
+### Changed
+
+- package development version advanced to `0.0.4`;
+- public API now exports spatial-scale comparison interfaces;
+- CI runs all four public examples;
+- spatial support aggregation remains an explicit upstream responsibility;
+- the 2020 paper convention, legacy GD significance filter and newer gdverse mean-plus-LOESS heuristic are documented as distinct estimators.
+
 ## 0.0.3 - 2026-08-05
 
 ### Added

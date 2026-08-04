@@ -36,13 +36,19 @@ Each model family must reproduce at least one documented paper or official-softw
 | Head/tail breaks | recursive-mean and threshold contract | source convention reviewed; fixture pending | automatic class count and stopping tests | pending | implemented, provisional |
 | Optimal stratification | direct q evaluation and deterministic tie rule | gdverse/GD candidate fixture pending | rejected candidates and joint-complete-case tests | pending | implemented, provisional |
 | Integrated OPGD | workflow composition | external optimum fixture pending | multi-factor, one-factor and all-invalid tests | OPGD case pending | implemented, provisional |
+| Primary-paper scale score | hand-calculated linear 90% quantiles and maximum selection | paper/GD convention audit; fixture pending | equal-score ties, scale validation and common-factor checks | vegetation/H1N1 reproduction pending | implemented, provisional |
+| Legacy GD scale eligibility | p-filter plus 90% q quantile | `GD::sesu` pinned-source fixture pending | missing p-value and no-eligible-factor tests | pending | implemented, provisional |
+| SpatialScaleOPGD | scale-specific OPGD composition | external multi-scale fixture pending | failed scales, one-valid-scale and aligned/misaligned synthetic supports | OPGD scale case pending | implemented, provisional |
+| gdverse LOESS scale heuristic | source formula audited | pinned gdverse/sdsfun fixture pending | threshold crossings and fallback pending | pending | documented only |
 
 ## NTD fixture
 
 `tests/fixtures/reference/ntd_classic_reference.json` contains expected outputs and the SHA-256 hash of the non-redistributed input. `tools/validate_ntd_reference.py` verifies the hash and reruns all classical detectors.
 
-## Stage 3A validation gap
+## Stage 3 validation gaps
 
-Stage 3A has analytical, boundary, failure-mode and integrated workflow tests. It is not labelled fully validated until static reference fixtures and at least one published OPGD case are added. Spatial-scale OPGD and MSD remain unimplemented rather than being inferred from the univariate search.
+Stage 3A has analytical, boundary, failure-mode and integrated workflow tests but still needs stable external method fixtures and a published OPGD reproduction.
+
+Stage 3B has analytical scale-score tests, significance-policy tests, deterministic ties, common-factor validation, failed-scale retention and integrated prepared-support OPGD tests. It is not labelled fully externally validated until a static GD/gdverse scale fixture and at least one published multi-scale OPGD case are reproduced. Automatic spatial-support construction and the newer gdverse LOESS heuristic are not silently inferred.
 
 “Validated with convention split” means the primary scientific convention and the compatibility convention are both explicit, independently tested, and not numerically conflated.
