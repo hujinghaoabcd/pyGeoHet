@@ -19,21 +19,21 @@ This development-facing inventory distinguishes source evidence, planned impleme
 | Scale | Primary-paper spatial-scale OPGD | select prepared support by 90% q quantile | 2020 OPGD paper; legacy GD `sesu` | implemented with explicit eligibility and tie policies; external fixture pending | 3B |
 | Scale | Legacy GD significant-factor scale score | filter by factor p before 90% q quantile | `ausgis/GD::sesu` | implemented as `significant_only=True` compatibility mode | 3B |
 | Scale | gdverse LOESS scale heuristic | mean significant q with marginal-increase stopping | gdverse `sesu_opgd`; sdsfun `loess_optnum` | documented divergence; not yet reproduced | 3B |
-| Discretization | MSD | supervised multiscale break search | paper-associated code reported | primary-source/code audit next | 3C |
+| Discretization | MSD | supervised coarse-to-fine cut search on an explanatory-variable value grid | 2021 primary paper and reported Figshare code; uploaded GD/gdverse used as structural references | implemented with exact and multiscale modes; author-code fixture pending | 3C |
+| Robust | RGD | change-point robust discretization and B-value | uploaded author Python notebooks; gdverse `robustdisc`/`rgd` | next active implementation | 4 |
+| Robust | RID | robust two-factor interaction | gdverse `rid` and primary paper | planned | 4 |
 | Spatial | SPADE | spatial variance and multilevel discretization | gdverse follow-up implementation | planned | 5 |
 | Spatial | IDSA | spatially informed interaction zones | IDSA/gdverse | planned | 5 |
 | Categorical | SRS-GD | nominal target and local rough-set power | paper C++ / gdverse follow-up | planned | 6 |
-| Multivariate | GOZH | optimized multi-factor geographical zones | gdverse | planned | 7 |
-| Robust | RGD | change-point robust discretization and B-value | gdverse follow-up | planned | 4 |
 | Information | SSHIC/SSHIN | distribution differences beyond variance | sshicm | planned | 6 |
+| Spatial information | SWMI | spatially weighted mutual information | no full public package found | source audit | 6 |
+| Multivariate | GOZH | optimized multi-factor geographical zones | gdverse | planned | 7 |
 | Explanation | LESH | Shapley allocation in multivariate zones | gdverse | planned | 7 |
-| Robust | RID | robust two-factor interaction | gdverse | planned | 4 |
 | Multivariate | OMGD | optimal 3+ factor clustering and scale | author Python repository | planned | 7 |
 | Local | LISP | local stratified power and significance | localsp | planned | 8 |
 | Pattern | GPI | variable effects in pattern interaction | partial related software evidence | evidence review | 8 |
 | Structure | Local geometry SSH | compare local geometrical configurations | author repository reported | evidence review | 8 |
 | Complexity | UEP | power per stratification complexity | author repository reported | evidence review | 8 |
-| Spatial information | SWMI | spatially weighted mutual information | no full public package found | source audit | 6 |
 | Observation bias | EQ-statistic | biased and missing spatial observations | no public implementation found | source audit | 9 |
 | Outliers | SOH | outlier-pattern-assisted stratification | associated data/code reported | source audit | 9 |
 | Original research | Lagged SSH | cross-lag explanatory power with valid inference | methodological gap | experimental only | 10 |
@@ -46,4 +46,4 @@ This development-facing inventory distinguishes source evidence, planned impleme
 4. independent implementation used only for behavioural comparison;
 5. simulation and analytical properties.
 
-When sources disagree, pyGeoHet records the disagreement and exposes an explicit convention instead of averaging incompatible definitions. The ecological detector, Stage 3A boundary/tie contracts, and Stage 3B separation of paper, legacy-GD and newer-gdverse scale estimators follow this policy.
+When sources disagree, pyGeoHet records the disagreement and exposes an explicit convention instead of averaging incompatible definitions. The ecological detector, Stage 3A boundary/tie contracts, Stage 3B separation of paper, legacy-GD and newer-gdverse scale estimators, and Stage 3C separation between paper-derived MSD behaviour and pending author-archive parity follow this policy.
