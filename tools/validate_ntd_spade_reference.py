@@ -96,7 +96,9 @@ def main() -> None:
     y, strata, weights = _load_prepared_data(args.gpkg)
     expected_n = fixture["preparation"]["complete_observations"]
     if len(y) != expected_n:
-        raise SystemExit(f"Expected {expected_n} complete observations, received {len(y)}")
+        raise SystemExit(
+            f"Expected {expected_n} complete observations, received {len(y)}"
+        )
 
     result = power_spatial_determinant(y, strata, weights)
     expected = fixture["expected"]["psd_full_precision"]
