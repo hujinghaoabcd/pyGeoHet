@@ -14,7 +14,11 @@ from pygeohet.results import (
     EcologicalComparisonResult,
     EcologicalDetectorResult,
 )
-from pygeohet.validation import MissingPolicy, coerce_factor_frame, prepare_joint_data
+from pygeohet.validation import (
+    MissingPolicy,
+    coerce_factor_frame,
+    prepare_joint_data,
+)
 
 
 EcologicalAlternative = Literal["two-sided", "greater"]
