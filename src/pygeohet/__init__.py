@@ -43,10 +43,10 @@ from pygeohet.results import (
 )
 from pygeohet.stratification import (
     MSD,
-    MSDResult,
-    MSDScaleResult,
     MSD_TIE_RULE,
     TIE_RULE,
+    MSDResult,
+    MSDScaleResult,
     OptimalStratificationResult,
     StratificationEvaluationResult,
     StratificationResult,
