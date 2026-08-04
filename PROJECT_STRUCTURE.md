@@ -16,6 +16,7 @@ pyGeoHet/
 │   ├── stratification/
 │   │   ├── methods.py           six deterministic univariate methods
 │   │   ├── optimal.py           q-guided candidate evaluation and selection
+│   │   ├── msd.py               supervised exact/coarse-to-fine MSD search
 │   │   └── results.py           immutable stratification/search evidence
 │   ├── models/
 │   │   ├── geodetector.py       integrated classical workflow
@@ -27,16 +28,19 @@ pyGeoHet/
 │   ├── test_stratification.py   method, boundary and optimization contracts
 │   ├── test_opgd.py             integrated OPGD workflow tests
 │   ├── test_spatial_scale.py    scale scores, ties, failures and integration
+│   ├── test_msd.py              exact oracle, refinement and audit contracts
 │   └── test_*.py                classical analytical, edge and workflow tests
 ├── examples/
 │   ├── 01_factor_detector.py
 │   ├── 02_classic_workflow.py
 │   ├── 03_stratification_opgd.py
-│   └── 04_spatial_scale_opgd.py
+│   ├── 04_spatial_scale_opgd.py
+│   └── 05_multiscale_discretization.py
 ├── tools/                       offline fixture validators/generators
 ├── docs/
 │   ├── theory/                  formulas and numerical conventions
-│   ├── models/                  classic, OPGD and spatial-scale manuals
+│   ├── models/                  classic, OPGD, scale and MSD manuals
+│   ├── references/              paper/source-code audits
 │   ├── validation/              published-case reports
 │   └── development/             testing and handoff policies
 ├── .github/workflows/ci.yml     cross-platform gate with PR concurrency control
@@ -48,4 +52,6 @@ pyGeoHet/
 └── HANDOFF_NEXT_CONVERSATION.md authoritative continuation instructions
 ```
 
-Automatic geographic-support aggregation is intentionally absent from the core package. Scale-specific datasets are prepared explicitly upstream and compared through `models/spatial_scale.py`. Directories for robust, spatial-dependence, information, multivariate, local and temporal-lagged methods are created only when implementation begins. Planned public names remain in the roadmap until working code, tests and documentation exist.
+Automatic geographic-support aggregation is intentionally absent from the core package. Scale-specific datasets are prepared explicitly upstream and compared through `models/spatial_scale.py`. MSD's scales are explanatory-variable value-grid resolutions and are implemented separately in `stratification/msd.py`.
+
+Directories for robust, spatial-dependence, information, multivariate, local and temporal-lagged methods are created only when implementation begins. Planned public names remain in the roadmap until working code, tests and documentation exist.
