@@ -63,7 +63,9 @@ def prepare_factor_data(
     if y_clean.size == 0:
         raise InvalidDataError("no complete observations remain")
     if not bool(np.isfinite(y_clean).all()):
-        raise InvalidDataError("y must contain only finite values after missing handling")
+        raise InvalidDataError(
+            "y must contain only finite values after missing handling"
+        )
 
     counts = pd.Series(x_clean, copy=False).value_counts(sort=False, dropna=False)
     if len(counts) < 2:
