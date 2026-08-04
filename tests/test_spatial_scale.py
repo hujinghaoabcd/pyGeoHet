@@ -37,12 +37,8 @@ def _factor_result(values: dict[str, tuple[float, float]]) -> FactorDetectorResu
 def test_primary_paper_quantile_selects_highest_scale_score() -> None:
     result = compare_spatial_scales(
         {
-            10: _factor_result(
-                {"a": (0.1, 0.01), "b": (0.2, 0.01), "c": (0.8, 0.01)}
-            ),
-            20: _factor_result(
-                {"a": (0.2, 0.01), "b": (0.7, 0.01), "c": (0.9, 0.01)}
-            ),
+            10: _factor_result({"a": (0.1, 0.01), "b": (0.2, 0.01), "c": (0.8, 0.01)}),
+            20: _factor_result({"a": (0.2, 0.01), "b": (0.7, 0.01), "c": (0.9, 0.01)}),
         }
     )
 
