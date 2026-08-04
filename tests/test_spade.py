@@ -30,9 +30,7 @@ def test_spatial_variance_matches_manual_weighted_semivariance() -> None:
     off_diagonal = weights.copy()
     np.fill_diagonal(off_diagonal, 0.0)
     differences = values[:, None] - values[None, :]
-    expected_numerator = float(
-        np.sum(off_diagonal * 0.5 * differences * differences)
-    )
+    expected_numerator = float(np.sum(off_diagonal * 0.5 * differences * differences))
 
     result = spatial_variance(values, weights)
 
@@ -69,9 +67,10 @@ def test_psd_matches_direct_formula_and_row_permutation() -> None:
     within = 0.0
     for label in np.unique(strata):
         indices = np.flatnonzero(strata == label)
-        within += len(indices) * spatial_variance(
-            y[indices], weights[np.ix_(indices, indices)]
-        ).value
+        within += (
+            len(indices)
+            * spatial_variance(y[indices], weights[np.ix_(indices, indices)]).value
+        )
     expected = 1.0 - within / (len(y) * global_variance)
 
     permutation = np.asarray([5, 0, 3, 1, 4, 2])
