@@ -17,7 +17,7 @@ from pygeohet.detectors import (
     interaction_detector,
     risk_detector,
 )
-from pygeohet.models import GeoDetector, OPGD, OPGDResult, geodetector, opgd
+from pygeohet.models import OPGD, GeoDetector, OPGDResult, geodetector, opgd
 from pygeohet.results import (
     EcologicalComparisonResult,
     EcologicalDetectorResult,
