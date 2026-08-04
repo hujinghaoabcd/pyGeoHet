@@ -161,7 +161,9 @@ def multilevel_spatial_determinant(
             accepted_levels.append(level)
 
     if len(accepted_values) < 2:
-        raise InvalidDataError("PSMD requires at least two accepted discretization levels")
+        raise InvalidDataError(
+            "PSMD requires at least two accepted discretization levels"
+        )
     observed = float(np.mean(accepted_values))
 
     p_value: float | None = None
@@ -256,13 +258,14 @@ class SPADE:
             unknown = sorted(set(continuous) - set(frame.columns))
             if unknown:
                 raise InvalidDataError(
-                    "continuous_factors contains unknown columns: "
-                    + ", ".join(unknown)
+                    "continuous_factors contains unknown columns: " + ", ".join(unknown)
                 )
         if len(set(continuous)) != len(continuous):
             raise InvalidDataError("continuous_factors must not contain duplicates")
         continuous_set = set(continuous)
-        categorical = tuple(name for name in frame.columns if name not in continuous_set)
+        categorical = tuple(
+            name for name in frame.columns if name not in continuous_set
+        )
 
         if self.permutations:
             seed_sequence = np.random.SeedSequence(self.random_state)
