@@ -38,10 +38,7 @@ class OPGDResult:
             self,
             "discrete_labels",
             MappingProxyType(
-                {
-                    name: tuple(labels)
-                    for name, labels in self.discrete_labels.items()
-                }
+                {name: tuple(labels) for name, labels in self.discrete_labels.items()}
             ),
         )
 
