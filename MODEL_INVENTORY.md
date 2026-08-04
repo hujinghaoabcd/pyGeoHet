@@ -23,8 +23,13 @@ This development-facing inventory distinguishes source evidence, planned impleme
 | Robust | Fixed-K robust discretization | exact variance change-point partition and B-value | RGD paper; uploaded author notebook; gdverse `robustdisc` | implemented by independent exact DP with duplicate-x safety; external fixture pending | 4 |
 | Robust | RGD | optimize robust zones for continuous factors before detectors | uploaded author Python notebook; gdverse `rgd`; primary paper | implemented with marginal-gain and maximum-B selection; published case pending | 4 |
 | Robust | RID | robust factor zones followed by pairwise interaction detection | gdverse `rid`; robust-interaction paper/workflow evidence | implemented by composition with collision-safe interaction detector; fixture pending | 4 |
-| Spatial | SPADE | spatial variance and multilevel discretization | gdverse follow-up implementation | next active implementation | 5 |
-| Spatial | IDSA | spatially informed interaction zones | IDSA/gdverse | planned | 5 |
+| Spatial | Spatial variance | weighted average pairwise semivariance | SPADE paper; sdsfun `spvar`; gdverse wrappers | implemented for explicit dense weights with diagonal/island audit | 5A |
+| Spatial | PSD | spatial determinant for categorical strata | SPADE paper; gdverse `psd_spade`; sdsfun | implemented and checked against NTD soiltype fixture | 5A |
+| Spatial | CPSD | compensate response PSD by information-retention PSD | SPADE paper; gdverse/sdsfun workflows | implemented; external continuous-case fixture pending | 5A |
+| Spatial | PSMD | average CPSD over explicit discretization levels | SPADE paper; gdverse `spade`; sdsfun | implemented with complete accepted/rejected level table | 5A |
+| Spatial | SPADE | categorical PSD and continuous PSMD workflow | primary paper; gdverse and sdsfun | implemented with explicit factor typing and seeded permutations | 5A |
+| Spatial interaction | Fuzzy overlay | response-risk membership AND/OR zones | IDSA paper; sdsfun `fuzzyoverlay` | source/formula audit complete; Stage 5B next | 5B |
+| Spatial interaction | IDSA / PID | spatially informed interactive determinant | IDSA paper; gdverse `idsa`/`pid_idsa`; sdsfun | planned for next branch after contract freeze | 5B |
 | Categorical | SRS-GD | nominal target and local rough-set power | paper C++ / gdverse follow-up | planned | 6 |
 | Information | SSHIC/SSHIN | distribution differences beyond variance | sshicm | planned | 6 |
 | Spatial information | SWMI | spatially weighted mutual information | no full public package found | source audit | 6 |
@@ -47,4 +52,4 @@ This development-facing inventory distinguishes source evidence, planned impleme
 4. independent implementation used only for behavioural comparison;
 5. simulation and analytical properties.
 
-When sources disagree, pyGeoHet records the disagreement and exposes an explicit convention instead of averaging incompatible definitions. This policy governs the ecological detector, Stage 3 scale and MSD distinctions, and Stage 4 separation between the RGD estimand, author/gdverse implementations and pyGeoHet's explicit duplicate-value-safe exact dynamic program.
+When sources disagree, pyGeoHet records the disagreement and exposes an explicit convention instead of averaging incompatible definitions. This policy governs the ecological detector, Stage 3 scale and MSD distinctions, Stage 4 robust source differences, and Stage 5 separation between prepared spatial weights, SPADE variance decomposition and IDSA fuzzy interaction zones.
