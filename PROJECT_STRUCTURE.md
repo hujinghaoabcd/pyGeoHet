@@ -45,6 +45,7 @@ pyGeoHet/
 │   ├── test_idsa.py             fuzzy overlay, PID and IDSA search tests
 │   ├── test_idsa.py             fuzzy overlay, PID and IDSA search tests
 │   ├── test_idsa.py             fuzzy overlay, PID and IDSA search tests
+│   ├── test_idsa.py             fuzzy overlay, PID and IDSA search tests
 │   └── test_*.py                classical analytical, edge and workflow tests
 ├── examples/
 │   ├── 01_factor_detector.py
