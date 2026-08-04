@@ -24,6 +24,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Repair temporary finalizer
+        run: sed -i 's/roadmap = read("ROADMAP.md")n = None/roadmap = read("ROADMAP.md")/' tools/finalize_stage5b_docs.py
       - run: python tools/finalize_stage5b_docs.py
       - run: python -m pip install ruff black
       - run: ruff check --fix src tests examples tools
