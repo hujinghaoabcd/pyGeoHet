@@ -36,15 +36,25 @@ Supervised bivariate cut search by q maximization; explicit explanatory-variable
 
 ## Stage 4 - Robust detector family (`0.0.6`)
 
-Stable explanatory-variable ordering; duplicate-value-safe admissible boundaries; exact least-squares variance change-point segmentation; prefix-sum dynamic programming; B-value; explicit marginal-gain and maximum-B class-count selection; RGD and RID composition with the classical detector core; independent brute-force, rank-invariance, missingness and integration tests. The uploaded author research code and gdverse `robustdisc.R`, `rgd.R`, `rid.R`, and `inst/python/cpd_disc.py` are reviewed references rather than runtime dependencies.
+Stable explanatory-variable ordering; duplicate-value-safe admissible boundaries; exact least-squares variance change-point segmentation; prefix-sum dynamic programming; B-value; explicit marginal-gain and maximum-B class-count selection; RGD and RID composition with the classical detector core; independent brute-force, rank-invariance, missingness and integration tests.
 
-**Status:** implemented in PR #6. External author/gdverse fixtures, published RGD/RID cases, outlier perturbation experiments and selection-uncertainty analysis remain validation debt.
+**Status:** complete and merged. External author/gdverse fixtures, published RGD/RID cases, outlier perturbation experiments and selection-uncertainty analysis remain validation debt.
 
-## Stage 5 - Spatial-dependence detector family (`0.3.0`)
+## Stage 5 - Spatial-dependence detector family
 
-Spatial-weight and distance contracts; spatial variance and multilevel information loss; SPADE and IDSA, including fuzzy overlay. Work begins with a source/formula audit and small-lattice numerical fixtures before public APIs are created.
+### Stage 5A - Spatial variance and SPADE (`0.0.7`)
 
-**Status:** next active stage after Stage 4 merge.
+Prepared dense spatial-weight contracts; weighted spatial variance; PSD for categorical strata; CPSD information compensation; PSMD over explicit discretization levels; integrated SPADE; conditional permutation inference; immutable audit results; NTD soiltype reference validation.
+
+The implementation keeps geometry processing and weight construction upstream. It does not silently choose a CRS, centroid, distance metric, neighbourhood, normalization or symmetrization rule.
+
+**Status:** implemented in PR #7. The categorical PSD path matches the pinned gdverse NTD reference at six decimal places. Continuous published-case reproduction, static CPSD/PSMD tables, sparse weights and uncertainty analysis remain validation debt.
+
+### Stage 5B - Fuzzy overlay and IDSA (`0.0.8` target)
+
+Collision-safe fuzzy factor-stratum labels; response-risk membership normalization; explicit fuzzy AND/OR and deterministic ties; spatial interactive power `theta`; information-retention component `phi`; `PID = theta / phi`; continuous-factor discretization strategy; pairwise and multivariate IDSA audit tables; independent manual fixtures and reference-case reproduction.
+
+**Status:** next active batch after Stage 5A merge. Classical tuple intersection must not be substituted for fuzzy interaction zones.
 
 ## Stage 6 - Categorical and information-consistency SSH (`0.4.0`)
 

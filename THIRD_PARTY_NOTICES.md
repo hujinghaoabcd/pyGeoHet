@@ -8,59 +8,61 @@ Reference implementations and papers may be used to define formulas, construct s
 
 The classical-workflow and Stage 3 audits reviewed the primary geographical-detector papers and user-uploaded source archives from `GD`, `gdverse`, `geodetector`, `GeodetectorPy`, QGIS implementations, OMGD and robust-detector research code. Several reviewed packages use GPL-family licences. No source code was copied or translated line by line into the MIT-licensed package.
 
-The uploaded `gdverse` archive was used concretely rather than treated only as a citation. Files reviewed for software and numerical contracts include:
-
-- `R/gd_optunidisc.R` and `R/opgd.R` for candidate-grid organisation and separation of optimal parameters from detector output;
-- `R/sesu_opgd.R` for keeping geographic-support comparison separate from discretization;
-- package tests and vignettes for public wrappers, deterministic examples and output tables.
-
-The uploaded GD and lightweight Python/R/QGIS implementations were also reviewed for API expectations, q conventions, labels and failure handling. Their behaviour is not silently adopted when it conflicts with a primary-paper estimand.
+The uploaded `gdverse` archive was used concretely rather than treated only as a citation. Files reviewed for software and numerical contracts include `R/gd_optunidisc.R`, `R/opgd.R`, `R/sesu_opgd.R`, tests and vignettes. Their behaviour is not silently adopted when it conflicts with a primary-paper estimand.
 
 ## MSD scientific and code evidence
 
 Stage 3C is anchored by Meng et al. (2021), *Development of a multiscale discretization method for the geographical detector model*, DOI `10.1080/13658816.2021.1884686`. The paper reports associated code at Figshare DOI `10.6084/m9.figshare.13643318`.
 
-The Figshare archive bytes could not be retrieved in the current development environment. Accordingly:
-
-- pyGeoHet does not claim line-by-line or output parity with the author archive;
-- no Figshare source was copied into the repository;
-- the current MSD contract is independently implemented from the paper's formula, pseudocode and examples;
-- uploaded GD/gdverse code informs software organisation and boundaries but is not presented as an MSD numerical oracle;
-- author parity remains a named validation task requiring archive version, file names, checksums, licence and static fixtures.
-
-The full audit is recorded in `docs/references/msd-code-audit.md`.
+The Figshare archive bytes could not be retrieved in the current development environment. pyGeoHet therefore does not claim author-code parity; it implements the documented estimand independently and retains the missing archive fixture as validation debt. See `docs/references/msd-code-audit.md`.
 
 ## Robust detector scientific and code evidence
 
-Stage 4 reviewed:
+Stage 4 reviewed Zhang, Song and Wu (2022), the uploaded `Robust_Geographical_Detector` author archive, and gdverse `robustdisc`, `rgd`, `rid` and Python change-point helper sources.
 
-- Zhang, Song and Wu (2022), *Robust geographical detector*;
-- the uploaded author archive `Robust_Geographical_Detector-main(1).zip`, including `CPD_1.ipynb`, its README and bundled article PDF;
-- the uploaded gdverse files `R/robustdisc.R`, `R/rgd.R`, `R/rid.R`, `inst/python/cpd_disc.py`, the robust-detector vignette and generated help pages.
+The reviewed gdverse snapshot declares GPL-3. The uploaded author archive did not contain a visible licence file. Both are used only for formula, behaviour and validation understanding. pyGeoHet independently implements validation, distinct-value-safe candidates, prefix sums, dynamic programming, immutable results and workflow composition. No runtime dependency on `ruptures`, reticulate, R, GD or gdverse is introduced. See `docs/references/robust-code-audit.md`.
 
-The paper and reference software support the central workflow: order the response by the explanatory variable, solve a least-squares offline change-point problem, calculate B from the resulting zones, and use those zones in factor or interaction detection.
+## SPADE and IDSA scientific and code evidence
 
-The reviewed gdverse snapshot declares GPL-3. The uploaded author archive did not contain a visible licence file in the reviewed snapshot. Therefore both sources are used for formula, behaviour and validation understanding only. pyGeoHet does not copy or translate their implementation and does not distribute their notebook or code.
+Stage 5 reviewed:
 
-The Stage 4 implementation independently provides:
+- Cang and Luo (2018), *Spatial association detector (SPADE)*;
+- Song and Wu (2021), *An interactive detector for spatial associations*;
+- uploaded gdverse `R/psd_spade.R`, `R/spade.R`, `R/idsa.R`, `R/pid_idsa.R`, tests and vignettes;
+- maintained `stscl/sdsfun` `R/spvar.R`, `R/fuzzyoverlay.R` and `R/spwt.R`.
 
-- pair validation and missing-row reconstruction;
-- stable ordering and distinct-value-safe candidate boundaries;
-- prefix-sum interval objectives;
-- exact dynamic programming and deterministic backtracking;
-- immutable candidate and selected-model results;
-- RGD/RID composition with pyGeoHet's own q and interaction implementations.
+The reviewed gdverse and sdsfun projects use GPL-family licensing. pyGeoHet uses them to verify formulas, public workflow boundaries and reference outputs, not as code to translate or a runtime backend.
 
-No runtime dependency on `ruptures`, reticulate, R, GD or gdverse is introduced. Differences from the reviewed software, especially the rule that tied explanatory values cannot be split, are documented rather than hidden. See `docs/references/robust-code-audit.md`.
+Stage 5A independently implements:
+
+- square finite nonnegative spatial-weight validation;
+- explicit diagonal removal, symmetry and island evidence;
+- weighted average semivariance;
+- PSD, CPSD and PSMD variance decompositions;
+- missing-sample alignment across both weight-matrix axes;
+- immutable results and conditional seeded permutation inference;
+- an integrated SPADE workflow using pyGeoHet's own stratification subsystem.
+
+The package does not depend at runtime on R, gdverse, sdsfun, sf, spdep, geopandas or a geometry engine. Coordinate/geometry-to-weight construction remains an upstream responsibility.
+
+The IDSA source audit identified fuzzy response-risk membership zones that differ from classical tuple intersection. Stage 5B will implement those formulas independently with collision-safe labels and explicit tie rules. No provisional IDSA API is exported before that work is complete. See `docs/references/spade-idsa-code-audit.md`.
 
 ## Validation data
 
-The NTD validation uses a GPL-associated CSV available in a reviewed archive. pyGeoHet does not redistribute that raw file. It stores only numerical outputs, provenance, the input SHA-256 hash, and a validator that the developer can run against a separately obtained copy.
+The classical NTD validation uses a GPL-associated CSV available in a reviewed archive. pyGeoHet does not redistribute that raw file. It stores only numerical outputs, provenance, the input SHA-256 hash and an offline validator.
+
+The Stage 5A SPADE validation uses gdverse `inst/extdata/NTDs.gpkg`. pyGeoHet does not redistribute the GPKG. The provenance fixture records SHA-256
+
+```text
+1dd0508fc03a61db973cce48524cf6ef32a93ac8102b7ca03a1865f4fb8cb406
+```
+
+and the preparation contract: disease polygon centroids, supporting-layer spatial joins, 185 complete observations, inverse Euclidean distance-squared weights and the `soiltype` stratification. The independent result `0.2566528294856155` matches the gdverse expected value `0.256653` at six decimals.
 
 The ecological detector has incompatible historical software conventions. pyGeoHet implements the primary-paper residual-dispersion F ratio, uses a two-sided test by default, and exposes a separately named upper-tail compatibility option. This is a documented statistical choice, not copied package behaviour.
 
 ## Scientific anchors
 
-Initial anchors include Wang et al. (2010), Cao, Ge, and Wang (2013), Wang, Zhang, and Fu (2016), Wang and Xu (2017), Song et al. (2020), Meng et al. (2021), Zhang, Song, and Wu (2022), and later method papers listed in `MODEL_INVENTORY.md`.
+Initial anchors include Wang et al. (2010), Cao, Ge, and Wang (2013), Wang, Zhang, and Fu (2016), Wang and Xu (2017), Cang and Luo (2018), Song et al. (2020), Meng et al. (2021), Song and Wu (2021), Zhang, Song, and Wu (2022), and later method papers listed in `MODEL_INVENTORY.md`.
 
 Licences of future source archives must be audited before code-level adaptation. Lack of a clear licence means the source may be read for behavioural understanding but must not be copied or translated line by line.

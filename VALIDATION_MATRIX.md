@@ -46,10 +46,18 @@ Each model family must reproduce at least one documented paper or official-softw
 | Robust class-count optimization | explicit marginal-gain and maximum-B rules | gdverse/author class-count table pending | rejected counts, threshold crossing and deterministic ties | RGD case pending | implemented, provisional |
 | Integrated RGD | robust labels reproduce factor q/B and compose with classical workflow | pinned author/gdverse output pending | one/multi-factor integration and aligned labels | published RGD case pending | implemented, provisional |
 | Integrated RID | robust labels plus collision-safe pairwise interaction | pinned gdverse RID fixture pending | at-least-two-factor, joint sample and interaction integration | published RID case pending | implemented, provisional |
+| Spatial variance | hand-computed weighted semivariance | sdsfun formula/source audit | global weight scaling, directed weights, missing-axis alignment and islands | SPADE NTD support calculation | implemented and externally checked |
+| PSD | direct stratum decomposition | gdverse NTD soiltype fixture: 0.2566528295 | simultaneous row/weight permutation, minimum strata and island failures | NTD SPADE case | validated for pinned case |
+| CPSD | ratio identity when response equals information variable | gdverse/sdsfun formula audit | zero denominator and common-sample tests | pending | implemented, provisional |
+| PSMD | exact mean of accepted CPSD levels | reference workflow audited; static table pending | invalid-level retention, minimum accepted levels and seeded permutations | pending | implemented, provisional |
+| Integrated SPADE | categorical PSD plus continuous PSMD composition | NTD categorical path checked | mixed factor typing and deterministic seeds | partial NTD | implemented, provisional |
+| IDSA fuzzy overlay and PID | paper/source audit complete | fixture pending | tie, normalization and missing-risk tests pending | pending | Stage 5B planned |
 
-## NTD fixture
+## NTD fixtures
 
-`tests/fixtures/reference/ntd_classic_reference.json` contains expected outputs and the SHA-256 hash of the non-redistributed input. `tools/validate_ntd_reference.py` verifies the hash and reruns all classical detectors.
+`tests/fixtures/reference/ntd_classic_reference.json` contains expected classical outputs and the SHA-256 hash of the non-redistributed input. `tools/validate_ntd_reference.py` verifies the hash and reruns all classical detectors.
+
+`tests/fixtures/reference/ntd_spade_reference.json` records the gdverse `NTDs.gpkg` SHA-256, preparation contract and expected soiltype PSD without redistributing the GPKG. `tools/validate_ntd_spade_reference.py` reconstructs disease centroids, supporting-layer joins and inverse-distance-squared weights when the separately obtained GPKG is available.
 
 ## Stage 3 validation gaps
 
@@ -57,20 +65,32 @@ Stage 3A has analytical, boundary, failure-mode and integrated workflow tests bu
 
 Stage 3B has analytical scale-score tests, significance-policy tests, deterministic ties, common-factor validation, failed-scale retention and integrated prepared-support OPGD tests. It is not labelled fully externally validated until a static GD/gdverse scale fixture and at least one published multi-scale OPGD case are reproduced. Automatic spatial-support construction and the newer gdverse LOESS heuristic are not silently inferred.
 
-Stage 3C has an independent exhaustive-enumeration oracle for exact searches, paper-style scale mapping, a synthetic 6 -> 3 -> 1 threshold recovery, deterministic ties, joint missing-data tests and full scale-path evidence. The paper-reported Figshare archive could not be downloaded in the current development environment. MSD therefore still needs the archive version/file/checksum audit, static author-output fixtures and a published-case reproduction.
+Stage 3C has an independent exhaustive-enumeration oracle for exact searches, paper-style scale mapping, a synthetic 6 -> 3 -> 1 threshold recovery, deterministic ties, joint missing-data tests and full scale-path evidence. MSD still needs the reported Figshare archive audit, static author-output fixtures and a published-case reproduction.
 
 ## Stage 4 validation gaps
 
 Stage 4 has an independent brute-force oracle for fixed-zone ordered partitions, B=q equality, monotone-rank invariance, duplicate-value safety, missing-row reconstruction, explicit minimum-size failures, multi-factor RGD composition and RID interaction integration.
 
-It is not labelled fully externally validated until all of the following are complete:
+It still needs pinned author/gdverse fixtures, published RGD/RID examples, perturbation/outlier simulations and class-count selection-stability analysis.
 
-1. pin the author notebook and/or a gdverse release with environment, source hashes and arguments;
-2. generate static fixtures for break positions, cut values, labels, B-values and selected class counts;
-3. record the known tied-`x` behavioural difference rather than forcing accidental row-level parity;
-4. reproduce at least one published RGD example with data provenance;
-5. reproduce an official RID interaction example;
-6. add perturbation and response-outlier simulations for cut stability;
-7. quantify model-selection optimism under class-count search and resampling.
+## Stage 5A validation state and gaps
+
+Stage 5A has analytical and property tests for every public statistic. The categorical PSD route is also checked against the gdverse NTD reference case:
+
+```text
+pyGeoHet full precision: 0.2566528294856155
+gdverse test expectation: 0.256653
+```
+
+The preparation uses 185 complete disease-centroid observations and an inverse Euclidean distance-squared matrix. The raw GPKG is not redistributed.
+
+Remaining work:
+
+1. pin static CPSD and PSMD tables from a maintained reference environment;
+2. reproduce a published continuous-factor SPADE example;
+3. test sparse and strongly asymmetric weights once those input forms are public;
+4. study sensitivity to neighbourhood and weight construction outside the core statistic;
+5. quantify PSMD level-selection and discretization uncertainty;
+6. add larger spatial simulations for null, clustered and boundary-sensitive processes.
 
 “Validated with convention split” means the primary scientific convention and the compatibility convention are both explicit, independently tested, and not numerically conflated.

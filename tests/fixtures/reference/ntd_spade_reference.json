@@ -1,0 +1,30 @@
+{
+  "fixture_name": "gdverse NTD SPADE soiltype reference",
+  "source_project": "gdverse",
+  "source_test": "tests/testthat/test-psd_spade.R",
+  "source_data": "inst/extdata/NTDs.gpkg",
+  "source_data_sha256": "1dd0508fc03a61db973cce48524cf6ef32a93ac8102b7ca03a1865f4fb8cb406",
+  "source_data_size_bytes": 299008,
+  "preparation": {
+    "response_layer": "disease",
+    "response_column": "incidence",
+    "stratum_layer": "soiltype",
+    "stratum_column": "soiltype",
+    "support_point": "polygon centroid",
+    "join_predicate": "intersects",
+    "complete_observations": 185,
+    "dropped_sp_ids": ["141", "165", "166", "188"],
+    "weight": "inverse Euclidean distance squared",
+    "weight_power": 2,
+    "weight_diagonal": 0
+  },
+  "expected": {
+    "psd_full_precision": 0.2566528294856155,
+    "psd_six_decimals": 0.256653
+  },
+  "tolerance": {
+    "absolute_full_precision": 1e-12,
+    "rounded_decimals": 6
+  },
+  "redistribution": "The raw GPKG is not redistributed by pyGeoHet."
+}

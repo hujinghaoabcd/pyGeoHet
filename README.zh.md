@@ -1,8 +1,8 @@
 # pyGeoHet
 
-**pyGeoHet** 是一个面向空间分层异质性（SSH）分析的研究型 Python 工具箱。项目覆盖经典地理探测器工作流，并扩展可审计离散化、空间尺度比较、多尺度搜索和稳健变化点探测。
+**pyGeoHet** 是一个面向空间分层异质性（SSH）分析的研究型 Python 工具箱。项目覆盖经典地理探测器工作流，并扩展可审计离散化、空间尺度比较、多尺度搜索、稳健变化点探测和空间方差分解。
 
-> **当前状态——阶段 4 已实现：** q 统计量、四类经典探测器、统一 `GeoDetector`、六种连续变量分层方法、单变量 `OPGD`、显式空间支持尺度 OPGD、多尺度离散化 `MSD`、精确稳健离散化、`RGD` 和 `RID` 均已可用。下一阶段将开发 SPADE、IDSA 等空间依赖探测方法。
+> **当前状态——阶段 5A 已实现：** q 统计量、四类经典探测器、统一 `GeoDetector`、六种连续变量分层方法、`OPGD`、显式空间支持尺度 OPGD、`MSD`、稳健离散化、`RGD`、`RID`、空间方差、PSD、CPSD、PSMD 和 `SPADE` 均已可用。下一批将实现模糊交互分区和 IDSA。
 
 ## 开发安装
 
@@ -10,7 +10,7 @@
 python -m pip install -e ".[test]"
 ```
 
-## 完整经典工作流
+## 经典地理探测器
 
 ```python
 import pandas as pd
@@ -34,7 +34,6 @@ print(result.ecological.to_frame())
 ## 连续变量分层与 OPGD
 
 ```python
-import pandas as pd
 from pygeohet import OPGD, optimize_stratification
 
 y = [1.0, 1.1, 1.2, 5.0, 5.1, 5.2, 10.0, 10.1, 10.2]
@@ -48,60 +47,28 @@ search = optimize_stratification(
 )
 print(search.best_series())
 print(search.candidates_frame())
-
-factors = pd.DataFrame(
-    {
-        "elevation": x,
-        "precipitation": [100, 101, 102, 140, 141, 142, 200, 201, 202],
-    }
-)
-result = OPGD(
-    methods=["equal_interval", "quantile", "natural_breaks"],
-    n_strata=[2, 3, 4],
-).fit(y, factors)
-
-print(result.optimal_frame())
-print(result.detector.factor.to_frame())
 ```
 
-直接分层支持等间距、分位数、加权 Fisher–Jenks 自然断点、几何间隔、标准差和头尾断裂。结果保留断点、请求层数、实际层数、各层样本数、缺失行、层数折叠、候选拒绝原因和确定性并列规则。
+直接分层支持等间距、分位数、加权 Fisher–Jenks 自然断点、几何间隔、标准差和头尾断裂。结果保留断点、请求层数、实际层数、样本数、缺失行、层数折叠、候选拒绝原因和确定性并列规则。
 
 ## 空间尺度 OPGD
 
-候选空间支持必须在上游明确准备。pyGeoHet 负责比较各尺度结果，不会静默聚合栅格、面或点数据。
+候选空间支持必须在上游明确准备。pyGeoHet 只比较各尺度结果，不会静默聚合栅格、面或点数据。
 
 ```python
 from pygeohet import SpatialScaleOPGD, compare_spatial_scales
 
 scale_effects = compare_spatial_scales(
-    {
-        10: result_10km,
-        20: result_20km,
-        40: result_40km,
-    }
+    {10: result_10km, 20: result_20km, 40: result_40km}
 )
 print(scale_effects.best_series())
-print(scale_effects.factors_frame())
-
-model = SpatialScaleOPGD(
-    methods=["equal_interval", "quantile", "natural_breaks"],
-    n_strata=[2, 3, 4],
-)
-scale_result = model.fit(
-    {
-        10: (y_10km, factors_10km),
-        20: (y_20km, factors_20km),
-        40: (y_40km, factors_40km),
-    }
-)
-print(scale_result.scale_effects.best_series())
 ```
 
-默认规则遵循 2020 年 OPGD 论文：选择解释变量 q 值 90% 分位数最高的空间支持。`significant_only=True` 显式提供旧版 GD 的显著性筛选约定。新版 gdverse 的“显著因子平均 q + LOESS 停止”属于不同估计器，不会被静默替代。
+默认规则遵循 2020 年 OPGD 论文：选择解释变量 q 值 90% 分位数最高的空间支持。旧版 GD 的显著性筛选和新版 gdverse 的 LOESS 规则均作为不同约定显式区分。
 
 ## 多尺度离散化 MSD
 
-MSD 使用响应变量和 q 直接搜索一个连续解释变量的有序切点。这里的“尺度”是解释变量数值网格分辨率，不是地理观测支持尺度。
+MSD 使用响应变量和 q 搜索连续解释变量的有序切点。这里的“尺度”是解释变量数值网格分辨率，不是地理观测支持尺度。
 
 ```python
 import numpy as np
@@ -121,22 +88,14 @@ result = MSD(
     epsilon=1,
     base_resolution=1.0,
 ).fit(y, x)
-
-print(result.summary())
 print(result.steps_frame())
 ```
 
-`upscale=1` 表示在全部观测唯一值边界上执行精确全局搜索。粗到细搜索保留每个尺度的候选、选中切点、q、层内平方和与失败证据。
+`upscale=1` 表示在全部唯一值边界上执行精确全局搜索。粗到细搜索保留每个尺度的候选、切点、q、层内平方和和失败证据。
 
 ## 稳健离散化、RGD 与 RID
 
-稳健离散化先按连续解释变量排列响应序列，再寻找连续的方差变化点分区。给定区域数 `K` 后，pyGeoHet 使用动态规划精确最小化所有区域的响应层内平方和。对应 B 值为：
-
-```text
-B = 1 - 稳健区域层内平方和 / 总平方和
-```
-
-其数值等于在稳健分层标签上计算的 q。
+稳健离散化先按连续解释变量排列响应序列，再寻找连续方差变化点。固定分区数后，pyGeoHet 用动态规划精确最小化区域内平方和。其 B 值在数值上等于稳健标签上的 q。
 
 ```python
 import numpy as np
@@ -145,11 +104,7 @@ from pygeohet import RGD, RID, robust_discretize
 
 x = np.arange(24, dtype=float)
 y = np.repeat([0.0, 4.0, 9.0, 13.0], 6)
-
 fixed = robust_discretize(y, x, n_strata=4)
-print(fixed.summary())
-print(fixed.cut_points)
-print(fixed.b_value)
 
 factors = pd.DataFrame(
     {
@@ -157,33 +112,74 @@ factors = pd.DataFrame(
         "cycle": np.tile(np.arange(6, dtype=float), 4),
     }
 )
-
-rgd_result = RGD(
-    n_strata=range(2, 6),
-    selection="marginal_gain",
-    increase_rate=0.05,
-).fit(y, factors)
-print(rgd_result.optimal_frame())
-print(rgd_result.candidates_frame("trend"))
-
-rid_result = RID(
-    n_strata=range(2, 5),
-    selection="max_b",
-).fit(y, factors)
-print(rid_result.interaction.to_frame())
+rgd_result = RGD(n_strata=range(2, 6)).fit(y, factors)
+rid_result = RID(n_strata=range(2, 5), selection="max_b").fit(y, factors)
 ```
 
-稳健方法的重要约定：
+相同解释变量值绝不会被拆分；严格单调变换保持同一个有序问题；区域数选择与数值内核分离；运行时不依赖 `ruptures`、R 或 gdverse。
 
-- 相同解释变量值绝不会被拆分到不同区域；
-- 对解释变量进行严格单调变换不会改变有序分区问题；
-- `marginal_gain` 和 `max_b` 是两个显式区域数选择规则；
-- 切点值归入后一分区；
-- 缺失行标签会回填到原始行位置并记为 `None`；
-- RGD 与 RID 复用已经测试的经典因子探测和交互探测实现；
-- `ruptures`、R 和 gdverse 只作为公式和行为参考，不是运行时依赖。
+## 空间方差与 SPADE
 
-实现保留论文的核心估计量和变化点逻辑，但代码结构、验证、动态规划和 API 均为独立实现，不机械照抄作者或 gdverse 源码。
+阶段 5A 接受已经准备好的非负方阵空间权重。核心不会静默决定几何代表点、CRS、距离单位、邻域、行标准化或对称化。
+
+```python
+import numpy as np
+import pandas as pd
+from pygeohet import (
+    SPADE,
+    compensated_spatial_determinant,
+    multilevel_spatial_determinant,
+    power_spatial_determinant,
+    spatial_variance,
+)
+
+coordinates = np.arange(12, dtype=float)
+distance = np.abs(coordinates[:, None] - coordinates[None, :])
+weights = np.zeros_like(distance)
+mask = distance > 0
+weights[mask] = 1.0 / distance[mask] ** 2
+
+y = np.asarray([0, 0, 1, 1, 4, 4, 5, 5, 9, 9, 10, 10], dtype=float)
+region = np.repeat(["west", "centre", "east"], 4)
+trend = coordinates.copy()
+
+print(spatial_variance(y, weights).summary())
+print(power_spatial_determinant(y, region, weights).summary())
+
+labels = np.repeat([1, 2, 3], 4)
+print(compensated_spatial_determinant(y, trend, labels, weights).summary())
+
+psmd = multilevel_spatial_determinant(
+    y,
+    trend,
+    weights,
+    n_strata=(2, 3, 4),
+    method="quantile",
+)
+print(psmd.candidates_frame())
+
+factors = pd.DataFrame({"trend": trend, "region": region})
+result = SPADE(n_strata=(2, 3, 4), method="quantile").fit(
+    y,
+    factors,
+    weights,
+    continuous_factors=("trend",),
+)
+print(result.to_frame())
+```
+
+已实现公式：
+
+```text
+Gamma = sum_ij w_ij (y_i - y_j)^2 / 2 / sum_ij w_ij
+PSD   = 1 - sum_h N_h Gamma_h / (N Gamma)
+CPSD  = 响应变量 PSD / 原连续解释变量的信息保留 PSD
+PSMD  = 所有有效显式层数 CPSD 的平均值
+```
+
+缺失观测会同步删除权重矩阵对应的行和列。对角权重、矩阵对称性和孤岛均有审计信息。PSD 与 PSMD 支持固定随机种子的条件置换检验。
+
+NTD SPADE 外部参考结果为 `0.2566528294856155`，与 gdverse 测试值 `0.256653` 在六位小数上一致。原始 GPKG 不在仓库中重新分发。
 
 ## 公共接口
 
@@ -195,50 +191,44 @@ from pygeohet import (
     MSD,
     RGD,
     RID,
+    SPADE,
     q_statistic,
+    spatial_variance,
+    power_spatial_determinant,
+    compensated_spatial_determinant,
+    multilevel_spatial_determinant,
     stratify,
-    evaluate_stratification,
     optimize_stratification,
     multiscale_discretize,
     robust_discretize,
     optimize_robust_discretization,
     compare_spatial_scales,
-    factor_detector,
-    interaction_detector,
-    risk_detector,
-    ecological_detector,
     geodetector,
     opgd,
     rgd,
     rid,
+    spade,
 )
 ```
 
 ## 统计与开发原则
 
 - q 直接按中心化平方和计算；
-- 缺失行数量和实际样本范围必须可审计；
-- 交互探测的三个 q 值使用同一个联合完整样本；
-- 叠加层使用元组编码，避免字符串拼接造成类别碰撞；
-- 风险探测使用双侧 Welch 检验；
-- 生态探测默认采用不依赖因子顺序的双侧 F 检验，并提供显式 `greater` 兼容模式；
-- 原始因子层默认至少两个样本，交互叠加形成的自然单样本单元显式保留；
-- 分层结果记录断点、实际层数、边界规则、折叠与拒绝证据；
-- OPGD 保留完整“方法 × 层数”候选表和并列规则；
-- 空间尺度比较保留所有支持、评分、因子资格、失败原因和并列规则；
-- MSD 将地理支持尺度与解释变量数值网格尺度严格区分；
-- 稳健离散化使用稳定排序、重复值安全边界、精确 SSE 优化和确定性变化点并列规则；
-- 模型复杂度选择与数值内核分离，不做隐藏自动选择；
-- 运行时不调用 R、QGIS、gdverse 或作者 Notebook；
-- 项目状态、验证矩阵和下一对话交接文档是合并门槛。
+- 缺失行和实际样本范围可审计；
+- 交互探测使用联合完整样本和防碰撞标签；
+- 分层、尺度、MSD 和稳健搜索保留全部候选和并列规则；
+- 地理支持尺度、解释变量网格尺度和空间权重结构严格区分；
+- 空间权重不会被静默构建、标准化或对称化；
+- PSD 是空间方差分解，不会在任意权重下冒充经典 q；
+- PSMD 的失败层数和实际采用层数均保留；
+- 外部 R、Python、QGIS、Notebook 和 GIS 实现不作为运行时后端；
+- 项目状态、验证矩阵和交接文档是合并门槛。
 
 ## 验证状态
 
-经典工作流已复现 GD/gdverse NTD 参考结果中的因子 q/p 值、交互类型和风险显著组合数量。
+经典工作流已复现 NTD 因子、交互和风险参考输出。MSD 与独立穷举程序一致；稳健分区与独立暴力枚举一致，并验证 B=q。
 
-阶段 3A–3C 已具备解析、边界、失败路径和统一工作流测试。MSD 与独立穷举程序在小问题上得到相同全局最优解。阶段 4 的稳健离散化与独立暴力枚举一致，保持秩等价解，不拆分相同解释变量值，正确重建缺失行，并验证 RGD 的 B 值等于因子 q。
-
-阶段 3 和阶段 4 当前均标记为 **已实现、暂定验证**。在固定外部版本、生成静态参考输出和完成正式论文案例复现前，不宣称完全外部一致。
+阶段 5A 包括手工空间方差、权重缩放、观测与权重同步重排、缺失样本同步裁剪、孤岛失败、CPSD 恒等、PSMD 候选平均、确定性置换和混合因子 SPADE 测试。分类变量 NTD PSD 路径已完成外部核对；连续 CPSD/PSMD 的正式论文案例仍属于暂定验证。
 
 详细说明见：
 
@@ -247,9 +237,8 @@ from pygeohet import (
 - `docs/models/spatial-scale-opgd.md`；
 - `docs/models/msd.md`；
 - `docs/models/robust-rgd-rid.md`；
-- `docs/references/msd-code-audit.md`；
-- `docs/references/robust-code-audit.md`；
-- `docs/validation/ntd-reference.md`；
+- `docs/models/spade.md`；
+- `docs/references/spade-idsa-code-audit.md`；
 - `VALIDATION_MATRIX.md`；
 - `ROADMAP.md`；
 - `HANDOFF_NEXT_CONVERSATION.md`。

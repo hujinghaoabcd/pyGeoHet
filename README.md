@@ -1,8 +1,8 @@
 # pyGeoHet
 
-**pyGeoHet** is a research-oriented Python toolkit for spatially stratified heterogeneity (SSH) analysis. It covers the classical Geographical Detector workflow and extends it with auditable discretization, spatial-scale comparison, multiscale search and robust change-point detection.
+**pyGeoHet** is a research-oriented Python toolkit for spatially stratified heterogeneity (SSH) analysis. It covers the classical Geographical Detector workflow and extends it with auditable discretization, spatial-scale comparison, multiscale search, robust change-point detection and spatial-variance decomposition.
 
-> **Status - Stage 4 implemented:** q-statistic, the four classical detectors, integrated `GeoDetector`, six continuous-variable stratification methods, univariate `OPGD`, prepared-support spatial-scale OPGD, multiscale discretization (`MSD`), exact robust discretization, `RGD`, and `RID` are available. Stage 5 will develop spatial-dependence detectors such as SPADE and IDSA.
+> **Status - Stage 5A implemented:** q-statistic, the four classical detectors, integrated `GeoDetector`, six continuous-variable stratification methods, univariate `OPGD`, prepared-support spatial-scale OPGD, multiscale discretization (`MSD`), robust discretization, `RGD`, `RID`, spatial variance, PSD, CPSD, PSMD and `SPADE` are available. Stage 5B will add fuzzy interaction zones and IDSA.
 
 ## Installation for development
 
@@ -59,7 +59,6 @@ result = OPGD(
     methods=["equal_interval", "quantile", "natural_breaks"],
     n_strata=[2, 3, 4],
 ).fit(y, factors)
-
 print(result.optimal_frame())
 print(result.detector.factor.to_frame())
 ```
@@ -74,14 +73,9 @@ Candidate spatial supports are prepared explicitly upstream. pyGeoHet compares t
 from pygeohet import SpatialScaleOPGD, compare_spatial_scales
 
 scale_effects = compare_spatial_scales(
-    {
-        10: result_10km,
-        20: result_20km,
-        40: result_40km,
-    }
+    {10: result_10km, 20: result_20km, 40: result_40km}
 )
 print(scale_effects.best_series())
-print(scale_effects.factors_frame())
 
 model = SpatialScaleOPGD(
     methods=["equal_interval", "quantile", "natural_breaks"],
@@ -94,7 +88,6 @@ scale_result = model.fit(
         40: (y_40km, factors_40km),
     }
 )
-print(scale_result.scale_effects.best_series())
 ```
 
 The default follows the 2020 OPGD paper: select the support with the highest 90% quantile of factor q values. `significant_only=True` exposes the legacy GD significance filter. The newer gdverse mean-plus-LOESS heuristic is documented as a distinct estimator and is not silently substituted.
@@ -121,7 +114,6 @@ result = MSD(
     epsilon=1,
     base_resolution=1.0,
 ).fit(y, x)
-
 print(result.summary())
 print(result.steps_frame())
 ```
@@ -130,13 +122,7 @@ Use `upscale=1` for an exact global search over all observed unique-value bounda
 
 ## Robust discretization, RGD and RID
 
-Robust discretization orders the response by a continuous explanatory variable and finds contiguous variance change-point zones. For fixed zone count `K`, pyGeoHet minimizes total within-zone response SSE exactly by dynamic programming. The resulting B-value is
-
-```text
-B = 1 - robust within-zone SS / total SS
-```
-
-and is numerically equal to q evaluated on the robust labels.
+Robust discretization orders the response by a continuous explanatory variable and finds contiguous variance change-point zones. For fixed zone count `K`, pyGeoHet minimizes total within-zone response SSE exactly by dynamic programming. Its B-value is numerically equal to q evaluated on the robust labels.
 
 ```python
 import numpy as np
@@ -145,11 +131,7 @@ from pygeohet import RGD, RID, robust_discretize
 
 x = np.arange(24, dtype=float)
 y = np.repeat([0.0, 4.0, 9.0, 13.0], 6)
-
 fixed = robust_discretize(y, x, n_strata=4)
-print(fixed.summary())
-print(fixed.cut_points)
-print(fixed.b_value)
 
 factors = pd.DataFrame(
     {
@@ -157,33 +139,77 @@ factors = pd.DataFrame(
         "cycle": np.tile(np.arange(6, dtype=float), 4),
     }
 )
-
 rgd_result = RGD(
     n_strata=range(2, 6),
     selection="marginal_gain",
-    increase_rate=0.05,
 ).fit(y, factors)
-print(rgd_result.optimal_frame())
-print(rgd_result.candidates_frame("trend"))
-
-rid_result = RID(
-    n_strata=range(2, 5),
-    selection="max_b",
-).fit(y, factors)
-print(rid_result.interaction.to_frame())
+rid_result = RID(n_strata=range(2, 5), selection="max_b").fit(y, factors)
 ```
 
-Important robust contracts:
+Equal explanatory values are never split; strictly monotone transforms preserve the ordered problem; model-complexity selection is explicit; and no `ruptures`, R or gdverse runtime dependency is introduced.
 
-- equal explanatory values are never split across zones;
-- strictly monotone transformations of the explanatory values preserve the ordered problem;
-- `marginal_gain` and `max_b` are explicit class-count policies;
-- cut values belong to the latter zone;
-- missing labels are expanded back to the original rows;
-- RGD and RID reuse the tested classical detector and interaction implementations;
-- `ruptures`, R and gdverse are reference evidence, not runtime dependencies.
+## Spatial variance and SPADE
 
-The code follows the core published estimator but is independently organized and implemented. It is not a mechanical translation of author or gdverse source.
+Stage 5A accepts an explicitly prepared nonnegative square spatial-weight matrix. It never silently chooses geometry representatives, CRS, distance units, neighbours, row standardization or symmetrization.
+
+```python
+import numpy as np
+import pandas as pd
+from pygeohet import (
+    SPADE,
+    compensated_spatial_determinant,
+    multilevel_spatial_determinant,
+    power_spatial_determinant,
+    spatial_variance,
+)
+
+coordinates = np.arange(12, dtype=float)
+distance = np.abs(coordinates[:, None] - coordinates[None, :])
+weights = np.zeros_like(distance)
+mask = distance > 0
+weights[mask] = 1.0 / distance[mask] ** 2
+
+y = np.asarray([0, 0, 1, 1, 4, 4, 5, 5, 9, 9, 10, 10], dtype=float)
+region = np.repeat(["west", "centre", "east"], 4)
+trend = coordinates.copy()
+
+print(spatial_variance(y, weights).summary())
+print(power_spatial_determinant(y, region, weights).summary())
+
+labels = np.repeat([1, 2, 3], 4)
+print(compensated_spatial_determinant(y, trend, labels, weights).summary())
+
+psmd = multilevel_spatial_determinant(
+    y,
+    trend,
+    weights,
+    n_strata=(2, 3, 4),
+    method="quantile",
+)
+print(psmd.candidates_frame())
+
+factors = pd.DataFrame({"trend": trend, "region": region})
+spade_result = SPADE(n_strata=(2, 3, 4), method="quantile").fit(
+    y,
+    factors,
+    weights,
+    continuous_factors=("trend",),
+)
+print(spade_result.to_frame())
+```
+
+The implemented formulas are:
+
+```text
+Gamma = sum_ij w_ij (y_i - y_j)^2 / 2 / sum_ij w_ij
+PSD   = 1 - sum_h N_h Gamma_h / (N Gamma)
+CPSD  = PSD(response) / PSD(original continuous factor)
+PSMD  = mean CPSD over accepted explicit class-count levels
+```
+
+Missing observations remove the matching row and column from the weight matrix. Diagonal mass, symmetry and islands are audited. PSD and PSMD may use seeded conditional permutation inference.
+
+The NTD SPADE reference route produces `0.2566528294856155`, matching the gdverse test expectation `0.256653` at six decimals. The raw GPKG is not redistributed.
 
 ## Public interfaces
 
@@ -195,7 +221,12 @@ from pygeohet import (
     MSD,
     RGD,
     RID,
+    SPADE,
     q_statistic,
+    spatial_variance,
+    power_spatial_determinant,
+    compensated_spatial_determinant,
+    multilevel_spatial_determinant,
     stratify,
     evaluate_stratification,
     optimize_stratification,
@@ -211,6 +242,7 @@ from pygeohet import (
     opgd,
     rgd,
     rid,
+    spade,
 )
 ```
 
@@ -219,26 +251,23 @@ from pygeohet import (
 - q is computed from direct centered sums of squares;
 - missing-row counts and sample scopes remain auditable;
 - interaction components use one joint complete-case sample;
-- overlays use tuple coding, not collision-prone string concatenation;
+- categorical overlays use collision-safe labels;
 - risk comparisons use two-sided Welch tests;
-- the ecological default is a factor-order-invariant two-sided F test, with an explicit `greater` compatibility mode;
-- original factor strata default to a minimum size of two; natural singleton overlay cells remain explicit;
-- stratification records cuts, achieved strata, boundary conventions, collapse and rejection evidence;
-- OPGD retains a complete method-by-class candidate table and its tie rule;
-- spatial-scale comparison retains every support, score, eligibility decision, failure and tie convention;
-- MSD keeps geographic support scale separate from explanatory-value-grid scale;
-- robust discretization uses a stable order, duplicate-value-safe boundaries, exact SSE optimization and deterministic break ties;
+- ecological conventions are explicit;
+- stratification, scale, MSD and robust searches retain candidate and tie evidence;
+- spatial support scale, explanatory-value-grid scale and spatial-weight structure remain distinct;
+- spatial weights are never silently constructed, normalized or symmetrized;
+- PSD remains a spatial-variance estimand and is not called classical q under arbitrary weights;
+- PSMD failures and accepted levels remain visible;
 - model-complexity selection is explicit rather than hidden inside numerical kernels;
-- external R, Python, QGIS or notebook implementations are never called at runtime;
-- project status, validation records and next-conversation handoff are merge gates.
+- external R, Python, QGIS, notebook and GIS implementations are never called at runtime;
+- project status, validation records and handoff are merge gates.
 
 ## Validation
 
-The classical workflow reproduces the NTD factor q/p-values, interaction labels and risk-significance counts from GD/gdverse reference outputs.
+The classical workflow reproduces the NTD factor q/p-values, interaction labels and risk-significance counts. MSD matches an independent exhaustive search. Robust segmentation matches an independent brute-force oracle and verifies B=q on selected labels.
 
-Stages 3A-3C have analytical, boundary, rejection-path and integrated-workflow tests. MSD matches an independent exhaustive search on small problems. Stage 4 robust segmentation matches an independent brute-force oracle, preserves rank-equivalent solutions, prevents tied explanatory values from splitting, reconstructs missing rows and verifies that RGD B equals factor q.
-
-Stages 3 and 4 remain **implemented, provisional** until pinned external fixtures and published-case reproductions are complete. Validation gaps are recorded rather than filled by assumed compatibility.
+Stage 5A has hand-computed spatial-variance tests, weight-scaling and row/weight permutation invariance, common missing-sample alignment, explicit island failures, CPSD identity, PSMD candidate averaging, deterministic permutation tests and mixed-factor integration. Its categorical NTD PSD path is externally checked; continuous CPSD/PSMD published-case reproduction remains provisional.
 
 See:
 
@@ -247,9 +276,8 @@ See:
 - [`docs/models/spatial-scale-opgd.md`](docs/models/spatial-scale-opgd.md)
 - [`docs/models/msd.md`](docs/models/msd.md)
 - [`docs/models/robust-rgd-rid.md`](docs/models/robust-rgd-rid.md)
-- [`docs/references/msd-code-audit.md`](docs/references/msd-code-audit.md)
-- [`docs/references/robust-code-audit.md`](docs/references/robust-code-audit.md)
-- [`docs/validation/ntd-reference.md`](docs/validation/ntd-reference.md)
+- [`docs/models/spade.md`](docs/models/spade.md)
+- [`docs/references/spade-idsa-code-audit.md`](docs/references/spade-idsa-code-audit.md)
 - [`VALIDATION_MATRIX.md`](VALIDATION_MATRIX.md)
 - [`ROADMAP.md`](ROADMAP.md)
 - [`HANDOFF_NEXT_CONVERSATION.md`](HANDOFF_NEXT_CONVERSATION.md)
