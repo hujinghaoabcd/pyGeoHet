@@ -45,9 +45,7 @@ def evaluate_stratification(
         )
         observed = [label for label in labels if label is not None]
         counts_series = pd.Series(observed, dtype=int).value_counts(sort=False)
-        counts = {
-            int(label): int(count) for label, count in counts_series.items()
-        }
+        counts = {int(label): int(count) for label, count in counts_series.items()}
         result = StratificationResult(
             method="supplied_labels",
             labels=labels,
@@ -254,23 +252,22 @@ def optimize_stratification(
     best = None
     if accepted:
         maximum_q = max(
-            item.q_result.q
-            for item in accepted
-            if item.q_result is not None
+            item.q_result.q for item in accepted if item.q_result is not None
         )
         tied = [
             item
             for item in accepted
-            if item.q_result is not None
-            and maximum_q - item.q_result.q <= q_tolerance
+            if item.q_result is not None and maximum_q - item.q_result.q <= q_tolerance
         ]
         best = min(
             tied,
             key=lambda item: (
                 item.stratification.actual_strata,
-                item.stratification.requested_strata
-                if item.stratification.requested_strata is not None
-                else item.stratification.actual_strata,
+                (
+                    item.stratification.requested_strata
+                    if item.stratification.requested_strata is not None
+                    else item.stratification.actual_strata
+                ),
                 item.method_rank,
                 item.candidate_index,
             ),
