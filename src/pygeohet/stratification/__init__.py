@@ -3,9 +3,9 @@
 from pygeohet.stratification.methods import canonical_method, stratify
 from pygeohet.stratification.msd import (
     MSD,
+    MSD_TIE_RULE,
     MSDResult,
     MSDScaleResult,
-    MSD_TIE_RULE,
     multiscale_discretize,
 )
 from pygeohet.stratification.optimal import (
