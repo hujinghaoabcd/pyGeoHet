@@ -24,8 +24,7 @@ def _exhaustive_best(
             continue
         q_value = q_statistic(y, labels).q
         if q_value > best_q + 1e-12 or (
-            abs(q_value - best_q) <= 1e-12
-            and (best_cuts is None or cuts < best_cuts)
+            abs(q_value - best_q) <= 1e-12 and (best_cuts is None or cuts < best_cuts)
         ):
             best_cuts = tuple(float(value) for value in cuts)
             best_q = q_value
