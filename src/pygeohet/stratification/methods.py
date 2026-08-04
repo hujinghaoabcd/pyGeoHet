@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any
+from typing import Any, Literal
 
 import numpy as np
 import pandas as pd
@@ -219,7 +219,7 @@ def _build_result(
     raw_cut_points: tuple[float, ...],
     requested_strata: int | None,
     min_stratum_size: int,
-    boundary_side: str,
+    boundary_side: Literal["left", "right"],
     metadata: Mapping[str, Any],
 ) -> StratificationResult:
     raw = np.asarray(raw_cut_points, dtype=float)
@@ -312,7 +312,7 @@ def stratify(
 
     minimum = float(np.min(clean))
     maximum = float(np.max(clean))
-    boundary_side = "left"
+    boundary_side: Literal["left", "right"] = "left"
 
     if canonical == "equal_interval":
         assert requested is not None
