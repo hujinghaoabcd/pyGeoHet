@@ -8,7 +8,11 @@ from typing import Any, Literal
 import numpy as np
 import pandas as pd
 
-from pygeohet.exceptions import InvalidDataError, MissingDataError, SmallStratumError
+from pygeohet.exceptions import (
+    InvalidDataError,
+    MissingDataError,
+    SmallStratumError,
+)
 
 MissingPolicy = Literal["drop", "raise"]
 
