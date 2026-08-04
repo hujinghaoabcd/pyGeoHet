@@ -4,10 +4,13 @@ This development-facing inventory distinguishes source evidence, planned impleme
 
 | Family | Method | Main purpose | Reference implementation evidence | pyGeoHet state | Stage |
 |---|---|---|---|---|---:|
-| Classical | GD / q-statistic | global stratified explanatory power | GD, gdverse, Python/QGIS implementations | q and factor implemented | 1–2 |
-| Discretization | Optimal discretization | reduce subjective continuous-factor breaks | GD/gdverse follow-up implementations | planned | 3 |
-| Discretization | OPGD | optimize method, class count and scale | GD and gdverse | planned | 3 |
-| Discretization | MSD | supervised multiscale break search | paper-associated code reported | planned | 3 |
+| Classical | GD / q-statistic | global stratified explanatory power | GD, gdverse, Python/QGIS implementations | implemented and NTD-validated | 1 |
+| Classical | Interaction detector | pairwise overlay enhancement/weakening | GD, gdverse, geodetector, Python implementations | implemented and NTD-validated | 2 |
+| Classical | Risk detector | compare response means between strata | GD, gdverse, geodetector, Python implementations | implemented with Welch tests | 2 |
+| Classical | Ecological detector | compare residual dispersion between factors | primary papers; inconsistent package conventions | implemented with two-sided primary and upper-tail compatibility modes | 2 |
+| Discretization | Optimal discretization | reduce subjective continuous-factor breaks | GD/gdverse follow-up implementations | next | 3 |
+| Discretization | OPGD | optimize method, class count and scale | GD and gdverse | next | 3 |
+| Discretization | MSD | supervised multiscale break search | paper-associated code reported | primary-source audit before implementation | 3 |
 | Spatial | SPADE | spatial variance and multilevel discretization | gdverse follow-up implementation | planned | 5 |
 | Spatial | IDSA | spatially informed interaction zones | IDSA/gdverse | planned | 5 |
 | Categorical | SRS-GD | nominal target and local rough-set power | paper C++ / gdverse follow-up | planned | 6 |
@@ -16,7 +19,7 @@ This development-facing inventory distinguishes source evidence, planned impleme
 | Information | SSHIC/SSHIN | distribution differences beyond variance | sshicm | planned | 6 |
 | Explanation | LESH | Shapley allocation in multivariate zones | gdverse | planned | 7 |
 | Robust | RID | robust two-factor interaction | gdverse | planned | 4 |
-| Heavy-tail | Head/Tail SSH | recursive heavy-tailed stratification | paper code reported | planned | 3/8 |
+| Heavy-tail | Head/Tail SSH | recursive heavy-tailed stratification | paper code reported | scheduled | 3/8 |
 | Multivariate | OMGD | optimal 3+ factor clustering and scale | author Python repository | planned | 7 |
 | Local | LISP | local stratified power and significance | localsp | planned | 8 |
 | Pattern | GPI | variable effects in pattern interaction | partial related software evidence | evidence review | 8 |
@@ -35,4 +38,4 @@ This development-facing inventory distinguishes source evidence, planned impleme
 4. independent implementation used only for behavioural comparison;
 5. simulation and analytical properties.
 
-When sources disagree, pyGeoHet records the disagreement and exposes an explicit convention instead of averaging incompatible definitions.
+When sources disagree, pyGeoHet records the disagreement and exposes an explicit convention instead of averaging incompatible definitions. The Stage 2 ecological detector is the first implemented example of this policy.
