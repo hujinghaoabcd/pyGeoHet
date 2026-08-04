@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.0.3 - 2026-08-05
+
+### Added
+
+- audited continuous-variable stratification subsystem;
+- equal interval, quantile, weighted Fisher-Jenks natural breaks, geometric interval, standard-deviation and head/tail breaks;
+- immutable stratification, candidate-evaluation and optimal-search result objects;
+- duplicate-cut, collapsed-stratum, boundary-convention and rejection evidence;
+- joint-complete-case q-guided method-by-class-count optimization;
+- complete candidate tables retaining accepted and rejected candidates;
+- deterministic q-tie policy;
+- integrated `OPGD` / `opgd` workflow for continuous explanatory variables;
+- Stage 3A tests, model documentation and runnable example;
+- GitHub Actions concurrency control that cancels superseded pull-request runs.
+
+### Changed
+
+- package development version advanced to `0.0.3`;
+- public API now exports stratification and OPGD interfaces;
+- Stage 3 is split into Stage 3A univariate stratification/OPGD and later spatial-scale/MSD batches.
+
 ## 0.0.2 - 2026-08-05
 
 ### Added

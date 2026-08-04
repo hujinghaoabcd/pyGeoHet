@@ -2,7 +2,7 @@
 
 **pyGeoHet** 是一个面向空间分层异质性（SSH）分析的研究型 Python 工具箱。项目覆盖经典地理探测器工作流，并将继续扩展离散化、空间依赖、稳健探测、多变量分层、局地解释、类别响应和信息论 SSH 测度。
 
-> **当前状态——阶段 2 已完成：** q 统计量、因子探测器、交互作用探测器、风险探测器、生态探测器以及统一 `GeoDetector` 工作流均已实现并完成验证。阶段 3 将开发分层与最优离散化。
+> **当前状态——阶段 3A 已实现：** q 统计量、四类经典探测器、统一 `GeoDetector` 工作流、六种连续变量分层方法、可审计的 q 引导候选搜索和单变量 `OPGD` 已可使用。空间尺度 OPGD 与 MSD 留在阶段 3 的后续批次。
 
 ## 开发安装
 
@@ -32,15 +32,55 @@ print(result.risk.comparisons_frame())
 print(result.ecological.to_frame())
 ```
 
+## 连续变量分层与 OPGD
+
+```python
+import pandas as pd
+from pygeohet import OPGD, optimize_stratification
+
+y = [1.0, 1.1, 1.2, 5.0, 5.1, 5.2, 10.0, 10.1, 10.2]
+x = [10.0, 11.0, 12.0, 40.0, 41.0, 42.0, 80.0, 81.0, 82.0]
+
+search = optimize_stratification(
+    y,
+    x,
+    methods=["equal_interval", "quantile", "natural_breaks"],
+    n_strata=[2, 3, 4],
+)
+print(search.best_series())
+print(search.candidates_frame())
+
+factors = pd.DataFrame(
+    {
+        "elevation": x,
+        "precipitation": [100, 101, 102, 140, 141, 142, 200, 201, 202],
+    }
+)
+result = OPGD(
+    methods=["equal_interval", "quantile", "natural_breaks"],
+    n_strata=[2, 3, 4],
+).fit(y, factors)
+
+print(result.optimal_frame())
+print(result.detector.factor.to_frame())
+```
+
+直接分层支持等间距、分位数、加权 Fisher–Jenks 自然断点、几何间隔、标准差和头尾断裂。结果不会只返回标签，而会保留断点、请求层数、实际层数、各层样本数、缺失行、层数折叠、候选拒绝原因和确定性并列规则。
+
 也可以分别调用：
 
 ```python
 from pygeohet import (
     q_statistic,
+    stratify,
+    evaluate_stratification,
+    optimize_stratification,
     factor_detector,
     interaction_detector,
     risk_detector,
     ecological_detector,
+    geodetector,
+    opgd,
 )
 ```
 
@@ -53,10 +93,23 @@ from pygeohet import (
 - 风险探测使用双侧 Welch 检验；
 - 生态探测默认采用不依赖因子顺序的双侧 F 检验，并提供显式 `greater` 兼容模式；
 - 原始因子层默认至少两个样本，交互叠加形成的单样本单元显式保留，不静默删除；
+- 分层结果必须记录断点、实际层数、边界规则、折叠与拒绝证据；
+- OPGD 在同一联合样本上保留完整“方法 × 层数”候选表并公开并列规则；
 - 运行时不调用 R、QGIS 或其他 GeoDetector 实现；
 - 方法必须经过解析性质、静态参考、模拟和论文案例四层验证；
 - 项目状态和下一对话交接文档是合并前的发布门槛。
 
+## 验证状态
+
 NTD 案例已复现 `gdverse`/`GD` 的因子 q/p 值、三组交互类型和风险显著组合数量。项目不重新分发第三方原始数据，而是提供带 SHA-256 校验的验证脚本。
 
-详细说明见 `docs/models/classic-detectors.md`、`docs/validation/ntd-reference.md`、`VALIDATION_MATRIX.md` 和 `ROADMAP.md`。
+阶段 3A 已具备解析、边界、失败路径和统一工作流测试。六种分层方法的跨语言静态基准以及公开 OPGD 案例复现仍需补充，因此当前标记为“已实现、暂定验证”，而不是“完全外部验证”。
+
+详细说明见：
+
+- `docs/models/classic-detectors.md`；
+- `docs/models/stratification-opgd.md`；
+- `docs/validation/ntd-reference.md`；
+- `VALIDATION_MATRIX.md`；
+- `ROADMAP.md`；
+- `HANDOFF_NEXT_CONVERSATION.md`。

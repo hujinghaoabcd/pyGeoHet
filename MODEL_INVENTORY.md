@@ -8,9 +8,16 @@ This development-facing inventory distinguishes source evidence, planned impleme
 | Classical | Interaction detector | pairwise overlay enhancement/weakening | GD, gdverse, geodetector, Python implementations | implemented and NTD-validated | 2 |
 | Classical | Risk detector | compare response means between strata | GD, gdverse, geodetector, Python implementations | implemented with Welch tests | 2 |
 | Classical | Ecological detector | compare residual dispersion between factors | primary papers; inconsistent package conventions | implemented with two-sided primary and upper-tail compatibility modes | 2 |
-| Discretization | Optimal discretization | reduce subjective continuous-factor breaks | GD/gdverse follow-up implementations | next | 3 |
-| Discretization | OPGD | optimize method, class count and scale | GD and gdverse | next | 3 |
-| Discretization | MSD | supervised multiscale break search | paper-associated code reported | primary-source audit before implementation | 3 |
+| Stratification | Equal interval | equal-width continuous breaks | optimal-discretization paper; sdsfun/gdverse | implemented with explicit lower-boundary convention | 3A |
+| Stratification | Quantile | approximately equal-frequency strata | optimal-discretization paper; sdsfun/gdverse | implemented without splitting equal values; collapse audited | 3A |
+| Stratification | Natural breaks | minimize within-class dispersion | optimal-discretization paper; sdsfun/gdverse | implemented by weighted Fisher-Jenks dynamic programming | 3A |
+| Stratification | Geometric interval | multiplicative interval progression | optimal-discretization paper; sdsfun/gdverse | implemented for strictly positive values | 3A |
+| Stratification | Standard deviation | mean-centred SD bands | optimal-discretization paper; sdsfun/gdverse | implemented with sample SD | 3A |
+| Stratification | Head/tail breaks | recursive heavy-tail stratification | paper/code evidence; sdsfun | implemented with configurable head threshold | 3A |
+| Discretization | Optimal univariate discretization | select method and class count by q | GD/gdverse follow-up implementations | implemented with full accepted/rejected candidate table | 3A |
+| Discretization | OPGD | optimize continuous factors before classic detectors | 2020 OPGD paper; GD and gdverse | univariate method/class search implemented; spatial-scale stage deferred | 3A/3B |
+| Discretization | Spatial-scale OPGD | optimize analysis scale as well as breaks | 2020 OPGD paper; reference software | numerical-contract audit next | 3B |
+| Discretization | MSD | supervised multiscale break search | paper-associated code reported | primary-source/code audit before implementation | 3C |
 | Spatial | SPADE | spatial variance and multilevel discretization | gdverse follow-up implementation | planned | 5 |
 | Spatial | IDSA | spatially informed interaction zones | IDSA/gdverse | planned | 5 |
 | Categorical | SRS-GD | nominal target and local rough-set power | paper C++ / gdverse follow-up | planned | 6 |
@@ -19,7 +26,6 @@ This development-facing inventory distinguishes source evidence, planned impleme
 | Information | SSHIC/SSHIN | distribution differences beyond variance | sshicm | planned | 6 |
 | Explanation | LESH | Shapley allocation in multivariate zones | gdverse | planned | 7 |
 | Robust | RID | robust two-factor interaction | gdverse | planned | 4 |
-| Heavy-tail | Head/Tail SSH | recursive heavy-tailed stratification | paper code reported | scheduled | 3/8 |
 | Multivariate | OMGD | optimal 3+ factor clustering and scale | author Python repository | planned | 7 |
 | Local | LISP | local stratified power and significance | localsp | planned | 8 |
 | Pattern | GPI | variable effects in pattern interaction | partial related software evidence | evidence review | 8 |
@@ -38,4 +44,4 @@ This development-facing inventory distinguishes source evidence, planned impleme
 4. independent implementation used only for behavioural comparison;
 5. simulation and analytical properties.
 
-When sources disagree, pyGeoHet records the disagreement and exposes an explicit convention instead of averaging incompatible definitions. The Stage 2 ecological detector is the first implemented example of this policy.
+When sources disagree, pyGeoHet records the disagreement and exposes an explicit convention instead of averaging incompatible definitions. The ecological detector and Stage 3A boundary/tie contracts are implemented examples of this policy.

@@ -17,7 +17,7 @@ from pygeohet.detectors import (
     interaction_detector,
     risk_detector,
 )
-from pygeohet.models import GeoDetector, geodetector
+from pygeohet.models import OPGD, GeoDetector, OPGDResult, geodetector, opgd
 from pygeohet.results import (
     EcologicalComparisonResult,
     EcologicalDetectorResult,
@@ -30,9 +30,20 @@ from pygeohet.results import (
     RiskDetectorResult,
     RiskStratumSummary,
 )
+from pygeohet.stratification import (
+    TIE_RULE,
+    OptimalStratificationResult,
+    StratificationEvaluationResult,
+    StratificationResult,
+    canonical_method,
+    evaluate_stratification,
+    optimize_stratification,
+    stratify,
+)
 
 __all__ = [
     "__version__",
+    "TIE_RULE",
     "EcologicalComparisonResult",
     "EcologicalDetector",
     "EcologicalDetectorResult",
@@ -44,17 +55,27 @@ __all__ = [
     "InteractionDetector",
     "InteractionDetectorResult",
     "InteractionType",
+    "OPGD",
+    "OPGDResult",
+    "OptimalStratificationResult",
     "QStatisticResult",
     "RiskComparisonResult",
     "RiskDetector",
     "RiskDetectorResult",
     "RiskStratumSummary",
+    "StratificationEvaluationResult",
+    "StratificationResult",
+    "canonical_method",
     "categorical_overlay",
     "classify_interaction",
     "ecological_detector",
+    "evaluate_stratification",
     "factor_detector",
     "geodetector",
     "interaction_detector",
+    "opgd",
+    "optimize_stratification",
     "q_statistic",
     "risk_detector",
+    "stratify",
 ]

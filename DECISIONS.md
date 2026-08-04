@@ -55,3 +55,15 @@ Risk comparisons use two-sided unequal-variance Welch tests with sample variance
 ## D014 - Ecological detector inference
 
 The primary ecological estimand is the paper's F ratio of residual within-stratum dispersion on a joint sample. `alternative="two-sided"` is the default because the stated null is equality and the scientific question is whether factor impacts differ. `alternative="greater"` is retained as an explicit compatibility mode for the upper-tail convention used by current gdverse output. The package never hides the convention used.
+
+## D015 - Stratification is an auditable statistical operation
+
+Continuous-variable stratification never returns labels alone. Every method records cuts, requested and achieved stratum counts, per-stratum counts, missing rows, duplicate cuts, collapsed strata, boundary conventions and rejection evidence. Equal values are not split by the quantile method. Geometric intervals reject nonpositive values rather than applying an undocumented shift.
+
+## D016 - OPGD candidate scope and tie policy
+
+All method-by-class-count candidates are evaluated on one joint complete-case sample for the response and the current explanatory variable. Rejected candidates remain in the result table. The optimizer maximizes q; q values within `q_tolerance` are tied, then fewer achieved strata, fewer requested strata, earlier user-supplied method order and earlier candidate are preferred. This rule is public and stored in the result.
+
+## D017 - Stage 3 is delivered in controlled batches
+
+Stage 3A contains univariate stratification and OPGD parameter search only. Spatial-scale optimization and multivariate stratification/MSD require separate numerical contracts and validation fixtures and are not implied by the `OPGD` name in version `0.0.3`.
