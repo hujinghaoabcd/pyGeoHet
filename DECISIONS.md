@@ -79,3 +79,19 @@ The Stage 3B primary convention follows the 2020 OPGD paper: calculate the 90% q
 ## D020 - Comparable scales and deterministic selection
 
 All successful candidate scales must contain the same factor set. Different observation counts are permitted because support aggregation changes sample size. A valid selection requires at least two accepted scales. Equal scores within `score_tolerance` use an explicit `first`, `smallest`, or `largest` tie policy, and failed scales remain in the public audit result.
+
+## D021 - MSD scale means explanatory-variable value-grid scale
+
+MSD upscaling/downscaling changes the resolution of the ordered explanatory-variable value grid. It does not aggregate geographic observation supports. `SpatialScaleOPGD` and MSD therefore remain separate public estimands and result types.
+
+## D022 - MSD sample, grid and refinement contract
+
+All MSD search steps use one joint complete-case sample sorted stably by `x`. The grid is determined by an explicit `origin` and positive `base_resolution`; omitted resolution is inferred as the minimum positive unique-value spacing and stored in the result. A coarse-to-fine run has strictly decreasing buffer scales ending at 1. Each refinement selects exactly one ordered cut from every mapped epsilon neighbourhood around the previous cuts.
+
+## D023 - MSD objective and deterministic tie rule
+
+For a fixed class count, MSD minimizes within-stratum sum of squares, which is equivalent to maximizing q. Interval costs use reusable prefix sums. Objectives within `q_tolerance` are tied; the lexicographically smallest cut-point tuple is selected. A cut-point value belongs to the latter class. `upscale=1` is the exact global-search reference mode.
+
+## D024 - MSD evidence boundary
+
+The implementation is derived from the primary paper and independently checked against exhaustive enumeration. Uploaded GD/gdverse and related source archives inform organisation, ordering, audit tables and separation of estimands, but they are not claimed as an MSD numerical oracle. Author-code parity remains provisional until the reported Figshare archive is pinned by version, file checksum and executable fixture. No undocumented author behaviour is invented.

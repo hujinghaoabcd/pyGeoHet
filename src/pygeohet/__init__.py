@@ -42,18 +42,27 @@ from pygeohet.results import (
     RiskStratumSummary,
 )
 from pygeohet.stratification import (
+    MSD,
+    MSD_TIE_RULE,
     TIE_RULE,
+    MSDResult,
+    MSDScaleResult,
     OptimalStratificationResult,
     StratificationEvaluationResult,
     StratificationResult,
     canonical_method,
     evaluate_stratification,
+    multiscale_discretize,
     optimize_stratification,
     stratify,
 )
 
 __all__ = [
     "__version__",
+    "MSD",
+    "MSDResult",
+    "MSDScaleResult",
+    "MSD_TIE_RULE",
     "TIE_RULE",
     "EcologicalComparisonResult",
     "EcologicalDetector",
@@ -89,6 +98,7 @@ __all__ = [
     "factor_detector",
     "geodetector",
     "interaction_detector",
+    "multiscale_discretize",
     "opgd",
     "optimize_stratification",
     "q_statistic",

@@ -14,7 +14,7 @@ Collision-safe overlays; five interaction classes and common-sample interaction 
 
 **Status:** complete and merged.
 
-## Stage 3 - Stratification, optimal discretization and scale (`0.1.0` target)
+## Stage 3 - Stratification, optimal discretization and scale (`0.0.5`)
 
 ### Stage 3A - Univariate stratification and OPGD (`0.0.3`)
 
@@ -26,17 +26,19 @@ Equal interval, quantile, weighted Fisher-Jenks natural breaks, geometric interv
 
 Primary-paper 90% q-quantile scoring across explicitly prepared supports; optional legacy-GD significance eligibility; precomputed-result and integrated OPGD interfaces; common-factor checks; explicit ties and failed-scale evidence. Automatic geographic aggregation remains upstream.
 
-**Status:** implemented in the Stage 3B pull request; final cross-platform merge gate and external fixture remain.
+**Status:** complete and merged; external scale fixture and published-case reproduction remain validation debt.
 
-### Stage 3C - Multiscale discretization (MSD)
+### Stage 3C - Multiscale discretization (`0.0.5`)
 
-Implement MSD only after the paper and pinned reference code establish its objective, candidate construction and relationship to OPGD. Retain failed candidates, complexity information and selection evidence. Do not infer “multiscale” from the Stage 3B support-comparison implementation.
+Supervised bivariate cut search by q maximization; explicit explanatory-variable value grid; exact global-search mode; paper-style coarse-to-fine upscaling/downscaling; one refined cut per mapped epsilon neighbourhood; cached interval objectives; immutable scale-path evidence; missing/sample/stratum contracts and deterministic ties.
 
-**Status:** next active batch.
+**Status:** implemented in PR #5. Analytical, exhaustive-enumeration, synthetic recovery and edge tests are complete. Author Figshare parity and a published-case reproduction remain validation debt.
 
 ## Stage 4 - Robust detector family (`0.2.0`)
 
-Rank transformation, variance change-point segmentation, dynamic-programming robust discretization, RGD B-value and robust interaction detector (RID), with perturbation and outlier experiments.
+Rank/sorted-sample contracts; variance change-point segmentation; dynamic-programming robust discretization; RGD B-value; robust interaction detector (RID); perturbation, outlier and minimum-segment experiments. The uploaded author research code and gdverse `robustdisc.R`, `rgd.R`, `rid.R`, and `inst/python/cpd_disc.py` are mandatory implementation references.
+
+**Status:** next active stage after Stage 3C merge.
 
 ## Stage 5 - Spatial-dependence detector family (`0.3.0`)
 
@@ -64,4 +66,4 @@ Experimental cross-lag SSH estimand, lag search and selection-aware inference, s
 
 ## Scope rule
 
-A method whose paper, formula, code licence, or validation data cannot be verified remains planned or experimental; gaps are not silently filled from neighbouring methods.
+A method whose paper, formula, code licence, or validation data cannot be verified remains planned or experimental; gaps are not silently filled from neighbouring methods. Reference source archives are inspected for numerical behaviour and software contracts, but code is not copied line by line into the MIT-licensed package.

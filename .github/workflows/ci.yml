@@ -43,4 +43,5 @@ jobs:
       - run: python examples/02_classic_workflow.py
       - run: python examples/03_stratification_opgd.py
       - run: python examples/04_spatial_scale_opgd.py
+      - run: python examples/05_multiscale_discretization.py
       - run: python -m build

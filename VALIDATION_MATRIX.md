@@ -40,6 +40,8 @@ Each model family must reproduce at least one documented paper or official-softw
 | Legacy GD scale eligibility | p-filter plus 90% q quantile | `GD::sesu` pinned-source fixture pending | missing p-value and no-eligible-factor tests | pending | implemented, provisional |
 | SpatialScaleOPGD | scale-specific OPGD composition | external multi-scale fixture pending | failed scales, one-valid-scale and aligned/misaligned synthetic supports | OPGD scale case pending | implemented, provisional |
 | gdverse LOESS scale heuristic | source formula audited | pinned gdverse/sdsfun fixture pending | threshold crossings and fallback pending | pending | documented only |
+| MSD exact search | equality with independent exhaustive enumeration | author Figshare fixture pending | cut membership, ties, minimum size and missing sample | MSD case pending | implemented, provisional |
+| MSD coarse-to-fine search | paper-derived 6 -> 3 -> 1 mapping contract | author scale-path fixture pending | known-threshold recovery, invalid scales and audit tables | MSD case pending | implemented, provisional |
 
 ## NTD fixture
 
@@ -50,5 +52,7 @@ Each model family must reproduce at least one documented paper or official-softw
 Stage 3A has analytical, boundary, failure-mode and integrated workflow tests but still needs stable external method fixtures and a published OPGD reproduction.
 
 Stage 3B has analytical scale-score tests, significance-policy tests, deterministic ties, common-factor validation, failed-scale retention and integrated prepared-support OPGD tests. It is not labelled fully externally validated until a static GD/gdverse scale fixture and at least one published multi-scale OPGD case are reproduced. Automatic spatial-support construction and the newer gdverse LOESS heuristic are not silently inferred.
+
+Stage 3C has an independent exhaustive-enumeration oracle for exact searches, paper-style scale mapping, a synthetic 6 -> 3 -> 1 threshold recovery, deterministic ties, joint missing-data tests and full scale-path evidence. The paper-reported Figshare archive could not be downloaded in the current development environment. MSD therefore still needs the archive version/file/checksum audit, static author-output fixtures and a published-case reproduction.
 
 “Validated with convention split” means the primary scientific convention and the compatibility convention are both explicit, independently tested, and not numerically conflated.
