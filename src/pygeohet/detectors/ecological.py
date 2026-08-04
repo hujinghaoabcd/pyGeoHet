@@ -20,7 +20,6 @@ from pygeohet.validation import (
     prepare_joint_data,
 )
 
-
 EcologicalAlternative = Literal["two-sided", "greater"]
 
 
