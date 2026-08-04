@@ -32,7 +32,7 @@ jobs:
           python-version: "3.11"
           cache: pip
       - run: python -m pip install -e ".[dev]"
-      - run: ruff check --diff src/pygeohet/detectors/ecological.py
+      - run: ruff check src tests examples tools
       - run: black --check src tests examples tools
       - run: mypy src/pygeohet
       - run: python -m build
