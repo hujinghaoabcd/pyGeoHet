@@ -98,9 +98,7 @@ class StratificationEvaluationResult:
                 "method": self.stratification.method,
                 "requested_strata": self.stratification.requested_strata,
                 "actual_strata": self.stratification.actual_strata,
-                "minimum_count": min(
-                    self.stratification.counts.values(), default=0
-                ),
+                "minimum_count": min(self.stratification.counts.values(), default=0),
                 "cut_points": self.stratification.cut_points,
                 "duplicate_cut_points": self.stratification.duplicate_cut_points,
                 "collapsed_strata": self.stratification.collapsed_strata,
