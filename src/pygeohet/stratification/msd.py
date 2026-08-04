@@ -393,17 +393,11 @@ def multiscale_discretize(
         else:
             groups: list[tuple[int, ...]] = []
             for code in selected_codes:
-                low = int(
-                    np.ceil(previous_scale * (code - neighbourhood) / scale)
-                )
-                high = int(
-                    np.floor(previous_scale * (code + neighbourhood) / scale)
-                )
+                low = int(np.ceil(previous_scale * (code - neighbourhood) / scale))
+                high = int(np.floor(previous_scale * (code + neighbourhood) / scale))
                 groups.append(
                     tuple(
-                        candidate
-                        for candidate in all_codes
-                        if low <= candidate <= high
+                        candidate for candidate in all_codes if low <= candidate <= high
                     )
                 )
             candidate_groups = tuple(groups)
@@ -458,9 +452,7 @@ def multiscale_discretize(
         code_by_position = {
             position: code for code, position in position_by_code.items()
         }
-        selected_codes = tuple(
-            code_by_position[position] for position in cut_positions
-        )
+        selected_codes = tuple(code_by_position[position] for position in cut_positions)
         selected_cut_points = tuple(
             float(x_sorted[position]) for position in cut_positions
         )
