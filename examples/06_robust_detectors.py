@@ -7,11 +7,14 @@ from pygeohet import RGD, RID, robust_discretize
 
 x = np.arange(36, dtype=float)
 secondary = np.tile(np.arange(9, dtype=float), 4)
-y = np.select(
-    [x < 9, x < 18, x < 27],
-    [1.0, 5.0, 10.0],
-    default=15.0,
-) + 0.15 * secondary
+y = (
+    np.select(
+        [x < 9, x < 18, x < 27],
+        [1.0, 5.0, 10.0],
+        default=15.0,
+    )
+    + 0.15 * secondary
+)
 
 single = robust_discretize(y, x, n_strata=4)
 print(single.summary())
