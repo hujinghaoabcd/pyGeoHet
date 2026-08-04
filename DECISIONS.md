@@ -67,3 +67,15 @@ All method-by-class-count candidates are evaluated on one joint complete-case sa
 ## D017 - Stage 3 is delivered in controlled batches
 
 Stage 3A contains univariate stratification and OPGD parameter search only. Spatial-scale optimization and multivariate stratification/MSD require separate numerical contracts and validation fixtures and are not implied by the `OPGD` name in version `0.0.3`.
+
+## D018 - Spatial support is prepared explicitly upstream
+
+Spatial-scale comparison does not silently resample rasters, aggregate polygons, rebuild neighbourhoods, or transform coordinates. Every candidate support is supplied as an already prepared dataset or factor-result table. The package compares supports but does not invent aggregation origins, alignment, summaries, nodata handling, zoning, kernels, or neighbourhood definitions.
+
+## D019 - Spatial-scale estimators remain distinct
+
+The Stage 3B primary convention follows the 2020 OPGD paper: calculate the 90% quantile of factor q values at each candidate support and select the maximum. `significant_only=True` is an explicit compatibility option for the legacy `GD::sesu()` eligibility filter. The newer gdverse mean-q plus LOESS stopping heuristic is a different estimator and is not silently substituted or claimed as reproduced.
+
+## D020 - Comparable scales and deterministic selection
+
+All successful candidate scales must contain the same factor set. Different observation counts are permitted because support aggregation changes sample size. A valid selection requires at least two accepted scales. Equal scores within `score_tolerance` use an explicit `first`, `smallest`, or `largest` tie policy, and failed scales remain in the public audit result.
