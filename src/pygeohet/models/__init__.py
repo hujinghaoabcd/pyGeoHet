@@ -15,6 +15,21 @@ from pygeohet.models.robust import (
     rid,
     robust_discretize,
 )
+from pygeohet.models.spade import (
+    SPADE,
+    compensated_spatial_determinant,
+    multilevel_spatial_determinant,
+    power_spatial_determinant,
+    spade,
+)
+from pygeohet.models.spade_results import (
+    CompensatedSpatialDeterminantResult,
+    MultilevelSpatialCandidate,
+    MultilevelSpatialDeterminantResult,
+    PowerSpatialDeterminantResult,
+    SPADEResult,
+    SpatialStratumVariance,
+)
 from pygeohet.models.spatial_scale import (
     SpatialScaleCandidateResult,
     SpatialScaleOPGD,
@@ -24,9 +39,13 @@ from pygeohet.models.spatial_scale import (
 )
 
 __all__ = [
+    "CompensatedSpatialDeterminantResult",
     "GeoDetector",
+    "MultilevelSpatialCandidate",
+    "MultilevelSpatialDeterminantResult",
     "OPGD",
     "OPGDResult",
+    "PowerSpatialDeterminantResult",
     "RGD",
     "RGDResult",
     "RID",
@@ -34,15 +53,22 @@ __all__ = [
     "RobustCandidateResult",
     "RobustDiscretizationResult",
     "RobustOptimizationResult",
+    "SPADE",
+    "SPADEResult",
     "SpatialScaleCandidateResult",
     "SpatialScaleOPGD",
     "SpatialScaleOPGDResult",
     "SpatialScaleResult",
+    "SpatialStratumVariance",
     "compare_spatial_scales",
+    "compensated_spatial_determinant",
     "geodetector",
+    "multilevel_spatial_determinant",
     "opgd",
     "optimize_robust_discretization",
+    "power_spatial_determinant",
     "rgd",
     "rid",
     "robust_discretize",
+    "spade",
 ]
