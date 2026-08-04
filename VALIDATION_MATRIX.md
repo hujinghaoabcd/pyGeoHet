@@ -28,10 +28,21 @@ Each model family must reproduce at least one documented paper or official-softw
 | Risk detector | manual Welch equality | gdverse significance counts | zero-variance and matrix tests | NTD | validated |
 | Ecological detector | primary F formula, reciprocal invariance | gdverse `greater` compatibility | tail and zero-dispersion tests | NTD | validated with convention split |
 | Integrated GeoDetector | workflow composition | NTD whole-workflow fixture | one/two-factor tests | NTD | validated |
-| Stratification methods | pending | pending | pending | pending | Stage 3 |
+| Equal interval | exact cuts and lower-boundary test | source convention reviewed; fixture pending | missing alignment and collapsed-layer audit | pending | implemented, provisional |
+| Quantile | lower-quantile and no-tie-split tests | source convention reviewed; fixture pending | duplicate-cut collapse | pending | implemented, provisional |
+| Natural breaks | clear-cluster Fisher-Jenks test | independent/reference fixture pending | weighted duplicate values and deterministic ties | pending | implemented, provisional |
+| Geometric interval | ratio and upper-boundary contract | source convention reviewed; fixture pending | nonpositive-domain rejection | pending | implemented, provisional |
+| Standard deviation | sample-SD cut contract | source convention reviewed; fixture pending | collapsed/empty layer audit | pending | implemented, provisional |
+| Head/tail breaks | recursive-mean and threshold contract | source convention reviewed; fixture pending | automatic class count and stopping tests | pending | implemented, provisional |
+| Optimal stratification | direct q evaluation and deterministic tie rule | gdverse/GD candidate fixture pending | rejected candidates and joint-complete-case tests | pending | implemented, provisional |
+| Integrated OPGD | workflow composition | external optimum fixture pending | multi-factor, one-factor and all-invalid tests | OPGD case pending | implemented, provisional |
 
 ## NTD fixture
 
 `tests/fixtures/reference/ntd_classic_reference.json` contains expected outputs and the SHA-256 hash of the non-redistributed input. `tools/validate_ntd_reference.py` verifies the hash and reruns all classical detectors.
+
+## Stage 3A validation gap
+
+Stage 3A has analytical, boundary, failure-mode and integrated workflow tests. It is not labelled fully validated until static reference fixtures and at least one published OPGD case are added. Spatial-scale OPGD and MSD remain unimplemented rather than being inferred from the univariate search.
 
 “Validated with convention split” means the primary scientific convention and the compatibility convention are both explicit, independently tested, and not numerically conflated.
