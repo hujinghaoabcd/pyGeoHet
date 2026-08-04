@@ -130,10 +130,14 @@ def _jenks_cut_points(values: np.ndarray, n_strata: int) -> tuple[float, ...]:
                     start,
                     stop,
                 )
-                tolerance = 64.0 * np.finfo(float).eps * max(
-                    1.0,
-                    abs(candidate),
-                    abs(best_cost) if np.isfinite(best_cost) else 1.0,
+                tolerance = (
+                    64.0
+                    * np.finfo(float).eps
+                    * max(
+                        1.0,
+                        abs(candidate),
+                        abs(best_cost) if np.isfinite(best_cost) else 1.0,
+                    )
                 )
                 if candidate < best_cost - tolerance:
                     best_cost = candidate
@@ -155,9 +159,7 @@ def _jenks_cut_points(values: np.ndarray, n_strata: int) -> tuple[float, ...]:
         stop = start
     starts.reverse()
 
-    return tuple(
-        float((unique[index - 1] + unique[index]) / 2.0) for index in starts
-    )
+    return tuple(float((unique[index - 1] + unique[index]) / 2.0) for index in starts)
 
 
 def _head_tail_cut_points(values: np.ndarray, threshold: float) -> tuple[float, ...]:
@@ -228,9 +230,7 @@ def _build_result(
     clean_labels = np.searchsorted(unique_cuts, clean, side=boundary_side) + 1
     observed = np.unique(clean_labels)
     remap = {int(label): index + 1 for index, label in enumerate(observed)}
-    clean_labels = np.asarray(
-        [remap[int(label)] for label in clean_labels], dtype=int
-    )
+    clean_labels = np.asarray([remap[int(label)] for label in clean_labels], dtype=int)
 
     labels_list: list[int | None] = [None] * int(keep_mask.size)
     clean_index = 0
@@ -297,9 +297,7 @@ def stratify(
         raise ValueError("min_stratum_size must be a positive integer")
 
     clean, keep_mask, _, dropped_count = _prepare_values(values, missing=missing)
-    metadata: dict[str, Any] = {
-        "boundary_convention": "documented per method"
-    }
+    metadata: dict[str, Any] = {"boundary_convention": "documented per method"}
 
     if np.unique(clean).size < 2:
         return _make_rejected_result(
@@ -319,18 +317,13 @@ def stratify(
     if canonical == "equal_interval":
         assert requested is not None
         width = (maximum - minimum) / requested
-        raw_cuts = tuple(
-            minimum + width * index for index in range(1, requested)
-        )
-        metadata["boundary_convention"] = (
-            "exact cut point remains in the lower stratum"
-        )
+        raw_cuts = tuple(minimum + width * index for index in range(1, requested))
+        metadata["boundary_convention"] = "exact cut point remains in the lower stratum"
     elif canonical == "quantile":
         assert requested is not None
         probabilities = np.arange(1, requested, dtype=float) / requested
         raw_cuts = tuple(
-            float(value)
-            for value in np.quantile(clean, probabilities, method="lower")
+            float(value) for value in np.quantile(clean, probabilities, method="lower")
         )
         metadata["quantile_method"] = "lower"
         metadata["boundary_convention"] = (
@@ -340,9 +333,7 @@ def stratify(
         assert requested is not None
         raw_cuts = _jenks_cut_points(clean, requested)
         metadata["algorithm"] = "weighted Fisher-Jenks dynamic programming"
-        metadata["boundary_convention"] = (
-            "midpoints between adjacent distinct values"
-        )
+        metadata["boundary_convention"] = "midpoints between adjacent distinct values"
     elif canonical == "geometric_interval":
         assert requested is not None
         if minimum <= 0.0:
@@ -356,14 +347,10 @@ def stratify(
                 metadata=metadata,
             )
         ratio = (maximum / minimum) ** (1.0 / requested)
-        raw_cuts = tuple(
-            minimum * ratio**index for index in range(1, requested)
-        )
+        raw_cuts = tuple(minimum * ratio**index for index in range(1, requested))
         boundary_side = "right"
         metadata["ratio"] = ratio
-        metadata["boundary_convention"] = (
-            "exact cut point enters the upper stratum"
-        )
+        metadata["boundary_convention"] = "exact cut point enters the upper stratum"
     elif canonical == "standard_deviation":
         assert requested is not None
         standard_deviation = float(np.std(clean, ddof=1))
@@ -374,9 +361,7 @@ def stratify(
         )
         metadata["mean"] = mean
         metadata["sample_standard_deviation"] = standard_deviation
-        metadata["boundary_convention"] = (
-            "exact cut point remains in the lower stratum"
-        )
+        metadata["boundary_convention"] = "exact cut point remains in the lower stratum"
     else:
         raw_cuts = _head_tail_cut_points(clean, head_tail_threshold)
         boundary_side = "right"
