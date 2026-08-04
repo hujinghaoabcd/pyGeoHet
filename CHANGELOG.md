@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.0.7 - 2026-08-05
+
+### Added
+
+- auditable weighted spatial variance through `spatial_variance()`;
+- explicit prepared dense spatial-weight validation with diagonal, symmetry and island evidence;
+- power of spatial determinant through `power_spatial_determinant()`;
+- compensated power of spatial determinant through `compensated_spatial_determinant()`;
+- multilevel spatial determinant through `multilevel_spatial_determinant()`;
+- integrated `SPADE` / `spade` workflow for explicit continuous and categorical factors;
+- immutable spatial-variance, PSD, CPSD, PSMD candidate and integrated result objects;
+- optional seeded permutation inference for PSD and PSMD;
+- complete PSMD candidate tables retaining invalid discretization levels and reasons;
+- hand-computed, invariance, missing-alignment, island, ratio and workflow tests;
+- provenance-only NTD SPADE reference fixture and offline GPKG validator;
+- SPADE model manual, source audit and public example.
+
+### Changed
+
+- package development version advanced to `0.0.7`;
+- public API now exports spatial variance, PSD, CPSD, PSMD and SPADE interfaces;
+- CI runs seven public examples;
+- spatial weights remain explicit upstream inputs; the package does not infer CRS, centroids, neighbours, distance units or row standardization;
+- reference gdverse/sdsfun code is used for formula and behavioural validation, not copied or called at runtime;
+- Stage 5B IDSA becomes the next active development batch.
+
 ## 0.0.6 - 2026-08-05
 
 ### Added
