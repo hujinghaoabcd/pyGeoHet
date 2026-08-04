@@ -7,25 +7,36 @@ pyGeoHet/
 │   ├── _version.py              package version
 │   ├── exceptions.py            explicit statistical/data errors
 │   ├── validation.py            factor coercion and complete-case contracts
-│   ├── results.py               immutable result objects
+│   ├── results.py               classical immutable result objects
 │   ├── core/
 │   │   ├── qstat.py             q and noncentral-F inference
 │   │   ├── overlay.py           collision-safe tuple overlays
 │   │   └── interaction.py       interaction-type classifier
 │   ├── detectors/               factor, interaction, risk and ecological APIs
-│   ├── models/                  integrated GeoDetector workflow
+│   ├── stratification/
+│   │   ├── methods.py           six deterministic univariate methods
+│   │   ├── optimal.py           q-guided candidate evaluation and selection
+│   │   └── results.py           immutable stratification/search evidence
+│   ├── models/
+│   │   ├── geodetector.py       integrated classical workflow
+│   │   └── opgd.py              audited optimal-discretization workflow
 │   └── py.typed                 inline typing marker
 ├── tests/
 │   ├── fixtures/reference/      static external-output records
-│   └── test_*.py                analytical, edge and workflow tests
-├── examples/                    installed-package runnable examples
+│   ├── test_stratification.py   method, boundary and optimization contracts
+│   ├── test_opgd.py             integrated OPGD workflow tests
+│   └── test_*.py                classical analytical, edge and workflow tests
+├── examples/
+│   ├── 01_factor_detector.py
+│   ├── 02_classic_workflow.py
+│   └── 03_stratification_opgd.py
 ├── tools/                       offline fixture validators/generators
 ├── docs/
 │   ├── theory/                  formulas and numerical conventions
-│   ├── models/                  model manuals
+│   ├── models/                  classic and stratification/OPGD manuals
 │   ├── validation/              published-case reports
 │   └── development/             testing and handoff policies
-├── .github/workflows/ci.yml     compact cross-platform quality gate
+├── .github/workflows/ci.yml     cross-platform gate with PR concurrency control
 ├── MODEL_INVENTORY.md           methods, references and implementation state
 ├── VALIDATION_MATRIX.md         evidence required for every public model
 ├── DECISIONS.md                 durable statistical and API decisions
@@ -34,4 +45,4 @@ pyGeoHet/
 └── HANDOFF_NEXT_CONVERSATION.md authoritative continuation instructions
 ```
 
-Directories for stratification, robust, spatial, information, multivariate, local and experimental-lagged methods are created only when implementation begins. This keeps the package proportional to the algorithms.
+Directories for robust, spatial, information, multivariate, local and experimental-lagged methods are created only when implementation begins. Planned public names remain in the roadmap until working code, tests and documentation exist.
