@@ -12,11 +12,23 @@ Package, docs, tests and CI skeleton; numerical contracts and typed immutable re
 
 Collision-safe overlays; five interaction classes and common-sample interaction detector; Welch risk detector; ecological detector with primary two-sided and explicit upper-tail compatibility conventions; integrated `GeoDetector`; NTD static reference fixture and case reproduction.
 
-**Status:** complete in the Stage 2 pull request.
+**Status:** complete and merged.
 
-## Stage 3 - Stratification, optimal discretization and scale (`0.1.0`)
+## Stage 3 - Stratification, optimal discretization and scale (`0.1.0` target)
 
-Equal interval, quantile, natural breaks, geometric interval, standard-deviation and head/tail breaks; immutable stratification results; candidate audit tables; optimal univariate discretization, OPGD and multiscale discretization. Search results must retain failed candidates and complexity information rather than only the maximum q.
+### Stage 3A - Univariate stratification and OPGD (`0.0.3`)
+
+Equal interval, quantile, weighted Fisher-Jenks natural breaks, geometric interval, standard-deviation and head/tail breaks; immutable stratification results; joint-sample candidate evaluation; complete audit tables; deterministic q ties; optimal univariate discretization and integrated OPGD.
+
+**Status:** implemented in the Stage 3A pull request; final cross-platform merge gate required.
+
+### Stage 3B - Spatial-scale optimization
+
+Freeze the primary-source numerical contract for scale candidates, neighborhood construction, edge handling, sample scope and deterministic ties. Implement spatial-scale candidate tables and reference fixtures without conflating scale search with univariate discretization.
+
+### Stage 3C - Multiscale discretization (MSD)
+
+Implement MSD only after the paper and reference code establish its objective, candidate construction and relationship to OPGD. Retain failed candidates, complexity information and selection evidence.
 
 ## Stage 4 - Robust detector family (`0.2.0`)
 
