@@ -32,17 +32,19 @@ Primary-paper 90% q-quantile scoring across explicitly prepared supports; option
 
 Supervised bivariate cut search by q maximization; explicit explanatory-variable value grid; exact global-search mode; paper-style coarse-to-fine upscaling/downscaling; one refined cut per mapped epsilon neighbourhood; cached interval objectives; immutable scale-path evidence; missing/sample/stratum contracts and deterministic ties.
 
-**Status:** implemented in PR #5. Analytical, exhaustive-enumeration, synthetic recovery and edge tests are complete. Author Figshare parity and a published-case reproduction remain validation debt.
+**Status:** complete and merged; author Figshare parity and a published-case reproduction remain validation debt.
 
-## Stage 4 - Robust detector family (`0.2.0`)
+## Stage 4 - Robust detector family (`0.0.6`)
 
-Rank/sorted-sample contracts; variance change-point segmentation; dynamic-programming robust discretization; RGD B-value; robust interaction detector (RID); perturbation, outlier and minimum-segment experiments. The uploaded author research code and gdverse `robustdisc.R`, `rgd.R`, `rid.R`, and `inst/python/cpd_disc.py` are mandatory implementation references.
+Stable explanatory-variable ordering; duplicate-value-safe admissible boundaries; exact least-squares variance change-point segmentation; prefix-sum dynamic programming; B-value; explicit marginal-gain and maximum-B class-count selection; RGD and RID composition with the classical detector core; independent brute-force, rank-invariance, missingness and integration tests. The uploaded author research code and gdverse `robustdisc.R`, `rgd.R`, `rid.R`, and `inst/python/cpd_disc.py` are reviewed references rather than runtime dependencies.
 
-**Status:** next active stage after Stage 3C merge.
+**Status:** implemented in PR #6. External author/gdverse fixtures, published RGD/RID cases, outlier perturbation experiments and selection-uncertainty analysis remain validation debt.
 
 ## Stage 5 - Spatial-dependence detector family (`0.3.0`)
 
-Spatial-weight and distance contracts; spatial variance and multilevel information loss; SPADE and IDSA, including fuzzy overlay.
+Spatial-weight and distance contracts; spatial variance and multilevel information loss; SPADE and IDSA, including fuzzy overlay. Work begins with a source/formula audit and small-lattice numerical fixtures before public APIs are created.
+
+**Status:** next active stage after Stage 4 merge.
 
 ## Stage 6 - Categorical and information-consistency SSH (`0.4.0`)
 
@@ -66,4 +68,4 @@ Experimental cross-lag SSH estimand, lag search and selection-aware inference, s
 
 ## Scope rule
 
-A method whose paper, formula, code licence, or validation data cannot be verified remains planned or experimental; gaps are not silently filled from neighbouring methods. Reference source archives are inspected for numerical behaviour and software contracts, but code is not copied line by line into the MIT-licensed package.
+A method whose paper, formula, code licence, or validation data cannot be verified remains planned or experimental; gaps are not silently filled from neighbouring methods. Reference source archives are inspected for numerical behaviour and software contracts, but code is not copied line by line into the MIT-licensed package. Correct estimands and reproducible outputs take priority over mechanical source parity.
