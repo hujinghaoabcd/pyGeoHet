@@ -20,9 +20,10 @@ This development-facing inventory distinguishes source evidence, planned impleme
 | Scale | Legacy GD significant-factor scale score | filter by factor p before 90% q quantile | `ausgis/GD::sesu` | implemented as `significant_only=True` compatibility mode | 3B |
 | Scale | gdverse LOESS scale heuristic | mean significant q with marginal-increase stopping | gdverse `sesu_opgd`; sdsfun `loess_optnum` | documented divergence; not yet reproduced | 3B |
 | Discretization | MSD | supervised coarse-to-fine cut search on an explanatory-variable value grid | 2021 primary paper and reported Figshare code; uploaded GD/gdverse used as structural references | implemented with exact and multiscale modes; author-code fixture pending | 3C |
-| Robust | RGD | change-point robust discretization and B-value | uploaded author Python notebooks; gdverse `robustdisc`/`rgd` | next active implementation | 4 |
-| Robust | RID | robust two-factor interaction | gdverse `rid` and primary paper | planned | 4 |
-| Spatial | SPADE | spatial variance and multilevel discretization | gdverse follow-up implementation | planned | 5 |
+| Robust | Fixed-K robust discretization | exact variance change-point partition and B-value | RGD paper; uploaded author notebook; gdverse `robustdisc` | implemented by independent exact DP with duplicate-x safety; external fixture pending | 4 |
+| Robust | RGD | optimize robust zones for continuous factors before detectors | uploaded author Python notebook; gdverse `rgd`; primary paper | implemented with marginal-gain and maximum-B selection; published case pending | 4 |
+| Robust | RID | robust factor zones followed by pairwise interaction detection | gdverse `rid`; robust-interaction paper/workflow evidence | implemented by composition with collision-safe interaction detector; fixture pending | 4 |
+| Spatial | SPADE | spatial variance and multilevel discretization | gdverse follow-up implementation | next active implementation | 5 |
 | Spatial | IDSA | spatially informed interaction zones | IDSA/gdverse | planned | 5 |
 | Categorical | SRS-GD | nominal target and local rough-set power | paper C++ / gdverse follow-up | planned | 6 |
 | Information | SSHIC/SSHIN | distribution differences beyond variance | sshicm | planned | 6 |
@@ -46,4 +47,4 @@ This development-facing inventory distinguishes source evidence, planned impleme
 4. independent implementation used only for behavioural comparison;
 5. simulation and analytical properties.
 
-When sources disagree, pyGeoHet records the disagreement and exposes an explicit convention instead of averaging incompatible definitions. The ecological detector, Stage 3A boundary/tie contracts, Stage 3B separation of paper, legacy-GD and newer-gdverse scale estimators, and Stage 3C separation between paper-derived MSD behaviour and pending author-archive parity follow this policy.
+When sources disagree, pyGeoHet records the disagreement and exposes an explicit convention instead of averaging incompatible definitions. This policy governs the ecological detector, Stage 3 scale and MSD distinctions, and Stage 4 separation between the RGD estimand, author/gdverse implementations and pyGeoHet's explicit duplicate-value-safe exact dynamic program.
