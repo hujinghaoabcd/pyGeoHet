@@ -2,31 +2,27 @@
 
 **Project:** pyGeoHet  
 **Date:** 2026-08-05  
-**Completed stage:** Stage 4 of 10 - robust discretization, RGD and RID  
-**Next active stage:** Stage 5 - spatial-dependence detector family  
-**Development version:** 0.0.6
+**Completed stage:** Stage 5A of 10 - spatial variance and SPADE  
+**Next active stage:** Stage 5B - fuzzy overlay and IDSA  
+**Development version:** 0.0.7
 
 ## Completed
 
-- lean package, documentation, testing and CI foundation;
-- direct q-statistic with noncentral-F significance;
-- factor, interaction, risk and ecological detectors;
-- collision-safe tuple overlays and integrated `GeoDetector` workflow;
-- immutable auditable result objects for all classical detectors;
-- NTD static reference fixture and hash-checking validator;
-- six deterministic continuous-variable stratification methods;
-- joint-complete-case q-guided candidate evaluation and complete audit tables;
-- deterministic tie policy and integrated `OPGD` / `opgd` workflow;
-- primary-paper spatial-scale scoring and prepared-support `SpatialScaleOPGD`;
-- supervised MSD with exact and coarse-to-fine value-grid search modes;
-- exact robust discretization using ordered response segmentation and dynamic programming;
-- admissible change points restricted to boundaries between distinct explanatory values;
-- B-value reporting with complete q decomposition and aligned missing-row labels;
-- auditable class-count search through `marginal_gain` and `max_b` policies;
-- integrated `RGD` / `rgd` and `RID` / `rid` workflows;
-- independent brute-force, rank-invariance, duplicate-value, missing-data and integration tests;
-- uploaded author and gdverse robust-code audit with explicit clean-room and licence boundaries;
-- CI execution of all public examples and durable handoff system.
+- package, documentation, testing and cross-platform CI foundation;
+- direct q-statistic and four classical detector workflows;
+- six continuous-variable stratification methods and auditable OPGD;
+- prepared-support spatial-scale comparison;
+- exact and coarse-to-fine MSD;
+- exact robust change-point discretization, RGD and RID;
+- explicit spatial-weight validation and weighted spatial variance;
+- power of spatial determinant (PSD);
+- compensated power of spatial determinant (CPSD);
+- power of spatial and multilevel discretization determinant (PSMD);
+- integrated `SPADE` / `spade` workflow for continuous and categorical factors;
+- immutable spatial variance, stratum contribution, PSD, CPSD, PSMD candidate and integrated results;
+- optional seeded permutation inference for PSD and PSMD;
+- provenance-only NTD SPADE fixture and offline validator;
+- gdverse/sdsfun formula and source audit with independent Python implementation.
 
 ## Current public surface
 
@@ -38,69 +34,71 @@ from pygeohet import (
     MSD,
     RGD,
     RID,
-    FactorDetector,
-    InteractionDetector,
-    RiskDetector,
-    EcologicalDetector,
+    SPADE,
     q_statistic,
+    spatial_variance,
+    power_spatial_determinant,
+    compensated_spatial_determinant,
+    multilevel_spatial_determinant,
     stratify,
-    evaluate_stratification,
     optimize_stratification,
     multiscale_discretize,
     robust_discretize,
     optimize_robust_discretization,
     compare_spatial_scales,
-    factor_detector,
-    interaction_detector,
-    risk_detector,
-    ecological_detector,
     geodetector,
     opgd,
     rgd,
     rid,
+    spade,
 )
 ```
 
-## Stage 4 numerical contract
+## Stage 5A numerical contract
 
-- `y` and one continuous `x` use one joint complete-case sample;
-- rows are stably ordered by ascending `x`;
-- equal `x` values cannot be split across robust zones;
-- a segment cost is the response sum of squared deviations from its segment mean;
-- prefix sums and exact dynamic programming solve a fixed-zone problem;
-- B is `1 - SSW_R / SST` and equals q on the resulting robust labels;
-- cut values belong to the latter zone;
-- objective ties choose the lexicographically smallest break-position tuple;
-- class-count selection is an explicit layer above segmentation;
-- RGD and RID reuse the existing classical factor and interaction detectors;
-- no runtime dependency on `ruptures`, R, GD or gdverse is introduced.
+- the core accepts a prepared square nonnegative spatial-weight matrix;
+- no CRS, centroid, neighbourhood, distance unit, bandwidth, symmetrization or row-standardization rule is inferred;
+- diagonal weights are excluded and reported;
+- directed matrices are accepted and their asymmetry is reported;
+- missing rows subset the value/factor vectors and both weight-matrix axes together;
+- islands are rejected by default and may only be retained explicitly;
+- spatial variance is the weighted average pairwise semivariance;
+- PSD is `1 - sum_h(N_h * Gamma_h) / (N * Gamma)`;
+- CPSD is response PSD divided by information-retention PSD;
+- PSMD is the mean CPSD over at least two explicitly accepted discretization levels;
+- invalid PSMD levels remain in the candidate table;
+- permutation inference shuffles the response while holding weights and strata fixed;
+- geometry libraries and external R packages are not runtime dependencies.
 
 ## Validation state
 
-The classical workflow is validated against analytical properties and the NTD reference case. Stages 3A-3C and Stage 4 are **implemented, provisional** pending stable external fixtures and published-case reproductions.
+The classical workflow remains validated against the NTD reference case. Stages 3, 4 and parts of Stage 5A are implemented with explicit validation boundaries.
 
-Stage 4 currently has:
+Stage 5A includes:
 
-- equality with an independent brute-force ordered-partition oracle on small problems;
-- B-value equality with the factor-detector q-value on the selected labels;
-- duplicate-`x` indivisibility tests;
-- invariance under strictly monotone explanatory-value transformations, including an extreme transformed value;
-- missing-row reconstruction and explicit invalid-configuration tests;
-- multi-factor RGD and two-factor RID integration tests;
-- a source audit of the primary paper, uploaded author notebook and gdverse wrappers.
+- a hand-calculated weighted semivariance test;
+- invariance to global rescaling of spatial weights;
+- direct PSD decomposition and simultaneous row/weight permutation invariance;
+- missing-sample alignment across both axes of the weight matrix;
+- explicit global and within-stratum island failures;
+- CPSD identity when response and information variable coincide;
+- PSMD equality to the mean of accepted CPSD candidates;
+- deterministic seeded permutation tests;
+- mixed continuous/categorical SPADE workflow tests;
+- external NTD parity: `0.2566528294856155`, matching the gdverse expectation `0.256653` at six decimals.
 
-External validation still requires pinned author/gdverse outputs and a published RGD/RID case.
+The raw NTD GPKG is not redistributed. The fixture records its SHA-256 and preparation contract.
 
 ## Deliberately deferred
 
-- `ruptures` or R-backed compatibility execution at runtime;
-- row-level splitting of tied explanatory values;
-- implicit LOESS class-count selection without a pinned formula and fixture;
-- mixed already-categorical and continuous RID inputs without an explicit provenance contract;
-- automatic spatial-support construction;
-- SPADE, IDSA, categorical-response, information, multivariate, local and temporal-lag extensions;
-- resampling-based uncertainty for optimized strata and class counts.
+- automatic construction of weights from geometry or coordinates;
+- sparse-weight storage and large-N approximation;
+- hidden row normalization or implicit matrix symmetrization;
+- treating PSD as numerically identical to classical q under arbitrary weights;
+- IDSA fuzzy interaction zones and PID, which require a distinct estimand;
+- categorical-response, information, multivariate, local and temporal-lag extensions;
+- selection-aware uncertainty for optimized discretization levels.
 
 ## Immediate next task
 
-Stage 5 begins with a joint paper-and-source audit of SPADE and IDSA. Before implementation, freeze spatial-weight and neighbourhood contracts, spatial variance decomposition, multilevel discretization, fuzzy or deterministic overlay behaviour, missing-neighbour handling, coordinate/support requirements and independent small-lattice validation fixtures.
+Stage 5B implements IDSA in a separate batch. It begins with a collision-safe fuzzy overlay object, explicit risk-membership normalization and tie rules, followed by the paper's spatial power component, information-retention component and `PID = theta / phi`. Classical tuple intersection must not be substituted for the fuzzy zone.
