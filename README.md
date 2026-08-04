@@ -2,7 +2,7 @@
 
 **pyGeoHet** is a research-oriented Python toolkit for spatially stratified heterogeneity (SSH) analysis. It covers the classical Geographical Detector workflow and is being extended to discretization, spatial dependence, robustness, multivariate stratification, local explanation, categorical responses, and information-based SSH measures.
 
-> **Status - Stage 3A implemented:** q-statistic, the four classical detectors, the integrated `GeoDetector` workflow, six continuous-variable stratification methods, audited q-guided candidate search, and univariate `OPGD` are available. Spatial-scale OPGD and MSD remain later Stage 3 batches.
+> **Status - Stage 3B implemented:** q-statistic, the four classical detectors, the integrated `GeoDetector` workflow, six continuous-variable stratification methods, audited q-guided candidate search, univariate `OPGD`, and prepared-support spatial-scale OPGD selection are available. MSD is the next Stage 3 batch.
 
 ## Installation for development
 
@@ -50,7 +50,12 @@ search = optimize_stratification(
 print(search.best_series())
 print(search.candidates_frame())
 
-factors = pd.DataFrame({"elevation": x, "precipitation": [100, 101, 102, 140, 141, 142, 200, 201, 202]})
+factors = pd.DataFrame(
+    {
+        "elevation": x,
+        "precipitation": [100, 101, 102, 140, 141, 142, 200, 201, 202],
+    }
+)
 result = OPGD(
     methods=["equal_interval", "quantile", "natural_breaks"],
     n_strata=[2, 3, 4],
@@ -62,6 +67,41 @@ print(result.detector.factor.to_frame())
 
 Supported direct stratification methods are equal interval, quantile, weighted Fisher-Jenks natural breaks, geometric interval, standard deviation, and head/tail breaks. Every result retains cuts, requested and achieved strata, counts, missing rows, collapsed strata, rejected candidates, and the deterministic tie rule.
 
+## Spatial-scale OPGD
+
+Candidate spatial supports are prepared explicitly upstream. pyGeoHet compares their factor results and does not silently aggregate rasters, polygons, or points.
+
+```python
+from pygeohet import SpatialScaleOPGD, compare_spatial_scales
+
+# Compare already-computed factor, GeoDetector, or OPGD results.
+scale_effects = compare_spatial_scales(
+    {
+        10: result_10km,
+        20: result_20km,
+        40: result_40km,
+    }
+)
+print(scale_effects.best_series())
+print(scale_effects.factors_frame())
+
+# Or run OPGD on each prepared support.
+model = SpatialScaleOPGD(
+    methods=["equal_interval", "quantile", "natural_breaks"],
+    n_strata=[2, 3, 4],
+)
+scale_result = model.fit(
+    {
+        10: (y_10km, factors_10km),
+        20: (y_20km, factors_20km),
+        40: (y_40km, factors_40km),
+    }
+)
+print(scale_result.scale_effects.best_series())
+```
+
+The default follows the 2020 OPGD paper: select the support with the highest 90% quantile of factor q values. `significant_only=True` exposes the legacy GD significance filter. The newer gdverse mean-plus-LOESS heuristic is documented as a distinct estimator and is not silently substituted.
+
 Individual interfaces are also public:
 
 ```python
@@ -70,6 +110,7 @@ from pygeohet import (
     stratify,
     evaluate_stratification,
     optimize_stratification,
+    compare_spatial_scales,
     factor_detector,
     interaction_detector,
     risk_detector,
@@ -90,6 +131,8 @@ from pygeohet import (
 - singleton overlay cells are retained explicitly, while original factor strata default to a minimum size of two;
 - stratification records cuts, achieved strata, boundary conventions, collapse and rejection evidence;
 - OPGD evaluates a complete method-by-class candidate table on one joint sample and exposes its tie rule;
+- spatial-scale comparison retains every support, score, factor eligibility decision, failure and tie convention;
+- geographic support construction remains explicit upstream;
 - external R, Python, QGIS, or spreadsheet implementations are never called at runtime;
 - each method is checked through analytical properties, static references, simulations, and published cases;
 - project status and next-conversation handoff documents are release gates.
@@ -98,12 +141,13 @@ from pygeohet import (
 
 The NTD published-case record reproduces the factor q/p-values, all three interaction labels, and risk significance counts from `gdverse`/`GD`. Raw third-party data are not redistributed; a hash-checking validator is provided in `tools/validate_ntd_reference.py`.
 
-Stage 3A currently has analytical, boundary, rejection-path and integrated workflow tests. Static cross-language stratification fixtures and a published OPGD reproduction remain required before the new methods are labelled fully externally validated.
+Stages 3A and 3B currently have analytical, boundary, rejection-path and integrated workflow tests. Static cross-language stratification and spatial-scale fixtures plus published OPGD case reproductions remain required before these methods are labelled fully externally validated.
 
 See:
 
 - [`docs/models/classic-detectors.md`](docs/models/classic-detectors.md)
 - [`docs/models/stratification-opgd.md`](docs/models/stratification-opgd.md)
+- [`docs/models/spatial-scale-opgd.md`](docs/models/spatial-scale-opgd.md)
 - [`docs/validation/ntd-reference.md`](docs/validation/ntd-reference.md)
 - [`VALIDATION_MATRIX.md`](VALIDATION_MATRIX.md)
 - [`ROADMAP.md`](ROADMAP.md)
