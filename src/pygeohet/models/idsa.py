@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable, Sequence
 from itertools import combinations
-from typing import Any, Literal
+from typing import Any, Literal, cast
 
 import numpy as np
 import pandas as pd
@@ -102,7 +102,7 @@ def _validate_fuzzy_options(
         raise ValueError("tie_policy must be either 'first' or 'last'")
     if membership_tolerance < 0.0:
         raise ValueError("membership_tolerance must be nonnegative")
-    return operation, tie_policy
+    return cast(FuzzyOperation, operation), cast(FuzzyTiePolicy, tie_policy)
 
 
 def _risk_levels_and_memberships(
@@ -971,7 +971,7 @@ class IDSA:
             individual_power[name] = optimization.best.result.value
         discrete = pd.DataFrame(discrete_clean)
 
-        factor_order = tuple(numeric.columns)
+        factor_order: tuple[str, ...] = tuple(str(name) for name in numeric.columns)
         factor_rank = {name: index for index, name in enumerate(factor_order)}
         used_tuple = tuple(int(index) for index in used)
         attempts: list[IDSACombinationResult] = []
@@ -1046,8 +1046,9 @@ class IDSA:
                 factor_rank,
                 self.pid_tolerance,
             )
-            current = best.factors
-            current_value = best.result.value if best.result is not None else -np.inf
+            assert best.result is not None
+            current: tuple[str, ...] = best.factors
+            current_value = best.result.value
             remaining = [name for name in factor_order if name not in current]
             while remaining:
                 step += 1
@@ -1089,8 +1090,8 @@ class IDSA:
                 if stage_best.result.value <= current_value + self.pid_tolerance:
                     break
                 best = stage_best
-                current = best.factors
-                current_value = best.result.value
+                current = stage_best.factors
+                current_value = stage_best.result.value
                 remaining = [name for name in factor_order if name not in current]
 
         assert best.result is not None

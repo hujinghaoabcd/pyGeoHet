@@ -57,6 +57,23 @@ def test_spatial_variance_is_invariant_to_global_weight_scaling() -> None:
     assert not first.symmetric_weights
 
 
+def test_psd_accepts_hashable_tuple_strata() -> None:
+    y = np.asarray([0.0, 1.0, 4.0, 5.0, 9.0, 10.0])
+    strata = np.empty(len(y), dtype=object)
+    strata[:] = [
+        ("a", 1),
+        ("a", 1),
+        ("b", 1),
+        ("b", 1),
+        ("c", 2),
+        ("c", 2),
+    ]
+    result = power_spatial_determinant(y, strata, _complete_weights(len(y)))
+
+    assert result.strata_frame()["count"].tolist() == [2, 2, 2]
+    assert result.value > 0.0
+
+
 def test_psd_matches_direct_formula_and_row_permutation() -> None:
     y = np.asarray([0.0, 1.0, 4.0, 5.0, 9.0, 10.0])
     strata = np.asarray(["a", "a", "b", "b", "c", "c"])
