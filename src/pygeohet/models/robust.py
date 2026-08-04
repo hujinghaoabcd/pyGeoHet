@@ -418,11 +418,14 @@ def robust_discretize(
 
     break_positions, within_ss = solution
     cut_points = tuple(float(x_sorted[position]) for position in break_positions)
-    labels_clean = np.searchsorted(
-        np.asarray(cut_points, dtype=float),
-        x_clean,
-        side="right",
-    ) + 1
+    labels_clean = (
+        np.searchsorted(
+            np.asarray(cut_points, dtype=float),
+            x_clean,
+            side="right",
+        )
+        + 1
+    )
     q_result = q_statistic(
         y_clean,
         labels_clean,
@@ -621,7 +624,9 @@ class RGD:
 
         factor_frame = coerce_factor_frame(continuous_factors)
         if factor_frame.empty or factor_frame.shape[1] == 0:
-            raise InvalidDataError("continuous_factors must contain at least one column")
+            raise InvalidDataError(
+                "continuous_factors must contain at least one column"
+            )
 
         optimizations: dict[str, RobustOptimizationResult] = {}
         labels: dict[str, tuple[int | None, ...]] = {}
