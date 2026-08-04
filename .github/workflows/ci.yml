@@ -31,8 +31,9 @@ jobs:
             exit 0
           fi
           python tools/cleanup_stage5b_docs.py
-      - name: Commit cleanup
+      - name: Commit non-workflow cleanup
         run: |
+          git restore --source=HEAD -- .github/workflows/ci.yml .github/workflows/finalize-stage5b.yml
           if git diff --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
             echo "No cleanup changes"
             exit 0
