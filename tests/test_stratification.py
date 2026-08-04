@@ -72,9 +72,7 @@ def test_missing_values_remain_aligned() -> None:
 
 def test_evaluation_matches_direct_q_and_is_auditable() -> None:
     y = [1.0, 1.2, 8.0, 8.2]
-    stratification = stratify(
-        [0.0, 1.0, 10.0, 11.0], method="equal", n_strata=2
-    )
+    stratification = stratify([0.0, 1.0, 10.0, 11.0], method="equal", n_strata=2)
     evaluation = evaluate_stratification(y, stratification)
 
     assert evaluation.accepted
