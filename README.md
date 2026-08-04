@@ -158,8 +158,12 @@ import pandas as pd
 from pygeohet import (
     SPADE,
     IDSA,
+    IDSA,
     compensated_spatial_determinant,
     multilevel_spatial_determinant,
+    fuzzy_overlay,
+    power_interactive_determinant,
+    optimize_spatial_discretization,
     fuzzy_overlay,
     power_interactive_determinant,
     optimize_spatial_discretization,
@@ -272,6 +276,7 @@ from pygeohet import (
     rgd,
     rid,
     spade,
+    idsa,
     idsa,
 )
 ```
