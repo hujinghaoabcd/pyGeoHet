@@ -190,10 +190,21 @@ See:
 - [`ROADMAP.md`](ROADMAP.md)
 - [`HANDOFF_NEXT_CONVERSATION.md`](HANDOFF_NEXT_CONVERSATION.md)
 """
-readme = replace_section(readme, "## Spatial variance and SPADE", "## Fuzzy interaction zones and IDSA", spade_en)
-readme = replace_section(readme, "## Fuzzy interaction zones and IDSA", "## Public interfaces", idsa_en)
-readme = replace_section(readme, "## Public interfaces", "## Statistical commitments", public_en)
-readme = replace_section(readme, "## Statistical commitments", "## Validation", commitments_en)
+readme = replace_section(
+    readme,
+    "## Spatial variance and SPADE",
+    "## Fuzzy interaction zones and IDSA",
+    spade_en,
+)
+readme = replace_section(
+    readme, "## Fuzzy interaction zones and IDSA", "## Public interfaces", idsa_en
+)
+readme = replace_section(
+    readme, "## Public interfaces", "## Statistical commitments", public_en
+)
+readme = replace_section(
+    readme, "## Statistical commitments", "## Validation", commitments_en
+)
 readme = replace_section(readme, "## Validation", "## Licence", validation_en)
 readme_path.write_text(collapse_blank_lines(readme), encoding="utf-8")
 
