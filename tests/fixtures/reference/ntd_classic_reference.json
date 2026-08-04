@@ -1,0 +1,133 @@
+{
+  "fixture_schema": 1,
+  "case": "Neural-tube-defect (NTD) disease dataset",
+  "input": {
+    "filename": "GeoDetector_2018_Example(Disease Dataset).csv",
+    "sha256": "b28764136d57c3e7929465b12c4d5bcbb8521d09361633716f89dc59dc962e61",
+    "rows": 185,
+    "column_mapping": {
+      "type": "soiltype",
+      "region": "watershed",
+      "level": "elevation"
+    },
+    "redistributed": false,
+    "note": "The raw GPL-associated reference file is not distributed by pyGeoHet."
+  },
+  "gdverse_gd_vignette": {
+    "factor": {
+      "watershed": {
+        "q": 0.6377737,
+        "p_value": 0.000128803
+      },
+      "elevation": {
+        "q": 0.6067087,
+        "p_value": 0.043382244
+      },
+      "soiltype": {
+        "q": 0.3857168,
+        "p_value": 0.372145486
+      }
+    },
+    "interaction": {
+      "watershed__elevation": "enhance_bivariate",
+      "watershed__soiltype": "enhance_bivariate",
+      "elevation__soiltype": "enhance_bivariate"
+    },
+    "risk_significant_pair_counts": {
+      "watershed": 29,
+      "elevation": 20,
+      "soiltype": 8
+    },
+    "ecological_greater_tail_significant": {
+      "watershed__elevation": false,
+      "watershed__soiltype": false,
+      "elevation__soiltype": false
+    }
+  },
+  "pygeohet_0_0_2": {
+    "factor": {
+      "watershed": {
+        "q": 0.6377736700704234,
+        "p_value": 0.00012880226356173018
+      },
+      "elevation": {
+        "q": 0.6067087097277271,
+        "p_value": 0.043382243038675314
+      },
+      "soiltype": {
+        "q": 0.3857168428094277,
+        "p_value": 0.37214548590693947
+      }
+    },
+    "interaction": {
+      "watershed__elevation": {
+        "q_1": 0.6377736700704234,
+        "q_2": 0.6067087097277271,
+        "q_overlay": 0.7135967785347097,
+        "interaction": "enhance_bivariate",
+        "overlay_strata": 23
+      },
+      "watershed__soiltype": {
+        "q_1": 0.6377736700704234,
+        "q_2": 0.3857168428094277,
+        "q_overlay": 0.7356805481395311,
+        "interaction": "enhance_bivariate",
+        "overlay_strata": 21
+      },
+      "elevation__soiltype": {
+        "q_1": 0.6067087097277271,
+        "q_2": 0.3857168428094277,
+        "q_overlay": 0.6635236983356346,
+        "interaction": "enhance_bivariate",
+        "overlay_strata": 18
+      }
+    },
+    "risk_significant_pair_counts": {
+      "elevation": 20,
+      "soiltype": 8,
+      "watershed": 29
+    },
+    "ecological_two_sided": {
+      "watershed__elevation": {
+        "f_statistic": 0.921012844395333,
+        "p_value": 0.5773752658814816,
+        "significant": false,
+        "more_explanatory": null
+      },
+      "watershed__soiltype": {
+        "f_statistic": 0.5896732242932086,
+        "p_value": 0.00037507392941217083,
+        "significant": true,
+        "more_explanatory": "watershed"
+      },
+      "elevation__soiltype": {
+        "f_statistic": 0.6402443004802426,
+        "p_value": 0.002631323967235188,
+        "significant": true,
+        "more_explanatory": "elevation"
+      }
+    },
+    "ecological_greater_compatibility": {
+      "watershed__elevation": {
+        "f_statistic": 0.921012844395333,
+        "p_value": 0.7113123670592592,
+        "significant": false
+      },
+      "watershed__soiltype": {
+        "f_statistic": 0.5896732242932086,
+        "p_value": 0.9998124630352939,
+        "significant": false
+      },
+      "elevation__soiltype": {
+        "f_statistic": 0.6402443004802426,
+        "p_value": 0.9986843380163825,
+        "significant": false
+      }
+    }
+  },
+  "tolerances": {
+    "q_abs": 1e-07,
+    "p_abs": 1e-07,
+    "f_abs": 1e-10
+  }
+}
