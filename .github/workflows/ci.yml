@@ -39,4 +39,7 @@ jobs:
       - run: ruff check src tests examples tools
       - run: black --check src tests examples tools
       - run: mypy src/pygeohet
+      - run: python examples/01_factor_detector.py
+      - run: python examples/02_classic_workflow.py
+      - run: python examples/03_stratification_opgd.py
       - run: python -m build
