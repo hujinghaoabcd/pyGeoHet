@@ -195,7 +195,9 @@ def psd_clean(
     scale = max(1.0, float(np.dot(y, y)))
     tolerance = 64.0 * np.finfo(float).eps * scale
     if global_variance.value <= tolerance:
-        raise InvalidDataError("global spatial variance is zero or numerically undefined")
+        raise InvalidDataError(
+            "global spatial variance is zero or numerically undefined"
+        )
 
     contributions: list[SpatialStratumVariance] = []
     within = 0.0
