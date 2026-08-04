@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use pyGeoHet, please cite the software and the methodological papers for the models you use."
+title: "pyGeoHet"
+type: software
+authors:
+  - family-names: "Hu"
+    given-names: "Jinghao"
+repository-code: "https://github.com/hujinghaoabcd/pyGeoHet"
+license: MIT
+version: 0.0.1
+date-released: 2026-08-05
