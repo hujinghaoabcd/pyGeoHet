@@ -106,4 +106,4 @@ class FactorDetectorResult:
     def summary(self) -> str:
         """Return a compact ordered text table."""
 
-        return self.to_frame().to_string(index=False)
+        return str(self.to_frame().to_string(index=False))
