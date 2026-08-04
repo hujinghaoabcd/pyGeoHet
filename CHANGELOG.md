@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.0.5 - 2026-08-05
+
+### Added
+
+- supervised multiscale discretization through `MSD` and `multiscale_discretize()`;
+- exact global-search mode over observed unique-value boundaries;
+- paper-style coarse-to-fine explanatory-variable value-grid search;
+- explicit upscale, buffer-scale, epsilon, grid-origin and base-resolution contracts;
+- one refined cut selected from each mapped neighbourhood;
+- cached interval within-stratum objectives and deterministic cut-tuple ties;
+- immutable `MSDResult` and `MSDScaleResult` audit objects;
+- per-scale candidate counts, selected cuts, q, within-stratum sum of squares and failure evidence;
+- exhaustive-enumeration, known-threshold, missing-data, boundary, tie and invalid-contract tests;
+- runnable MSD example, model manual and paper/source-code audit.
+
+### Changed
+
+- package development version advanced to `0.0.5`;
+- public API now exports MSD interfaces and results;
+- CI runs five public examples;
+- Stage 3 is complete in implementation terms and Stage 4 robust detector development is next;
+- author Figshare parity and a published MSD case are retained as explicit validation debt rather than assumed compatibility.
+
 ## 0.0.4 - 2026-08-05
 
 ### Added
