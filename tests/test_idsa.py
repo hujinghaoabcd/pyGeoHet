@@ -99,12 +99,10 @@ def test_pid_components_follow_published_ratio() -> None:
 
     result = power_interactive_determinant(y, factors, weights)
     within = sum(
-        item.within_weighted_variance
-        for item in result.information_components.values()
+        item.within_weighted_variance for item in result.information_components.values()
     )
     total = sum(
-        item.total_weighted_variance
-        for item in result.information_components.values()
+        item.total_weighted_variance for item in result.information_components.values()
     )
 
     assert result.phi == pytest.approx(1.0 - within / total)

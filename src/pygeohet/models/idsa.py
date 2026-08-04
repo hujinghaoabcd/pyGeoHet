@@ -201,7 +201,9 @@ def _fuzzy_overlay_clean(
 
     return FuzzyOverlayResult(
         labels=tuple(selected_labels),
-        memberships={name: tuple(float(value) for value in memberships[name]) for name in names},
+        memberships={
+            name: tuple(float(value) for value in memberships[name]) for name in names
+        },
         risk_levels=levels,
         factors=names,
         operation=operation,
@@ -230,7 +232,9 @@ def _expand_overlay(
     for clean_index, original_index in enumerate(used_indices):
         labels[int(original_index)] = overlay.labels[clean_index]
         for name in overlay.factors:
-            memberships[name][int(original_index)] = overlay.memberships[name][clean_index]
+            memberships[name][int(original_index)] = overlay.memberships[name][
+                clean_index
+            ]
     return FuzzyOverlayResult(
         labels=tuple(labels),
         memberships={name: tuple(values) for name, values in memberships.items()},
@@ -591,7 +595,9 @@ def _parse_spatial_discretization_grid(
     methods: Sequence[str],
     n_strata: Iterable[int],
 ) -> tuple[tuple[str, ...], tuple[int, ...]]:
-    canonical_methods = tuple(dict.fromkeys(canonical_method(method) for method in methods))
+    canonical_methods = tuple(
+        dict.fromkeys(canonical_method(method) for method in methods)
+    )
     if not canonical_methods:
         raise ValueError("methods must contain at least one method")
     if "head_tail_breaks" in canonical_methods:
@@ -700,7 +706,9 @@ def _optimize_spatial_discretization_clean(
         raise InvalidDataError(
             "no spatial discretization candidate was accepted: " + "; ".join(reasons)
         )
-    best_value = max(candidate.result.value for candidate in accepted if candidate.result)
+    best_value = max(
+        candidate.result.value for candidate in accepted if candidate.result
+    )
     tied = [
         candidate
         for candidate in accepted
@@ -710,9 +718,11 @@ def _optimize_spatial_discretization_clean(
     best = min(
         tied,
         key=lambda candidate: (
-            candidate.stratification.actual_strata
-            if candidate.stratification is not None
-            else candidate.requested_strata,
+            (
+                candidate.stratification.actual_strata
+                if candidate.stratification is not None
+                else candidate.requested_strata
+            ),
             candidate.requested_strata,
             candidate.method_rank,
             candidate.candidate_index,
@@ -1065,7 +1075,9 @@ class IDSA:
                     )
                     attempts.append(candidate)
                     stage_attempts.append(candidate)
-                accepted_stage = [item for item in stage_attempts if item.result is not None]
+                accepted_stage = [
+                    item for item in stage_attempts if item.result is not None
+                ]
                 if not accepted_stage:
                     break
                 stage_best = _select_best_combination(
@@ -1131,9 +1143,7 @@ class IDSA:
                 phi=best.result.phi,
                 information_components=best.result.information_components,
                 overlay=expanded_overlay,
-                encoded_factors={
-                    name: discrete_full[name] for name in best.factors
-                },
+                encoded_factors={name: discrete_full[name] for name in best.factors},
                 n_observations=best.result.n_observations,
                 dropped_count=best.result.dropped_count,
                 used_indices=best.result.used_indices,
