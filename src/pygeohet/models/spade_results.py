@@ -254,4 +254,4 @@ class SPADEResult:
         return pd.DataFrame(rows)
 
     def summary(self) -> str:
-        return self.to_frame().to_string(index=False)
+        return str(self.to_frame().to_string(index=False))
