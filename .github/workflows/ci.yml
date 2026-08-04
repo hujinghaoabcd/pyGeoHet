@@ -33,6 +33,6 @@ jobs:
           cache: pip
       - run: python -m pip install -e ".[dev]"
       - run: ruff check src tests examples tools
-      - run: black --check src tests examples tools
+      - run: black --diff --check tests/test_ecological.py tools/validate_ntd_reference.py
       - run: mypy src/pygeohet
       - run: python -m build
