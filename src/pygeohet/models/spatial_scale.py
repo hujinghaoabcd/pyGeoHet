@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Any, Literal
+from typing import Any, Literal, cast
 
 import numpy as np
 import pandas as pd
@@ -119,9 +119,10 @@ class SpatialScaleResult:
                 f"reason={self.selection_reason!r}, "
                 f"attempted={len(self.candidates)})"
             )
+        score = cast(float, self.best.score)
         return (
             "SpatialScaleResult("
-            f"scale={self.best.scale:g}, score={self.best.score:.6g}, "
+            f"scale={self.best.scale:g}, score={score:.6g}, "
             f"method={self.score_method!r}, "
             f"eligible={len(self.best.eligible_factors)}, "
             f"attempted={len(self.candidates)})"
@@ -154,12 +155,18 @@ class SpatialScaleOPGDResult:
         return self.opgd_results.get(best.scale)
 
     def candidates_frame(self) -> pd.DataFrame:
+        """Return the spatial-scale candidate table."""
+
         return self.scale_effects.candidates_frame()
 
     def factors_frame(self) -> pd.DataFrame:
+        """Return factor q and p evidence across scales."""
+
         return self.scale_effects.factors_frame()
 
     def summary(self) -> str:
+        """Return scale selection, failures, and the selected OPGD summary."""
+
         sections = [self.scale_effects.summary()]
         if self.failures:
             sections.extend(["", f"Failed scales: {dict(self.failures)!r}"])
@@ -206,9 +213,9 @@ def _factor_frame(result: Any) -> pd.DataFrame:
     if selected["factor"].duplicated().any():
         raise InvalidDataError("factor names must be unique within each scale")
     selected["q"] = pd.to_numeric(selected["q"], errors="raise").astype(float)
-    selected["p_value"] = pd.to_numeric(
-        selected["p_value"], errors="raise"
-    ).astype(float)
+    selected["p_value"] = pd.to_numeric(selected["p_value"], errors="raise").astype(
+        float
+    )
     if not bool(np.isfinite(selected["q"]).all()):
         raise InvalidDataError("q values must be finite")
     if bool(((selected["q"] < 0.0) | (selected["q"] > 1.0)).any()):
@@ -245,18 +252,22 @@ def _choose_best(
     ]
     if len(accepted) < 2:
         return None
-    maximum = max(float(candidate.score) for candidate in accepted)
+    maximum = max(cast(float, candidate.score) for candidate in accepted)
     tied = [
         candidate
         for candidate in accepted
-        if maximum - float(candidate.score) <= score_tolerance
+        if maximum - cast(float, candidate.score) <= score_tolerance
     ]
     if tie_break == "first":
         return min(tied, key=lambda candidate: candidate.source_order)
     if tie_break == "smallest":
-        return min(tied, key=lambda candidate: (candidate.scale, candidate.source_order))
+        return min(
+            tied, key=lambda candidate: (candidate.scale, candidate.source_order)
+        )
     if tie_break == "largest":
-        return max(tied, key=lambda candidate: (candidate.scale, -candidate.source_order))
+        return max(
+            tied, key=lambda candidate: (candidate.scale, -candidate.source_order)
+        )
     raise ValueError("tie_break must be 'first', 'smallest', or 'largest'")
 
 
@@ -315,12 +326,10 @@ def _compare_frames(
 
         frame = frames[scale]
         q_values = {
-            str(row.factor): float(row.q)
-            for row in frame.itertuples(index=False)
+            str(row.factor): float(row.q) for row in frame.itertuples(index=False)
         }
         p_values = {
-            str(row.factor): float(row.p_value)
-            for row in frame.itertuples(index=False)
+            str(row.factor): float(row.p_value) for row in frame.itertuples(index=False)
         }
         if significant_only:
             eligible = tuple(
@@ -420,7 +429,9 @@ def compare_spatial_scales(
     for order, (raw_scale, result) in enumerate(results_by_scale.items()):
         scale = _coerce_scale(raw_scale)
         if scale in frames:
-            raise InvalidDataError("spatial scales must be unique after numeric coercion")
+            raise InvalidDataError(
+                "spatial scales must be unique after numeric coercion"
+            )
         frames[scale] = _factor_frame(result)
         source_order[scale] = order
 
