@@ -2,16 +2,12 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
 from typing import Any
-
-import numpy as np
-import pandas as pd
 
 from pygeohet.core.qstat import q_statistic
 from pygeohet.exceptions import InvalidDataError
 from pygeohet.results import FactorDetectorResult
-from pygeohet.validation import MissingPolicy
+from pygeohet.validation import MissingPolicy, coerce_factor_frame
 
 
 class FactorDetector:
@@ -29,13 +25,13 @@ class FactorDetector:
     def fit(self, y: Any, factors: Any) -> FactorDetectorResult:
         """Compute one auditable q-statistic result per factor."""
 
-        factor_frame = _coerce_factors(factors)
+        factor_frame = coerce_factor_frame(factors)
         if factor_frame.empty or factor_frame.shape[1] == 0:
             raise InvalidDataError("factors must contain at least one column")
 
         results = {}
         for name in factor_frame.columns:
-            results[str(name)] = q_statistic(
+            results[name] = q_statistic(
                 y,
                 factor_frame[name],
                 missing=self.missing,
@@ -57,18 +53,3 @@ def factor_detector(
         missing=missing,
         min_stratum_size=min_stratum_size,
     ).fit(y, factors)
-
-
-def _coerce_factors(factors: Any) -> pd.DataFrame:
-    if isinstance(factors, pd.DataFrame):
-        return factors.copy(deep=False)
-    if isinstance(factors, Mapping):
-        return pd.DataFrame(dict(factors))
-
-    array = np.asarray(factors, dtype=object)
-    if array.ndim == 1:
-        return pd.DataFrame({"factor": array})
-    if array.ndim == 2:
-        names = [f"factor_{index}" for index in range(array.shape[1])]
-        return pd.DataFrame(array, columns=names)
-    raise InvalidDataError("factors must be one- or two-dimensional")
