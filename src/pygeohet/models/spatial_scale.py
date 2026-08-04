@@ -372,7 +372,6 @@ def _compare_frames(
         tie_break=tie_break,
         score_tolerance=score_tolerance,
     )
-    accepted_count = sum(candidate.accepted for candidate in candidates)
     selection_valid = best is not None
     selection_reason = None
     if not selection_valid:
