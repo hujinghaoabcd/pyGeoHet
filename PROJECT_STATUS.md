@@ -2,9 +2,9 @@
 
 **Project:** pyGeoHet  
 **Date:** 2026-08-05  
-**Completed stage:** Stage 3A of 10 - univariate stratification and OPGD search  
-**Next active stage:** Stage 3B - spatial-scale optimization and MSD contract  
-**Development version:** 0.0.3
+**Completed stage:** Stage 3B of 10 - prepared-support spatial-scale OPGD selection  
+**Next active stage:** Stage 3C - multiscale discretization (MSD)  
+**Development version:** 0.0.4
 
 ## Completed
 
@@ -14,13 +14,14 @@
 - collision-safe tuple overlays and integrated `GeoDetector` workflow;
 - immutable auditable result objects for all classical detectors;
 - NTD static reference fixture and hash-checking validator;
-- continuous-variable stratification protocol with aligned labels and full audit evidence;
-- equal interval, quantile, weighted Fisher-Jenks natural breaks, geometric interval, standard-deviation and head/tail breaks;
-- joint-complete-case q-guided candidate evaluation;
-- complete method-by-class-count candidate tables, including rejected candidates;
+- six deterministic continuous-variable stratification methods;
+- joint-complete-case q-guided candidate evaluation and complete audit tables;
 - deterministic tie policy and integrated `OPGD` / `opgd` workflow;
-- GitHub Actions concurrency control for superseded pull-request runs;
-- four-layer validation and durable handoff system.
+- primary-paper spatial-scale scoring based on the 90% quantile of factor q values;
+- optional legacy-GD significance filtering and explicit mean-q descriptive scoring;
+- prepared-support `compare_spatial_scales()` and integrated `SpatialScaleOPGD`;
+- strict common-factor validation, deterministic scale ties and failed-scale evidence;
+- CI execution of all public examples and durable handoff system.
 
 ## Current public surface
 
@@ -28,6 +29,7 @@
 from pygeohet import (
     GeoDetector,
     OPGD,
+    SpatialScaleOPGD,
     FactorDetector,
     InteractionDetector,
     RiskDetector,
@@ -36,6 +38,7 @@ from pygeohet import (
     stratify,
     evaluate_stratification,
     optimize_stratification,
+    compare_spatial_scales,
     factor_detector,
     interaction_detector,
     risk_detector,
@@ -47,15 +50,16 @@ from pygeohet import (
 
 ## Validation state
 
-The classical workflow passes analytical, edge-case and NTD reference checks. Stage 3A adds method-specific boundary tests, duplicate-edge and collapse tests, domain-restriction tests, joint-sample tests, complete-candidate-table tests and integrated OPGD workflow tests. The final merge gate is the full Ubuntu, Windows and macOS matrix on Python 3.11, 3.12 and 3.13 plus Ruff, Black, mypy and package build.
+The classical workflow passes analytical, edge-case and NTD reference checks. Stage 3A and 3B add method-boundary tests, collapse and domain-restriction tests, joint-sample tests, full candidate-table tests, spatial-scale quantile tests, significance-filter tests, common-factor tests, deterministic tie tests, failed-scale retention and integrated OPGD/scale workflows. External scale fixtures and a full published-case reproduction remain necessary before Stage 3B is labelled fully externally validated.
 
 ## Deliberately deferred
 
-- spatial-scale optimization;
-- multivariate stratification detector (MSD);
+- automatic raster, polygon or point-support aggregation;
+- newer gdverse mean-plus-LOESS scale selection compatibility;
+- multiscale discretization detector (MSD);
 - robust, spatial, categorical-response, information, multivariate, local and temporal-lag extensions;
 - resampling-based model-selection uncertainty.
 
 ## Immediate next task
 
-Stage 3B must first freeze the spatial-scale and MSD numerical contracts from primary sources and reference implementations. It must define scale candidates, neighborhood construction, edge handling, sample scope, objective functions, deterministic ties, complexity limits and validation fixtures before exposing public APIs.
+Stage 3C must freeze the MSD estimand and candidate-generation contract from the paper and pinned author/reference code. It must establish whether “multiscale” refers to multiresolution support, multiple discretization scales, hierarchical breaks, or another supervised construction; define its objective, ties, complexity controls, sample scope and validation fixtures before public APIs are added.
