@@ -119,3 +119,35 @@ RGD robustly discretizes each continuous factor and passes the selected labels t
 ## D030 - Robust source use is conceptual, not mechanical
 
 The RGD paper, uploaded author notebook and gdverse source define the scientific estimand, expected workflow and comparison targets. pyGeoHet independently implements validation, prefix sums, dynamic programming, immutable results and API composition. It does not call `ruptures`, R or gdverse at runtime and does not translate GPL or unlicensed source line by line.
+
+## D031 - Spatial weights are prepared statistical inputs
+
+Stage 5A accepts a square, finite, nonnegative spatial-weight matrix with one row and column per observation. The core does not infer CRS, centroids, geometry representatives, distance metrics, distance units, neighbourhood orders, kernels, bandwidths, row standardization or support aggregation. These choices belong to an explicit upstream preparation step.
+
+## D032 - Spatial-weight transformations are never silent
+
+The diagonal is excluded from the spatial-variance numerator and denominator and its removed mass is reported. Weight matrices are not row-standardized, symmetrized or thresholded automatically. Directed matrices are accepted and their symmetry status is retained. Global multiplication of all off-diagonal weights leaves the estimand unchanged.
+
+## D033 - Missing observations subset both spatial axes
+
+For spatial statistics, a dropped observation removes the corresponding response/factor entry and both its row and column from the weight matrix. The retained original indices and dropped-row count are public evidence. A vector-only deletion with an unchanged weight matrix is prohibited.
+
+## D034 - Islands and within-stratum connectivity remain explicit
+
+Observations with zero off-diagonal row weight are rejected by default. `allow_islands=True` may retain explicit islands only when the relevant global or stratum submatrix still has positive total off-diagonal weight. A stratum with no internal weighted pairs cannot define spatial variance and is not silently removed or assigned zero variance.
+
+## D035 - PSD is a spatial-variance decomposition
+
+Spatial variance is the weighted average pairwise semivariance. PSD is `1 - sum_h(N_h * Gamma_h) / (N * Gamma)`. It is a distinct estimand from classical q and is not claimed to equal q for arbitrary finite samples or weights. Every PSD result retains global variance, stratum variances, weight sums, counts and sample scope.
+
+## D036 - CPSD and PSMD separate response power from information retention
+
+CPSD is the response PSD divided by the PSD of the original continuous explanatory variable under the same discretization and weight matrix. A numerically zero information PSD makes the ratio undefined. PSMD is the arithmetic mean CPSD over an explicit sequence of accepted class counts; at least two levels must succeed, and rejected levels remain visible.
+
+## D037 - Stage 5A permutation inference is conditional
+
+PSD and PSMD permutation tests shuffle the response while holding the supplied weights, factors, strata and accepted discretization levels fixed. The pseudo-p value uses `(1 + count(null >= observed)) / (B + 1)`. This is conditional inference for a supplied spatial design and does not account for upstream weight selection or discretization-level search beyond the fixed accepted candidates.
+
+## D038 - IDSA is not classical tuple intersection
+
+The reviewed IDSA workflow constructs fuzzy interaction zones from normalized response-risk memberships associated with factor strata. Stage 5B must preserve source factor and stratum identity with collision-safe labels and explicit tie rules. Classical Cartesian tuple overlay cannot be substituted for fuzzy AND/OR merely because both produce categorical zones.
