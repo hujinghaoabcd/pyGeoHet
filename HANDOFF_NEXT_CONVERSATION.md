@@ -1,145 +1,150 @@
-# HANDOFF - pyGeoHet Stage 4 baseline
+# HANDOFF - pyGeoHet Stage 5A baseline
 
 Date: 2026-08-05
 
 ## 1. Authoritative continuation source
 
-After PR #6 is merged, the current `main` branch of `hujinghaoabcd/pyGeoHet` is the only authoritative baseline. A new conversation must fetch the latest `main` commit SHA before editing. Do not reconstruct Stage 4 from chat text, old ZIP copies or earlier design sketches.
+After PR #7 is merged, the latest `main` branch of `hujinghaoabcd/pyGeoHet` is the only authoritative baseline. A new conversation must fetch the latest `main` commit SHA before editing. Do not reconstruct Stage 5A from chat text, temporary extracts or old ZIP copies.
 
 Read in this order:
 
 1. `HANDOFF_NEXT_CONVERSATION.md`;
 2. `PROJECT_STATUS.md`;
 3. `DECISIONS.md`;
-4. `docs/theory/numerical-conventions.md`;
-5. `docs/models/robust-rgd-rid.md`;
-6. `docs/references/robust-code-audit.md`;
-7. `VALIDATION_MATRIX.md`;
-8. `ROADMAP.md`;
-9. `MODEL_INVENTORY.md`;
-10. the Stage 5 papers and uploaded reference source selected during the new audit.
+4. `docs/models/spade.md`;
+5. `docs/references/spade-idsa-code-audit.md`;
+6. `VALIDATION_MATRIX.md`;
+7. `ROADMAP.md`;
+8. `MODEL_INVENTORY.md`;
+9. `THIRD_PARTY_NOTICES.md`;
+10. the IDSA paper and pinned reference source used for Stage 5B.
 
 ## 2. Completed baseline
 
-Stages 1-3C remain complete in implementation terms:
+Stages 1-4 remain implemented: classical GeoDetector, OPGD, prepared-support scale comparison, MSD, robust discretization, RGD and RID.
 
-- direct q and noncentral-F significance;
-- factor, interaction, risk and ecological detectors;
-- integrated `GeoDetector`;
-- six deterministic univariate stratification methods;
-- complete q-guided candidate tables and integrated OPGD;
-- prepared-support spatial-scale OPGD;
-- exact and coarse-to-fine MSD.
+Stage 5A adds version `0.0.7` and:
 
-Stage 4 adds version `0.0.6` and:
+- `SpatialVarianceResult` and `spatial_variance()`;
+- `SpatialStratumVariance`;
+- `PowerSpatialDeterminantResult` and `power_spatial_determinant()`;
+- `CompensatedSpatialDeterminantResult` and `compensated_spatial_determinant()`;
+- `MultilevelSpatialCandidate`;
+- `MultilevelSpatialDeterminantResult` and `multilevel_spatial_determinant()`;
+- `SPADE`, `spade` and `SPADEResult`;
+- explicit dense spatial-weight validation;
+- diagonal removal, matrix symmetry and island audit evidence;
+- one common missing-data mask applied to vectors and both weight-matrix axes;
+- optional seeded permutation inference for PSD and PSMD;
+- complete accepted/rejected PSMD level tables;
+- a public example, model manual and SPADE/IDSA source audit;
+- a provenance-only NTD SPADE fixture and offline validator.
 
-- `RobustDiscretizationResult` for one fixed-zone exact robust solution;
-- `RobustCandidateResult` and `RobustOptimizationResult` for complete class-count evidence;
-- `robust_discretize()` for exact ordered least-squares segmentation;
-- `optimize_robust_discretization()` for explicit class-count selection;
-- `RGD`, `rgd`, `RGDResult`;
-- `RID`, `rid`, `RIDResult`;
-- one joint numeric complete-case sample for each response/factor pair;
-- stable ascending explanatory-variable ordering;
-- candidate change points only between distinct explanatory values;
-- prefix-sum segment costs and exact dynamic programming;
-- deterministic break-position ties;
-- B-value represented by the complete q variance decomposition on robust zones;
-- explicit `marginal_gain` and `max_b` selection policies;
-- aligned labels with `None` on dropped rows;
-- reuse of the classical `GeoDetector` and interaction detector rather than duplicate implementations;
-- brute-force, monotone-rank, duplicate-value, missingness and RGD/RID integration tests;
-- a public example, model manual and source-code audit.
+## 3. Non-negotiable Stage 5A decisions
 
-## 3. Non-negotiable Stage 4 decisions
+- Spatial weights are prepared statistical inputs, not silently derived from geometry.
+- The core does not choose a CRS, centroid, distance metric, unit, neighbourhood, bandwidth, normalization or symmetrization rule.
+- Weights must be square, finite and nonnegative.
+- Diagonal weights are excluded and reported.
+- Directed matrices are accepted and audited; they are not silently symmetrized.
+- Missing observations remove the matching row and column from `W`.
+- Islands are rejected by default. Explicit retention does not make an all-zero global or stratum submatrix valid.
+- Spatial variance is weighted average semivariance.
+- PSD is `1 - sum_h(N_h * Gamma_h) / (N * Gamma)`.
+- PSD is not described as identical to classical q under arbitrary weights.
+- CPSD is response PSD divided by information-retention PSD under the same sample, strata and weights.
+- A zero information PSD makes CPSD undefined.
+- PSMD is the arithmetic mean of accepted CPSD levels and requires at least two accepted levels.
+- Failed PSMD levels remain in the result.
+- Permutation inference is conditional on supplied weights and fixed strata/accepted levels.
+- gdverse, sdsfun, sf and spdep are references, not runtime dependencies.
 
-- Robust discretization is an ordered response-segmentation problem, not another generic OPGD method.
-- Strictly monotone transformations of `x` preserve the candidate order and should preserve the solution.
-- Equal `x` values are indivisible and never split by incidental row ordering.
-- Fixed-K segmentation minimizes total within-zone response SSE exactly.
-- `B = 1 - SSW_R / SST`; it is numerically q on the robust labels, but the B name records the robust construction process.
-- Segment costs use prefix sums; the current solver is exact dynamic programming, not a heuristic.
-- Objective ties within `b_tolerance` select the lexicographically smallest break-position tuple.
-- Cut values belong to the latter zone.
-- `min_stratum_size=2` is the package default; users may explicitly request 1 where mathematically acceptable.
-- Class-count selection remains separate from fixed-K segmentation.
-- `marginal_gain` and `max_b` are explicit estimators; no undocumented LOESS fallback exists.
-- RGD reuses the classical detector workflow; RID reuses the collision-safe interaction detector.
-- `ruptures`, R, reticulate, GD and gdverse are not runtime dependencies.
-- Reference implementations are studied for formulas, expected behaviour and validation, not copied mechanically.
+## 4. Reference audit and external validation
 
-## 4. Source audit completed for Stage 4
+Stage 5A reviewed:
 
-The Stage 4 audit used all three evidence tracks:
+- Cang and Luo (2018), *Spatial association detector (SPADE)*;
+- Song and Wu (2021), *An interactive detector for spatial associations*;
+- uploaded gdverse `R/psd_spade.R`, `R/spade.R`, `R/idsa.R`, `R/pid_idsa.R`, tests and vignettes;
+- maintained `stscl/sdsfun` `R/spvar.R`, `R/fuzzyoverlay.R` and `R/spwt.R`.
 
-1. the primary RGD paper and its B-value/change-point formulas;
-2. the uploaded author archive, especially `CPD_1.ipynb` and bundled documentation;
-3. the uploaded gdverse source, especially:
-   - `R/robustdisc.R`;
-   - `R/rgd.R`;
-   - `R/rid.R`;
-   - `inst/python/cpd_disc.py`;
-   - robust-method vignettes and help pages.
+External NTD SPADE validation uses the separately obtained gdverse `NTDs.gpkg`:
 
-The author notebook and gdverse helper use `ruptures.Dynp(model="l2")`. pyGeoHet implements the same core least-squares segmentation estimand independently with prefix sums and dynamic programming.
+```text
+SHA-256: 1dd0508fc03a61db973cce48524cf6ef32a93ac8102b7ca03a1865f4fb8cb406
+complete observations: 185
+weight: inverse Euclidean distance squared
+response: incidence
+stratum: soiltype
+pyGeoHet PSD: 0.2566528294856155
+gdverse expected: 0.256653
+```
 
-The reviewed gdverse snapshot is GPL-3. The author archive did not expose a licence file in the reviewed snapshot. Neither source was copied or translated line by line.
+The raw GPKG is not redistributed. `tests/fixtures/reference/ntd_spade_reference.json` stores provenance and expected output; `tools/validate_ntd_spade_reference.py` performs the optional reconstruction.
 
-## 5. Known Stage 4 validation gaps
+## 5. Known Stage 5A validation gaps
 
-The robust family is **implemented, provisional**, not externally validated. Remaining work:
+Stage 5A is implemented. The pinned categorical NTD PSD route is externally checked, while CPSD, PSMD and the full continuous SPADE workflow remain provisional.
 
-1. pin an executable author notebook or gdverse release by version and file hashes;
-2. produce static external fixtures for fixed-K break positions, cuts, labels and B-values;
-3. produce a class-count selection fixture;
-4. record tied-`x` behaviour as a deliberate compatibility difference;
-5. reproduce a published RGD case with data provenance;
-6. reproduce an official RID interaction example;
-7. add response-outlier, perturbation and unbalanced-zone simulations;
-8. quantify class-count selection stability and optimism under resampling;
-9. benchmark the exact solver and add pruning only if it preserves the public estimand.
+Remaining tasks:
 
-Do not delay Stage 5 merely to force superficial numerical parity where source conventions are ambiguous. Preserve these gaps explicitly.
+1. generate static CPSD and PSMD reference tables from a pinned environment;
+2. reproduce a published continuous-factor SPADE case;
+3. add larger null, clustered and boundary-sensitive spatial simulations;
+4. study sensitivity to alternative upstream weight constructions;
+5. quantify discretization-level and PSMD selection uncertainty;
+6. benchmark dense execution and design sparse-weight support without changing the estimand;
+7. test strongly asymmetric directed weights with external fixtures.
 
-## 6. Next active stage - Stage 5 spatial-dependence detectors
+Do not block Stage 5B merely to manufacture superficial parity where the reference workflow delegates weight construction to other packages.
 
-Stage 5 targets SPADE and IDSA. It must start with evidence and numerical-contract work before public API creation.
+## 6. Next active stage - Stage 5B IDSA
 
-### Required source audit
+IDSA must be implemented as a distinct spatial-interaction estimand. It is not classical Cartesian intersection and is not the robust RID workflow.
 
-1. identify the exact SPADE and IDSA primary papers and equations;
-2. locate their official or author implementations in the uploaded archives or current public repositories;
-3. inspect gdverse wrappers, tests, vignettes and any upstream package calls;
-4. audit licences before adapting implementation ideas;
-5. distinguish spatial dependence, spatial support scale, multilevel zoning and fuzzy overlay from Stage 3/4 estimands.
+### Source-derived fuzzy overlay behaviour
 
-### Freeze before coding
+The reviewed `sdsfun::fuzzyoverlay()` route:
 
-- supported spatial input form: coordinates, adjacency, distance matrix or weights;
-- weight standardization and symmetry policy;
-- disconnected observations and islands;
-- coordinate reference and distance-unit requirements;
-- spatial variance or information-loss formula;
-- neighbourhood order and multilevel aggregation;
-- candidate zoning/discretization construction;
-- deterministic versus fuzzy membership;
-- IDSA overlay and interaction-zone semantics;
-- missing `y`, missing factor, missing neighbour and zero-weight-row handling;
-- minimum zone size and degenerate local neighbourhoods;
-- exact tie rules and any random seeds;
-- immutable result and audit table design;
-- small-lattice analytical fixtures and independent brute-force checks;
-- external static fixtures and at least one published-case reproduction.
+1. computes the response mean for every stratum of every explanatory factor;
+2. normalizes all factor-stratum response means together;
+3. maps every observation to one membership value for each factor's current stratum;
+4. fuzzy AND selects the factor-stratum identity with the minimum membership;
+5. fuzzy OR selects the factor-stratum identity with the maximum membership;
+6. returns a categorical interaction-zone label.
+
+pyGeoHet must preserve `(factor_name, original_stratum_label)` as a collision-safe identity rather than concatenating strings.
+
+### Freeze before public coding
+
+- normalization formula and constant-risk behaviour;
+- whether normalization is global across all factor-strata or per factor;
+- missing response/factor sample scope;
+- deterministic tie rule when memberships are equal;
+- fuzzy AND and OR names and whether both enter public IDSA;
+- categorical versus continuous input handling;
+- continuous-factor discretization and candidate selection;
+- exact spatial power component `theta`;
+- exact information-retention component `phi`;
+- denominator-zero and degenerate-zone behaviour;
+- `PID = theta / phi` orientation;
+- pairwise versus multivariate factor combinations;
+- zone counts and minimum internal spatial-weight requirements;
+- permutation null and whether overlay is recomputed under response shuffles;
+- immutable membership, zone, component and PID result objects;
+- reference fixtures for fuzzy labels, `theta`, `phi` and PID.
 
 ### Recommended implementation sequence
 
-1. add internal spatial-weight validation utilities only when the contract is frozen;
-2. implement and test the core spatial variance/dependence statistic;
-3. implement SPADE candidate zoning and audit results;
-4. add integrated SPADE workflow;
-5. audit IDSA separately rather than assuming it is a trivial SPADE overlay;
-6. implement deterministic/fuzzy overlay only after its formula is verified;
-7. update exports, examples, manuals, validation matrix and handoff in the same PR.
+1. implement an internal risk-membership table with complete provenance;
+2. implement collision-safe `fuzzy_overlay(..., operation="and"|"or")` and manual tests;
+3. implement `theta` using the Stage 5A PSD core;
+4. derive and independently implement `phi` from the paper and pinned source;
+5. implement fixed-strata PID;
+6. add continuous-factor preprocessing only after fixed-strata PID is verified;
+7. build pairwise/multivariate `IDSA` workflow and candidate tables;
+8. create a static gdverse/sdsfun fixture and a published-case reproduction;
+9. update all status, validation, README and handoff files before merge.
 
 ## 7. Required checks
 
@@ -155,25 +160,26 @@ python examples/03_stratification_opgd.py
 python examples/04_spatial_scale_opgd.py
 python examples/05_multiscale_discretization.py
 python examples/06_robust_detectors.py
+python examples/07_spade.py
 python -m build
 ```
 
-Optional NTD verification when the external reference CSV is available:
+Optional external checks:
 
 ```bash
-python tools/validate_ntd_reference.py \
-  "path/to/GeoDetector_2018_Example(Disease Dataset).csv"
+python tools/validate_ntd_reference.py "path/to/classic.csv"
+python tools/validate_ntd_spade_reference.py "path/to/NTDs.gpkg"
 ```
 
 ## 8. Merge discipline
 
 Use a dedicated branch and pull request. Before merge:
 
-- all matrix jobs pass on Ubuntu, Windows and macOS for Python 3.11-3.13;
-- Ruff, Black, mypy, all public examples and package build pass;
-- new spatial methods have analytical/property tests before public export;
-- status, validation, changelog, inventory, roadmap, structure and handoff match the code;
+- all Ubuntu, Windows and macOS jobs pass on Python 3.11-3.13;
+- Ruff, Black, mypy, all examples and package builds pass;
+- every new public method has analytical/property tests;
 - source and licence audits are recorded;
-- external software remains reference-only and never a runtime dependency;
-- disagreements among papers, author code and gdverse remain explicit;
-- no method is labelled externally validated without the required fixture and case evidence.
+- status, validation, changelog, inventory, roadmap, structure and handoff match code;
+- external software remains reference-only;
+- paper/source disagreements stay explicit;
+- no full-validation claim is made without pinned output fixtures and a documented case.
