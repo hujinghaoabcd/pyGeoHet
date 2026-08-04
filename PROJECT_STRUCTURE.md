@@ -41,11 +41,6 @@ pyGeoHet/
 │   ├── test_robust.py           brute-force, rank, duplicate-x, RGD/RID tests
 │   ├── test_spade.py            variance, PSD, CPSD, PSMD and workflow tests
 │   ├── test_idsa.py             fuzzy overlay, PID and IDSA search tests
-│   ├── test_idsa.py             fuzzy overlay, PID and IDSA search tests
-│   ├── test_idsa.py             fuzzy overlay, PID and IDSA search tests
-│   ├── test_idsa.py             fuzzy overlay, PID and IDSA search tests
-│   ├── test_idsa.py             fuzzy overlay, PID and IDSA search tests
-│   ├── test_idsa.py             fuzzy overlay, PID and IDSA search tests
 │   └── test_*.py                classical analytical, edge and workflow tests
 ├── examples/
 │   ├── 01_factor_detector.py
@@ -61,7 +56,7 @@ pyGeoHet/
 │   └── validate_ntd_spade_reference.py
 ├── docs/
 │   ├── theory/                  formulas and numerical conventions
-│   ├── models/                  classic through SPADE manuals
+│   ├── models/                  classic through IDSA manuals
 │   ├── references/              paper/source-code audits
 │   ├── validation/              published/reference case reports
 │   └── development/             testing and handoff policies
@@ -76,11 +71,8 @@ pyGeoHet/
 
 Automatic geographic-support aggregation is intentionally absent from the core package. Scale-specific datasets are prepared explicitly upstream and compared through `models/spatial_scale.py`. MSD's scales are explanatory-variable value-grid resolutions and remain separate from geographic support.
 
-Stage 5A introduces a small `spatial` package because prepared-weight validation and spatial variance are reusable statistical primitives. SPADE is separated into a numerical core, immutable result definitions and workflow composition. This keeps future IDSA code from duplicating spatial variance while preventing fuzzy-overlay logic from being mixed into the PSD implementation.
+Stage 5A introduces a reusable `spatial` package and separates the SPADE numerical core, immutable results and workflow composition. Stage 5B keeps fuzzy overlay and PID in dedicated IDSA modules while reusing the Stage 5A spatial variance and PSD implementations.
 
-Dense spatial weights are the current public contract. Sparse matrices, coordinate-to-weight builders and geometry adapters should be added as separate optional layers only after their numerical and dependency contracts are frozen.
+Dense spatial weights are the current public contract. Sparse matrices, coordinate-to-weight builders and geometry adapters should be added as optional layers only after their numerical and dependency contracts are frozen.
 
 Directories for information, multivariate, local and temporal-lagged methods are created only when implementation begins. Planned public names remain in the roadmap until working code, tests and documentation exist.
-
-
-Stage 5B keeps fuzzy overlay and PID in a dedicated model module. It reuses Stage 5A spatial variance and PSD rather than duplicating those formulas. Fuzzy zone construction, information retention and subset search remain separate from classical tuple interaction and robust RID.

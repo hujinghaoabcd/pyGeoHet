@@ -127,32 +127,8 @@ import numpy as np
 import pandas as pd
 from pygeohet import (
     SPADE,
-    IDSA,
-    IDSA,
-    IDSA,
-    IDSA,
-    IDSA,
-    IDSA,
     compensated_spatial_determinant,
     multilevel_spatial_determinant,
-    fuzzy_overlay,
-    power_interactive_determinant,
-    optimize_spatial_discretization,
-    fuzzy_overlay,
-    power_interactive_determinant,
-    optimize_spatial_discretization,
-    fuzzy_overlay,
-    power_interactive_determinant,
-    optimize_spatial_discretization,
-    fuzzy_overlay,
-    power_interactive_determinant,
-    optimize_spatial_discretization,
-    fuzzy_overlay,
-    power_interactive_determinant,
-    optimize_spatial_discretization,
-    fuzzy_overlay,
-    power_interactive_determinant,
-    optimize_spatial_discretization,
     power_spatial_determinant,
     spatial_variance,
 )
@@ -205,7 +181,6 @@ PSMD  = 所有有效显式层数 CPSD 的平均值
 
 NTD SPADE 外部参考结果为 `0.2566528294856155`，与 gdverse 测试值 `0.256653` 在六位小数上一致。原始 GPKG 不在仓库中重新分发。
 
-
 ## 模糊交互分区与 IDSA
 
 IDSA 构造响应变量驱动的模糊分区，而不是简单笛卡尔交叉。所有因子—分层响应均值统一归一化；模糊 AND 选择最小隶属度，模糊 OR 选择最大隶属度；分区标签保留 `(因子名, 原分层值)` 身份。
@@ -223,8 +198,7 @@ result = IDSA(
 ).fit(y, continuous_factors, weights)
 ```
 
-`theta` 是模糊分区下响应变量的 PSD，`phi` 表示所有有序离散因子的空间信息保留能力，最终 `PID = theta / phi`。置换检验会在每次打乱响应变量后重新计算风险、隶属度和模糊分区。
-
+`theta` 是模糊分区下响应变量的 PSD，`phi` 表示有序离散因子的空间信息保留能力，最终 `PID = theta / phi`。置换检验会在每次打乱响应变量后重新计算风险、隶属度和模糊分区。
 
 ## 公共接口
 
@@ -237,11 +211,15 @@ from pygeohet import (
     RGD,
     RID,
     SPADE,
+    IDSA,
     q_statistic,
     spatial_variance,
     power_spatial_determinant,
     compensated_spatial_determinant,
     multilevel_spatial_determinant,
+    fuzzy_overlay,
+    power_interactive_determinant,
+    optimize_spatial_discretization,
     stratify,
     optimize_stratification,
     multiscale_discretize,
@@ -253,11 +231,6 @@ from pygeohet import (
     rgd,
     rid,
     spade,
-    idsa,
-    idsa,
-    idsa,
-    idsa,
-    idsa,
     idsa,
 )
 ```
@@ -272,6 +245,9 @@ from pygeohet import (
 - 空间权重不会被静默构建、标准化或对称化；
 - PSD 是空间方差分解，不会在任意权重下冒充经典 q；
 - PSMD 的失败层数和实际采用层数均保留；
+- 模糊分区保留因子—分层身份并记录并列决策；
+- PID 保留 theta、phi、隶属度、分区和子集搜索证据；
+- IDSA 置换时重新计算响应变量驱动的模糊分区；
 - 外部 R、Python、QGIS、Notebook 和 GIS 实现不作为运行时后端；
 - 项目状态、验证矩阵和交接文档是合并门槛。
 
@@ -279,7 +255,7 @@ from pygeohet import (
 
 经典工作流已复现 NTD 因子、交互和风险参考输出。MSD 与独立穷举程序一致；稳健分区与独立暴力枚举一致，并验证 B=q。
 
-阶段 5A 包括手工空间方差、权重缩放、观测与权重同步重排、缺失样本同步裁剪、孤岛失败、CPSD 恒等、PSMD 候选平均、确定性置换和混合因子 SPADE 测试。分类变量 NTD PSD 路径已完成外部核对；连续 CPSD/PSMD 的正式论文案例仍属于暂定验证。
+阶段 5A 已完成手工空间方差测试和分类变量 NTD PSD 外部核对。阶段 5B 增加模糊 AND/OR 隶属度、显式并列规则、theta/phi 直接分解、有序编码不变性、置换时重算模糊分区、CPSD 候选选择、贪心/穷举子集搜索和缺失行重建测试。IDSA 在固定外部 PID 参考输出和正式论文案例完成前仍标记为已实现、暂定验证。
 
 详细说明见：
 
@@ -289,11 +265,9 @@ from pygeohet import (
 - `docs/models/msd.md`；
 - `docs/models/robust-rgd-rid.md`；
 - `docs/models/spade.md`；
+- `docs/models/idsa.md`；
 - `docs/references/spade-idsa-code-audit.md`；
+- `docs/references/idsa-code-audit.md`；
 - `VALIDATION_MATRIX.md`；
 - `ROADMAP.md`；
 - `HANDOFF_NEXT_CONVERSATION.md`。
-
-
-- `docs/models/idsa.md`；
-- `docs/references/idsa-code-audit.md`。

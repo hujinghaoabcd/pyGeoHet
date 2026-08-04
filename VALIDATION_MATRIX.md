@@ -51,7 +51,7 @@ Each model family must reproduce at least one documented paper or official-softw
 | CPSD | ratio identity when response equals information variable | gdverse/sdsfun formula audit | zero denominator and common-sample tests | pending | implemented, provisional |
 | PSMD | exact mean of accepted CPSD levels | reference workflow audited; static table pending | invalid-level retention, minimum accepted levels and seeded permutations | pending | implemented, provisional |
 | Integrated SPADE | categorical PSD plus continuous PSMD composition | NTD categorical path checked | mixed factor typing and deterministic seeds | partial NTD | implemented, provisional |
-| IDSA fuzzy overlay and PID | paper/source audit complete | fixture pending | tie, normalization and missing-risk tests pending | pending | Stage 5B planned |
+| IDSA fuzzy overlay and PID | manual labels and direct theta/phi equality | fixture pending | ties, normalization, permutations, subset search and missing rows | pending | implemented, provisional |
 
 ## NTD fixtures
 
@@ -94,7 +94,6 @@ Remaining work:
 6. add larger spatial simulations for null, clustered and boundary-sensitive processes.
 
 “Validated with convention split” means the primary scientific convention and the compatibility convention are both explicit, independently tested, and not numerically conflated.
-
 
 ## Stage 5B validation state and gaps
 

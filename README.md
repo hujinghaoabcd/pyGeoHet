@@ -157,32 +157,8 @@ import numpy as np
 import pandas as pd
 from pygeohet import (
     SPADE,
-    IDSA,
-    IDSA,
-    IDSA,
-    IDSA,
-    IDSA,
-    IDSA,
     compensated_spatial_determinant,
     multilevel_spatial_determinant,
-    fuzzy_overlay,
-    power_interactive_determinant,
-    optimize_spatial_discretization,
-    fuzzy_overlay,
-    power_interactive_determinant,
-    optimize_spatial_discretization,
-    fuzzy_overlay,
-    power_interactive_determinant,
-    optimize_spatial_discretization,
-    fuzzy_overlay,
-    power_interactive_determinant,
-    optimize_spatial_discretization,
-    fuzzy_overlay,
-    power_interactive_determinant,
-    optimize_spatial_discretization,
-    fuzzy_overlay,
-    power_interactive_determinant,
-    optimize_spatial_discretization,
     power_spatial_determinant,
     spatial_variance,
 )
@@ -235,7 +211,6 @@ Missing observations remove the matching row and column from the weight matrix. 
 
 The NTD SPADE reference route produces `0.2566528294856155`, matching the gdverse test expectation `0.256653` at six decimals. The raw GPKG is not redistributed.
 
-
 ## Fuzzy interaction zones and IDSA
 
 IDSA builds response-informed fuzzy zones rather than Cartesian intersections. Factor-stratum response means are normalized globally, fuzzy AND selects the minimum membership and fuzzy OR the maximum. Zone labels preserve `(factor, stratum)` identity.
@@ -257,8 +232,7 @@ print(result.combinations_frame())
 print(result.best.result.summary())
 ```
 
-`theta` is response PSD under fuzzy zones. `phi` measures the retained spatial information of all canonical ordinal factor codes. `PID = theta / phi`. Permutation inference rebuilds response-derived memberships and zones on every shuffle. Exhaustive subset search is available for small factor sets.
-
+`theta` is response PSD under fuzzy zones. `phi` measures the retained spatial information of canonical ordinal factor codes. `PID = theta / phi`. Permutation inference rebuilds response-derived memberships and zones on every shuffle. Exhaustive subset search is available for small factor sets.
 
 ## Public interfaces
 
@@ -271,11 +245,15 @@ from pygeohet import (
     RGD,
     RID,
     SPADE,
+    IDSA,
     q_statistic,
     spatial_variance,
     power_spatial_determinant,
     compensated_spatial_determinant,
     multilevel_spatial_determinant,
+    fuzzy_overlay,
+    power_interactive_determinant,
+    optimize_spatial_discretization,
     stratify,
     evaluate_stratification,
     optimize_stratification,
@@ -293,11 +271,6 @@ from pygeohet import (
     rid,
     spade,
     idsa,
-    idsa,
-    idsa,
-    idsa,
-    idsa,
-    idsa,
 )
 ```
 
@@ -314,6 +287,9 @@ from pygeohet import (
 - spatial weights are never silently constructed, normalized or symmetrized;
 - PSD remains a spatial-variance estimand and is not called classical q under arbitrary weights;
 - PSMD failures and accepted levels remain visible;
+- fuzzy zones preserve factor-stratum identity and expose tie decisions;
+- PID retains theta, phi, membership, zone and subset-search evidence;
+- response-derived fuzzy zones are recomputed under IDSA permutation;
 - model-complexity selection is explicit rather than hidden inside numerical kernels;
 - external R, Python, QGIS, notebook and GIS implementations are never called at runtime;
 - project status, validation records and handoff are merge gates.
@@ -322,7 +298,7 @@ from pygeohet import (
 
 The classical workflow reproduces the NTD factor q/p-values, interaction labels and risk-significance counts. MSD matches an independent exhaustive search. Robust segmentation matches an independent brute-force oracle and verifies B=q on selected labels.
 
-Stage 5A has hand-computed spatial-variance tests, weight-scaling and row/weight permutation invariance, common missing-sample alignment, explicit island failures, CPSD identity, PSMD candidate averaging, deterministic permutation tests and mixed-factor integration. Its categorical NTD PSD path is externally checked; continuous CPSD/PSMD published-case reproduction remains provisional.
+Stage 5A has hand-computed spatial-variance tests and an externally checked categorical NTD PSD path. Stage 5B adds manual fuzzy AND/OR memberships, explicit ties, direct theta/phi decomposition, canonical-code invariance, response-overlay recomputation under permutation, CPSD candidate selection, greedy/exhaustive subset searches and missing-row reconstruction. IDSA remains implemented and provisional until pinned external PID fixtures and a published-case reproduction are complete.
 
 See:
 
@@ -333,8 +309,8 @@ See:
 - [`docs/models/robust-rgd-rid.md`](docs/models/robust-rgd-rid.md)
 - [`docs/models/spade.md`](docs/models/spade.md)
 - [`docs/models/idsa.md`](docs/models/idsa.md)
-- [`docs/references/idsa-code-audit.md`](docs/references/idsa-code-audit.md)
 - [`docs/references/spade-idsa-code-audit.md`](docs/references/spade-idsa-code-audit.md)
+- [`docs/references/idsa-code-audit.md`](docs/references/idsa-code-audit.md)
 - [`VALIDATION_MATRIX.md`](VALIDATION_MATRIX.md)
 - [`ROADMAP.md`](ROADMAP.md)
 - [`HANDOFF_NEXT_CONVERSATION.md`](HANDOFF_NEXT_CONVERSATION.md)
