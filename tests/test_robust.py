@@ -40,8 +40,10 @@ def _brute_force(
         for start, stop in zip(boundaries[:-1], boundaries[1:]):
             values = y_sorted[start:stop]
             within_ss += float(np.sum((values - np.mean(values)) ** 2))
-        if best is None or within_ss < best[0] - 1e-12 or (
-            abs(within_ss - best[0]) <= 1e-12 and cuts < best[1]
+        if (
+            best is None
+            or within_ss < best[0] - 1e-12
+            or (abs(within_ss - best[0]) <= 1e-12 and cuts < best[1])
         ):
             best = (within_ss, cuts)
     assert best is not None
