@@ -15,9 +15,11 @@ This development-facing inventory distinguishes source evidence, planned impleme
 | Stratification | Standard deviation | mean-centred SD bands | optimal-discretization paper; sdsfun/gdverse | implemented with sample SD | 3A |
 | Stratification | Head/tail breaks | recursive heavy-tail stratification | paper/code evidence; sdsfun | implemented with configurable head threshold | 3A |
 | Discretization | Optimal univariate discretization | select method and class count by q | GD/gdverse follow-up implementations | implemented with full accepted/rejected candidate table | 3A |
-| Discretization | OPGD | optimize continuous factors before classic detectors | 2020 OPGD paper; GD and gdverse | univariate method/class search implemented; spatial-scale stage deferred | 3A/3B |
-| Discretization | Spatial-scale OPGD | optimize analysis scale as well as breaks | 2020 OPGD paper; reference software | numerical-contract audit next | 3B |
-| Discretization | MSD | supervised multiscale break search | paper-associated code reported | primary-source/code audit before implementation | 3C |
+| Discretization | OPGD | optimize continuous factors before classic detectors | 2020 OPGD paper; GD and gdverse | univariate method/class search implemented | 3A |
+| Scale | Primary-paper spatial-scale OPGD | select prepared support by 90% q quantile | 2020 OPGD paper; legacy GD `sesu` | implemented with explicit eligibility and tie policies; external fixture pending | 3B |
+| Scale | Legacy GD significant-factor scale score | filter by factor p before 90% q quantile | `ausgis/GD::sesu` | implemented as `significant_only=True` compatibility mode | 3B |
+| Scale | gdverse LOESS scale heuristic | mean significant q with marginal-increase stopping | gdverse `sesu_opgd`; sdsfun `loess_optnum` | documented divergence; not yet reproduced | 3B |
+| Discretization | MSD | supervised multiscale break search | paper-associated code reported | primary-source/code audit next | 3C |
 | Spatial | SPADE | spatial variance and multilevel discretization | gdverse follow-up implementation | planned | 5 |
 | Spatial | IDSA | spatially informed interaction zones | IDSA/gdverse | planned | 5 |
 | Categorical | SRS-GD | nominal target and local rough-set power | paper C++ / gdverse follow-up | planned | 6 |
@@ -44,4 +46,4 @@ This development-facing inventory distinguishes source evidence, planned impleme
 4. independent implementation used only for behavioural comparison;
 5. simulation and analytical properties.
 
-When sources disagree, pyGeoHet records the disagreement and exposes an explicit convention instead of averaging incompatible definitions. The ecological detector and Stage 3A boundary/tie contracts are implemented examples of this policy.
+When sources disagree, pyGeoHet records the disagreement and exposes an explicit convention instead of averaging incompatible definitions. The ecological detector, Stage 3A boundary/tie contracts, and Stage 3B separation of paper, legacy-GD and newer-gdverse scale estimators follow this policy.
