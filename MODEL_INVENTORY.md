@@ -28,8 +28,8 @@ This development-facing inventory distinguishes source evidence, planned impleme
 | Spatial | CPSD | compensate response PSD by information-retention PSD | SPADE paper; gdverse/sdsfun workflows | implemented; external continuous-case fixture pending | 5A |
 | Spatial | PSMD | average CPSD over explicit discretization levels | SPADE paper; gdverse `spade`; sdsfun | implemented with complete accepted/rejected level table | 5A |
 | Spatial | SPADE | categorical PSD and continuous PSMD workflow | primary paper; gdverse and sdsfun | implemented with explicit factor typing and seeded permutations | 5A |
-| Spatial interaction | Fuzzy overlay | response-risk membership AND/OR zones | IDSA paper; sdsfun `fuzzyoverlay` | source/formula audit complete; Stage 5B next | 5B |
-| Spatial interaction | IDSA / PID | spatially informed interactive determinant | IDSA paper; gdverse `idsa`/`pid_idsa`; sdsfun | planned for next branch after contract freeze | 5B |
+| Spatial interaction | Fuzzy overlay | response-risk membership AND/OR zones | IDSA paper; sdsfun `fuzzyoverlay` | implemented with tuple identities, explicit ties and audit tables | 5B |
+| Spatial interaction | IDSA / PID | spatially informed interactive determinant | IDSA paper; gdverse `idsa`/`pid_idsa`; sdsfun | implemented with fixed PID, CPSD discretization and subset search; external case pending | 5B |
 | Categorical | SRS-GD | nominal target and local rough-set power | paper C++ / gdverse follow-up | planned | 6 |
 | Information | SSHIC/SSHIN | distribution differences beyond variance | sshicm | planned | 6 |
 | Spatial information | SWMI | spatially weighted mutual information | no full public package found | source audit | 6 |

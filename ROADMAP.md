@@ -54,7 +54,7 @@ The implementation keeps geometry processing and weight construction upstream. I
 
 Collision-safe fuzzy factor-stratum labels; response-risk membership normalization; explicit fuzzy AND/OR and deterministic ties; spatial interactive power `theta`; information-retention component `phi`; `PID = theta / phi`; continuous-factor discretization strategy; pairwise and multivariate IDSA audit tables; independent manual fixtures and reference-case reproduction.
 
-**Status:** next active batch after Stage 5A merge. Classical tuple intersection must not be substituted for fuzzy interaction zones.
+**Status:** implemented in PR #8. Analytical tests and source audits are complete; pinned external PID fixtures, LOESS-selector comparison and a published IDSA case remain validation debt.
 
 ## Stage 6 - Categorical and information-consistency SSH (`0.4.0`)
 

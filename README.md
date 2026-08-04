@@ -2,7 +2,7 @@
 
 **pyGeoHet** is a research-oriented Python toolkit for spatially stratified heterogeneity (SSH) analysis. It covers the classical Geographical Detector workflow and extends it with auditable discretization, spatial-scale comparison, multiscale search, robust change-point detection and spatial-variance decomposition.
 
-> **Status - Stage 5A implemented:** q-statistic, the four classical detectors, integrated `GeoDetector`, six continuous-variable stratification methods, univariate `OPGD`, prepared-support spatial-scale OPGD, multiscale discretization (`MSD`), robust discretization, `RGD`, `RID`, spatial variance, PSD, CPSD, PSMD and `SPADE` are available. Stage 5B will add fuzzy interaction zones and IDSA.
+> **Status - Stage 5B implemented:** q-statistic, the four classical detectors, integrated `GeoDetector`, six continuous-variable stratification methods, univariate `OPGD`, prepared-support spatial-scale OPGD, multiscale discretization (`MSD`), robust discretization, `RGD`, `RID`, spatial variance, PSD, CPSD, PSMD and `SPADE` are available. Fuzzy interaction zones and IDSA are now available; Stage 6 will address categorical and information-consistency SSH.
 
 ## Installation for development
 
@@ -157,8 +157,12 @@ import numpy as np
 import pandas as pd
 from pygeohet import (
     SPADE,
+    IDSA,
     compensated_spatial_determinant,
     multilevel_spatial_determinant,
+    fuzzy_overlay,
+    power_interactive_determinant,
+    optimize_spatial_discretization,
     power_spatial_determinant,
     spatial_variance,
 )
@@ -211,6 +215,31 @@ Missing observations remove the matching row and column from the weight matrix. 
 
 The NTD SPADE reference route produces `0.2566528294856155`, matching the gdverse test expectation `0.256653` at six decimals. The raw GPKG is not redistributed.
 
+
+## Fuzzy interaction zones and IDSA
+
+IDSA builds response-informed fuzzy zones rather than Cartesian intersections. Factor-stratum response means are normalized globally, fuzzy AND selects the minimum membership and fuzzy OR the maximum. Zone labels preserve `(factor, stratum)` identity.
+
+```python
+from pygeohet import IDSA, fuzzy_overlay, power_interactive_determinant
+
+overlay = fuzzy_overlay(y, discrete_factors, operation="and")
+pid = power_interactive_determinant(y, discrete_factors, weights)
+
+result = IDSA(
+    methods=("quantile", "natural_breaks", "equal_interval"),
+    n_strata=range(3, 9),
+    search="greedy",
+).fit(y, continuous_factors, weights)
+
+print(result.discretizations_frame())
+print(result.combinations_frame())
+print(result.best.result.summary())
+```
+
+`theta` is response PSD under fuzzy zones. `phi` measures the retained spatial information of all canonical ordinal factor codes. `PID = theta / phi`. Permutation inference rebuilds response-derived memberships and zones on every shuffle. Exhaustive subset search is available for small factor sets.
+
+
 ## Public interfaces
 
 ```python
@@ -243,6 +272,7 @@ from pygeohet import (
     rgd,
     rid,
     spade,
+    idsa,
 )
 ```
 
@@ -277,6 +307,8 @@ See:
 - [`docs/models/msd.md`](docs/models/msd.md)
 - [`docs/models/robust-rgd-rid.md`](docs/models/robust-rgd-rid.md)
 - [`docs/models/spade.md`](docs/models/spade.md)
+- [`docs/models/idsa.md`](docs/models/idsa.md)
+- [`docs/references/idsa-code-audit.md`](docs/references/idsa-code-audit.md)
 - [`docs/references/spade-idsa-code-audit.md`](docs/references/spade-idsa-code-audit.md)
 - [`VALIDATION_MATRIX.md`](VALIDATION_MATRIX.md)
 - [`ROADMAP.md`](ROADMAP.md)

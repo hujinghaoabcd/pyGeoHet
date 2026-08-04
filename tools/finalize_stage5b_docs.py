@@ -124,7 +124,7 @@ inventory = inventory.replace(
 )
 write("MODEL_INVENTORY.md", inventory)
 
-roadmap = read("ROADMAP.md")n = None
+roadmap = read("ROADMAP.md")
 roadmap = roadmap.replace(
     "**Status:** next active batch after Stage 5A merge. Classical tuple intersection must not be substituted for fuzzy interaction zones.",
     "**Status:** implemented in PR #8. Analytical tests and source audits are complete; pinned external PID fixtures, LOESS-selector comparison and a published IDSA case remain validation debt.",
@@ -296,7 +296,9 @@ readme = readme.replace(
     "Fuzzy interaction zones and IDSA are now available; Stage 6 will address categorical and information-consistency SSH.",
 )
 if "## Fuzzy interaction zones and IDSA" not in readme:
-    readme = readme.replace("## Public interfaces", readme_section + "\n\n## Public interfaces")
+    readme = readme.replace(
+        "## Public interfaces", readme_section + "\n\n## Public interfaces"
+    )
 readme = readme.replace(
     "    SPADE,\n",
     "    SPADE,\n    IDSA,\n",

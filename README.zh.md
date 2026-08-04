@@ -2,7 +2,7 @@
 
 **pyGeoHet** 是一个面向空间分层异质性（SSH）分析的研究型 Python 工具箱。项目覆盖经典地理探测器工作流，并扩展可审计离散化、空间尺度比较、多尺度搜索、稳健变化点探测和空间方差分解。
 
-> **当前状态——阶段 5A 已实现：** q 统计量、四类经典探测器、统一 `GeoDetector`、六种连续变量分层方法、`OPGD`、显式空间支持尺度 OPGD、`MSD`、稳健离散化、`RGD`、`RID`、空间方差、PSD、CPSD、PSMD 和 `SPADE` 均已可用。下一批将实现模糊交互分区和 IDSA。
+> **当前状态——阶段 5B 已实现：** q 统计量、四类经典探测器、统一 `GeoDetector`、六种连续变量分层方法、`OPGD`、显式空间支持尺度 OPGD、`MSD`、稳健离散化、`RGD`、`RID`、空间方差、PSD、CPSD、PSMD 和 `SPADE` 均已可用。模糊交互分区和 IDSA 已实现；下一阶段进入分类响应与信息一致性 SSH。
 
 ## 开发安装
 
@@ -127,8 +127,12 @@ import numpy as np
 import pandas as pd
 from pygeohet import (
     SPADE,
+    IDSA,
     compensated_spatial_determinant,
     multilevel_spatial_determinant,
+    fuzzy_overlay,
+    power_interactive_determinant,
+    optimize_spatial_discretization,
     power_spatial_determinant,
     spatial_variance,
 )
@@ -181,6 +185,27 @@ PSMD  = 所有有效显式层数 CPSD 的平均值
 
 NTD SPADE 外部参考结果为 `0.2566528294856155`，与 gdverse 测试值 `0.256653` 在六位小数上一致。原始 GPKG 不在仓库中重新分发。
 
+
+## 模糊交互分区与 IDSA
+
+IDSA 构造响应变量驱动的模糊分区，而不是简单笛卡尔交叉。所有因子—分层响应均值统一归一化；模糊 AND 选择最小隶属度，模糊 OR 选择最大隶属度；分区标签保留 `(因子名, 原分层值)` 身份。
+
+```python
+from pygeohet import IDSA, fuzzy_overlay, power_interactive_determinant
+
+overlay = fuzzy_overlay(y, discrete_factors, operation="and")
+pid = power_interactive_determinant(y, discrete_factors, weights)
+
+result = IDSA(
+    methods=("quantile", "natural_breaks", "equal_interval"),
+    n_strata=range(3, 9),
+    search="greedy",
+).fit(y, continuous_factors, weights)
+```
+
+`theta` 是模糊分区下响应变量的 PSD，`phi` 表示所有有序离散因子的空间信息保留能力，最终 `PID = theta / phi`。置换检验会在每次打乱响应变量后重新计算风险、隶属度和模糊分区。
+
+
 ## 公共接口
 
 ```python
@@ -208,6 +233,7 @@ from pygeohet import (
     rgd,
     rid,
     spade,
+    idsa,
 )
 ```
 
@@ -242,3 +268,7 @@ from pygeohet import (
 - `VALIDATION_MATRIX.md`；
 - `ROADMAP.md`；
 - `HANDOFF_NEXT_CONVERSATION.md`。
+
+
+- `docs/models/idsa.md`；
+- `docs/references/idsa-code-audit.md`。
