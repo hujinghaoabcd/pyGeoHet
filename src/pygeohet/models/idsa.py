@@ -1016,7 +1016,7 @@ class IDSA:
                 factor_order,
                 key=lambda name: (-individual_power[name], factor_rank[name]),
             )
-            current = (ranked[0],)
+            current: tuple[str, ...] = (ranked[0],)
             remaining = [name for name in factor_order if name not in current]
             step = 1
             pair_attempts: list[IDSACombinationResult] = []
@@ -1047,7 +1047,7 @@ class IDSA:
                 self.pid_tolerance,
             )
             assert best.result is not None
-            current: tuple[str, ...] = best.factors
+            current = best.factors
             current_value = best.result.value
             remaining = [name for name in factor_order if name not in current]
             while remaining:
