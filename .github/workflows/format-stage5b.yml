@@ -1,0 +1,39 @@
+name: Format Stage 5B
+
+on:
+  push:
+    branches: [stage-05b-idsa]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: format-stage-05b
+  cancel-in-progress: true
+
+jobs:
+  format:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: stage-05b-idsa
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install ruff black
+      - run: ruff check --fix src tests examples tools
+      - run: black src tests examples tools
+      - name: Commit formatting
+        run: |
+          if git diff --quiet; then
+            echo "No formatting changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src tests examples tools
+          git commit -m "style: format Stage 5B implementation"
+          git push origin HEAD:stage-05b-idsa
