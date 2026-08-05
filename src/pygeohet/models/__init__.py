@@ -53,6 +53,23 @@ from pygeohet.models.spatial_scale import (
     SpatialScaleResult,
     compare_spatial_scales,
 )
+from pygeohet.models.srsgd import (
+    SRSGeoDetector,
+    spatial_rough_set_measure,
+    srs_ecological_detector,
+    srs_factor_detector,
+    srs_interaction_detector,
+    srsgd,
+)
+from pygeohet.models.srsgd_results import (
+    SRSEcologicalComparisonResult,
+    SRSEcologicalDetectorResult,
+    SRSFactorDetectorResult,
+    SRSGeoDetectorResult,
+    SRSInteractionComparisonResult,
+    SRSInteractionDetectorResult,
+    SpatialRoughSetResult,
+)
 
 __all__ = [
     "CompensatedSpatialDeterminantResult",
@@ -77,8 +94,16 @@ __all__ = [
     "RobustOptimizationResult",
     "SPADE",
     "SPADEResult",
+    "SRSEcologicalComparisonResult",
+    "SRSEcologicalDetectorResult",
+    "SRSFactorDetectorResult",
+    "SRSGeoDetector",
+    "SRSGeoDetectorResult",
+    "SRSInteractionComparisonResult",
+    "SRSInteractionDetectorResult",
     "SpatialDiscretizationCandidate",
     "SpatialDiscretizationOptimizationResult",
+    "SpatialRoughSetResult",
     "SpatialScaleCandidateResult",
     "SpatialScaleOPGD",
     "SpatialScaleOPGDResult",
@@ -99,4 +124,9 @@ __all__ = [
     "rid",
     "robust_discretize",
     "spade",
+    "spatial_rough_set_measure",
+    "srs_ecological_detector",
+    "srs_factor_detector",
+    "srs_interaction_detector",
+    "srsgd",
 ]
