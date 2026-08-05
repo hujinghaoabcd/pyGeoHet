@@ -5,49 +5,11 @@ on:
     branches: [main]
   pull_request:
 
-permissions:
-  contents: write
-
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  fix-stage6a:
-    if: github.actor != 'github-actions[bot]'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: stage-06-information-ssh
-          fetch-depth: 0
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-      - run: python -m pip install ruff black
-      - name: Verify tuple-index regression is fixed
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          text = Path("tests/test_srsgd.py").read_text(encoding="utf-8")
-          if "by_added = {" not in text:
-              raise SystemExit("tuple-index regression test has not been fixed")
-          PY
-      - run: ruff check --fix src tests examples tools
-      - run: black src tests examples tools
-      - name: Commit cleanup
-        run: |
-          if git diff --quiet; then
-            echo "No cleanup changes"
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src tests examples tools
-          git commit -m "style: clean Stage 6A implementation"
-          git push origin HEAD:stage-06-information-ssh
-
   test:
     strategy:
       fail-fast: false
