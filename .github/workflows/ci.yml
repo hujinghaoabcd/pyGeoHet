@@ -5,38 +5,11 @@ on:
     branches: [main]
   pull_request:
 
-permissions:
-  contents: write
-
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  docs-stage6c:
-    if: github.actor != 'github-actions[bot]'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: stage-06c-swmi-audit
-          fetch-depth: 0
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-      - run: python tools/update_stage6c_docs.py
-      - name: Commit Stage 6C documentation
-        run: |
-          if git diff --quiet; then
-            echo "No documentation changes"
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add README.md MODEL_INVENTORY.md VALIDATION_MATRIX.md DECISIONS.md CHANGELOG.md THIRD_PARTY_NOTICES.md HANDOFF_NEXT_CONVERSATION.md
-          git commit -m "docs: synchronize Stage 6C evidence records"
-          git push origin HEAD:stage-06c-swmi-audit
-
   test:
     strategy:
       fail-fast: false
