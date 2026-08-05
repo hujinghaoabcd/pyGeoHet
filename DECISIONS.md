@@ -217,3 +217,24 @@ The reviewed gdverse C++ path differs from Bai et al. (2022) in focal-object inc
 ## D054 - Information-consistency methods require separate contracts
 
 Stage 6B nominal IN-SSH uses normalized mutual information. Continuous IC-SSH uses stratum-weighted, arctangent-normalized relative entropy. Neither is implemented by reusing q, SRS-GD, PSD or PID. Histogram support, bin edges, zero-density handling, constant targets and corrected permutation p-values must be frozen before merge.
+
+## D055 - Nominal information consistency is normalized mutual information
+
+`IN-SSH = I(Y;S) / H(Y) = 1 - H(Y|S) / H(Y)`. Natural logarithms are used consistently for target, conditional and mutual information terms. A constant target has zero entropy and makes the statistic undefined; it is not assigned zero or one.
+
+## D056 - Continuous information consistency uses one shared histogram support
+
+`IC-SSH = sum_h p_h * atan(KL(P_h || P)) / (pi/2)`. The global and every stratum histogram use one edge sequence resolved from the complete target. Stratum-specific supports are prohibited because their densities are not directly comparable.
+
+## D057 - Information-consistency zero and bin rules are explicit
+
+KL terms with zero stratum probability are omitted. Positive stratum mass must have positive global mass under the shared sample and edges. Automatic methods are Sturges, square root, Rice, Scott and Freedman-Diaconis; deterministic equal-width edges span the complete target range. Explicit edges must be finite, strictly increasing and cover the complete target.
+
+## D058 - Information-consistency inference is conditional and corrected
+
+Permutation inference shuffles the target relative to fixed supplied strata. Continuous permutations reuse the observed edge sequence. The pseudo-p value is `(1 + exceedances) / (B + 1)`. Inference is conditional on the supplied strata and bins and is not selection-adjusted for upstream discretization or factor search.
+
+## D059 - Multi-factor information consistency uses one common sample
+
+`InformationConsistency` applies one complete-case mask to the target and every supplied factor before evaluating factor-specific IN or IC values. This differs from independent factor-wise deletion and preserves direct comparability. The result retains common original indices and factor-specific decomposition evidence.
+

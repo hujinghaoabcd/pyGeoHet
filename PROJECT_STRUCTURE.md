@@ -32,7 +32,9 @@ pyGeoHet/
 │   │   ├── idsa_results.py      immutable fuzzy-overlay and PID results
 │   │   ├── idsa.py              fuzzy overlay, PID and IDSA search
 │   │   ├── srsgd_results.py     immutable local rough-set evidence
-│   │   └── srsgd.py             SRS factor, ecological and interaction workflows
+│   │   ├── srsgd.py             SRS factor, ecological and interaction workflows
+│   │   ├── information_results.py immutable entropy, KL and workflow evidence
+│   │   └── information.py       nominal IN-SSH and continuous IC-SSH
 │   └── py.typed                 inline typing marker
 ├── tests/
 │   ├── fixtures/reference/      static/provenance-only external records
@@ -44,6 +46,7 @@ pyGeoHet/
 │   ├── test_spade.py            variance, PSD, CPSD, PSMD and workflow tests
 │   ├── test_idsa.py             fuzzy overlay, PID and IDSA search tests
 │   ├── test_srsgd.py            Figure 1, adjacency and nominal-target tests
+│   ├── test_information.py      entropy, KL, histogram and workflow tests
 │   ├── test_public_api.py       documented top-level API regression tests
 │   └── test_*.py                classical analytical, edge and workflow tests
 ├── examples/
@@ -55,7 +58,8 @@ pyGeoHet/
 │   ├── 06_robust_detectors.py
 │   ├── 07_spade.py
 │   ├── 08_idsa.py
-│   └── 09_srsgd.py
+│   ├── 09_srsgd.py
+│   └── 10_information_consistency.py
 ├── tools/
 │   ├── validate_ntd_reference.py
 │   └── validate_ntd_spade_reference.py
@@ -83,4 +87,4 @@ Dense spatial weights are the current public contract. Sparse matrices, coordina
 Directories for information, multivariate, local and temporal-lagged methods are created only when implementation begins. Planned public names remain in the roadmap until working code, tests and documentation exist.
 
 
-Stage 6A adds SRS-GD as a dedicated nominal-target model family. It consumes a prepared binary adjacency matrix and does not reuse variance-based q, spatial PSD or fuzzy PID. Stage 6B information-consistency methods will remain in separate modules after their entropy and density contracts are frozen.
+Stage 6A adds SRS-GD as a dedicated nominal-target model family. It consumes a prepared binary adjacency matrix and does not reuse variance-based q, spatial PSD or fuzzy PID. Stage 6B adds separate information modules for nominal normalized mutual information and continuous shared-support relative entropy; these methods do not reuse q or SRS-GD internals.

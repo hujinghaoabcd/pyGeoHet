@@ -17,6 +17,19 @@ from pygeohet.models.idsa_results import (
     SpatialDiscretizationCandidate,
     SpatialDiscretizationOptimizationResult,
 )
+from pygeohet.models.information import (
+    InformationConsistency,
+    continuous_information_consistency,
+    information_consistency,
+    nominal_information_consistency,
+)
+from pygeohet.models.information_results import (
+    ContinuousInformationConsistencyResult,
+    ContinuousStratumContribution,
+    InformationConsistencyFactorResult,
+    NominalInformationConsistencyResult,
+    NominalJointCount,
+)
 from pygeohet.models.opgd import OPGD, OPGDResult, opgd
 from pygeohet.models.robust import (
     RGD,
@@ -73,15 +86,21 @@ from pygeohet.models.srsgd_results import (
 
 __all__ = [
     "CompensatedSpatialDeterminantResult",
+    "ContinuousInformationConsistencyResult",
+    "ContinuousStratumContribution",
     "FuzzyOverlayResult",
     "FuzzyRiskLevel",
     "GeoDetector",
     "IDSA",
     "IDSACombinationResult",
     "IDSAResult",
+    "InformationConsistency",
+    "InformationConsistencyFactorResult",
     "InteractiveSpatialDeterminantResult",
     "MultilevelSpatialCandidate",
     "MultilevelSpatialDeterminantResult",
+    "NominalInformationConsistencyResult",
+    "NominalJointCount",
     "OPGD",
     "OPGDResult",
     "PowerSpatialDeterminantResult",
@@ -111,10 +130,13 @@ __all__ = [
     "SpatialStratumVariance",
     "compare_spatial_scales",
     "compensated_spatial_determinant",
+    "continuous_information_consistency",
     "fuzzy_overlay",
     "geodetector",
     "idsa",
+    "information_consistency",
     "multilevel_spatial_determinant",
+    "nominal_information_consistency",
     "opgd",
     "optimize_robust_discretization",
     "optimize_spatial_discretization",

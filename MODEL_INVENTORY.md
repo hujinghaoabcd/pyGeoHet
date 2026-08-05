@@ -31,7 +31,7 @@ This development-facing inventory distinguishes source evidence, planned impleme
 | Spatial interaction | Fuzzy overlay | response-risk membership AND/OR zones | IDSA paper; sdsfun `fuzzyoverlay` | implemented with tuple identities, explicit ties and audit tables | 5B |
 | Spatial interaction | IDSA / PID | spatially informed interactive determinant | IDSA paper; gdverse `idsa`/`pid_idsa`; sdsfun | implemented with fixed PID, CPSD discretization and subset search; external case pending | 5B |
 | Categorical | SRS-GD | nominal target and local rough-set power | Bai et al. (2022); uploaded gdverse source | paper-aligned implementation with Figure 1 fixture; external cases pending | 6A |
-| Information | SSHIC/SSHIN | distribution differences beyond variance | 2023 paper; pinned stscl/sshicm source | next active batch after formula and fixture freeze | 6B |
+| Information | IC-SSH / IN-SSH | continuous and nominal distribution consistency across strata | 2023 paper; pinned stscl/sshicm source | implemented with shared-support histograms, normalized MI and corrected permutations; external fixture pending | 6B |
 | Spatial information | SWMI | spatially weighted mutual information | 2026 paper; no authoritative implementation pinned | evidence-gated; no API until full formulas and fixture are verified | 6C |
 | Multivariate | GOZH | optimized multi-factor geographical zones | gdverse | planned | 7 |
 | Explanation | LESH | Shapley allocation in multivariate zones | gdverse | planned | 7 |
@@ -52,4 +52,4 @@ This development-facing inventory distinguishes source evidence, planned impleme
 4. independent implementation used only for behavioural comparison;
 5. simulation and analytical properties.
 
-When sources disagree, pyGeoHet records the disagreement and exposes an explicit convention instead of averaging incompatible definitions. This policy governs the ecological detector, Stage 3 scale and MSD distinctions, Stage 4 robust source differences, Stage 5 separation between prepared spatial weights, SPADE variance decomposition and IDSA fuzzy interaction zones, and Stage 6 separation between the published SRS-GD estimand and ambiguous reference-source operations.
+When sources disagree, pyGeoHet records the disagreement and exposes an explicit convention instead of averaging incompatible definitions. This policy governs the ecological detector, Stage 3 scale and MSD distinctions, Stage 4 robust source differences, Stage 5 separation between prepared spatial weights, SPADE variance decomposition and IDSA fuzzy interaction zones, and Stage 6 separation between the published SRS-GD estimand, information-consistency distributions and ambiguous reference-source operations.

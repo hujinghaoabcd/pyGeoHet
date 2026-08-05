@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.0.10 - 2026-08-05
+
+### Added
+
+- nominal `nominal_information_consistency()` using normalized mutual information;
+- continuous `continuous_information_consistency()` using stratum-weighted arctangent-normalized KL divergence;
+- shared global/stratum histogram support with Sturges, square-root, Rice, Scott and Freedman-Diaconis rules;
+- explicit integer and edge-sequence histogram contracts;
+- immutable contingency, entropy, histogram, KL-contribution and multi-factor result objects;
+- `InformationConsistency` / `information_consistency()` common-sample workflows;
+- corrected seeded permutation inference with fixed continuous edges;
+- analytical perfect, null, partial contingency, `KL=log(2)` and zero-divergence tests;
+- label and affine invariance, missing-scope, small-stratum, support and public API tests;
+- tenth runnable example, model manual and expanded Stage 6 source audit.
+
+### Changed
+
+- package development version advanced to `0.0.10`;
+- public API exports nominal, continuous and integrated information-consistency interfaces;
+- CI runs ten public examples;
+- entropy components use one natural-log convention rather than mixed bases;
+- continuous density comparison uses one shared support rather than per-stratum supports;
+- permutation p values use `(1 + exceedances) / (B + 1)`;
+- Stage 6C SWMI remains evidence-gated and Stage 7 becomes the next implementable family after the evidence review.
+
 ## 0.0.9 - 2026-08-05
 
 ### Added

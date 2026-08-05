@@ -39,3 +39,17 @@ def test_stage6a_symbols_are_available_from_top_level_package() -> None:
             "srsgd",
         }
     )
+
+
+def test_stage6b_symbols_are_available_from_top_level_package() -> None:
+    _assert_public(
+        {
+            "InformationConsistency",
+            "InformationConsistencyFactorResult",
+            "NominalInformationConsistencyResult",
+            "ContinuousInformationConsistencyResult",
+            "nominal_information_consistency",
+            "continuous_information_consistency",
+            "information_consistency",
+        }
+    )

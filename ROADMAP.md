@@ -68,7 +68,7 @@ Nominal-target spatial information systems; focal-object local regions; exact mu
 
 Nominal `IN-SSH` by normalized mutual information and continuous `IC-SSH` by stratum-weighted arctangent-normalized relative entropy; corrected seeded permutation inference; common histogram support and explicit density contracts.
 
-**Status:** next active batch after PR #9 merge.
+**Status:** implementation and full cross-platform CI complete in PR #10. Hand-calculated nominal and continuous fixtures, shared-edge contracts, corrected seeded permutations, common-sample workflows, public exports and the model manual are complete. Static `sshicm` candidate tables and a published-case reproduction remain validation debt.
 
 ### Stage 6C - Spatially weighted mutual information
 
