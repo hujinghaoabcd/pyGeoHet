@@ -53,7 +53,9 @@ def test_figure_one_a1_matches_hand_calculation(
     expected_regions = (6, 6, 3, 5, 8, 4, 4, 6, 4, 5, 4)
     expected_positive = (3, 0, 3, 3, 5, 4, 4, 2, 4, 5, 4)
 
-    assert np.asarray(result.local_quality, dtype=float) == pytest.approx(expected_local)
+    assert np.asarray(result.local_quality, dtype=float) == pytest.approx(
+        expected_local
+    )
     assert result.region_size == expected_regions
     assert result.positive_region_size == expected_positive
     assert result.D == pytest.approx(0.7325757575757575)
@@ -89,18 +91,18 @@ def test_interaction_reports_nonnegative_gain_and_entropy_direction(
         adjacency,
         baseline="a1",
     )
-    frame = result.to_frame().set_index("added_features")
+    by_added = {
+        comparison.added_features: comparison for comparison in result.comparisons
+    }
 
-    a2 = frame.loc[("a2",)]
-    assert a2["power_gain"] == pytest.approx(
-        0.8143939393939393 - 0.7325757575757575
-    )
-    assert a2["heterogeneity_change"] == "decreased"
+    a2 = by_added[("a2",)]
+    assert a2.power_gain == pytest.approx(0.8143939393939393 - 0.7325757575757575)
+    assert a2.heterogeneity_change == "decreased"
 
-    a3 = frame.loc[("a3",)]
-    assert a3["power_gain"] == pytest.approx(0.0)
-    assert a3["p_value"] == pytest.approx(1.0)
-    assert a3["heterogeneity_change"] == "unchanged"
+    a3 = by_added[("a3",)]
+    assert a3.power_gain == pytest.approx(0.0)
+    assert a3.p_value == pytest.approx(1.0)
+    assert a3.heterogeneity_change == "unchanged"
 
 
 def test_factor_and_ecological_detectors_share_complete_sample(

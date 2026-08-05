@@ -62,13 +62,13 @@ from pygeohet.models.srsgd import (
     srsgd,
 )
 from pygeohet.models.srsgd_results import (
+    SpatialRoughSetResult,
     SRSEcologicalComparisonResult,
     SRSEcologicalDetectorResult,
     SRSFactorDetectorResult,
     SRSGeoDetectorResult,
     SRSInteractionComparisonResult,
     SRSInteractionDetectorResult,
-    SpatialRoughSetResult,
 )
 
 __all__ = [

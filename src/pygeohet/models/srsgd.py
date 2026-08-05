@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from collections.abc import Mapping, Sequence
+from collections.abc import Sequence
 from dataclasses import dataclass
 from itertools import combinations
 from typing import Any
@@ -14,14 +14,14 @@ from scipy import stats
 
 from pygeohet.exceptions import InvalidDataError, MissingDataError
 from pygeohet.models.srsgd_results import (
+    SpatialHeterogeneityChange,
+    SpatialRoughSetResult,
     SRSEcologicalComparisonResult,
     SRSEcologicalDetectorResult,
     SRSFactorDetectorResult,
     SRSGeoDetectorResult,
     SRSInteractionComparisonResult,
     SRSInteractionDetectorResult,
-    SpatialHeterogeneityChange,
-    SpatialRoughSetResult,
 )
 from pygeohet.validation import MissingPolicy, coerce_factor_frame
 
@@ -45,8 +45,7 @@ def _coerce_adjacency(adjacency: Any, n_observations: int) -> np.ndarray:
         raise InvalidDataError("adjacency must be a numeric square matrix") from exc
     if matrix.ndim != 2 or matrix.shape != (n_observations, n_observations):
         raise InvalidDataError(
-            "adjacency must have shape "
-            f"({n_observations}, {n_observations})"
+            "adjacency must have shape " f"({n_observations}, {n_observations})"
         )
     if not bool(np.isfinite(matrix).all()):
         raise InvalidDataError("adjacency must contain only finite values")
@@ -267,7 +266,9 @@ def _measure_prepared(
     else:
         probabilities = local / local_sum
         positive = probabilities > 0.0
-        entropy = float(-np.sum(probabilities[positive] * np.log2(probabilities[positive])))
+        entropy = float(
+            -np.sum(probabilities[positive] * np.log2(probabilities[positive]))
+        )
         maximum = float(np.log2(len(local)))
         normalized_entropy = entropy / maximum if maximum > 0.0 else None
 

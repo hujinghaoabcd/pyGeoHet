@@ -89,7 +89,11 @@ class SpatialRoughSetResult:
     def summary(self) -> str:
         """Return a terminal-friendly statistical summary."""
 
-        entropy = "undefined" if self.spatial_entropy is None else f"{self.spatial_entropy:.6g}"
+        entropy = (
+            "undefined"
+            if self.spatial_entropy is None
+            else f"{self.spatial_entropy:.6g}"
+        )
         p_text = "None" if self.p_value is None else f"{self.p_value:.6g}"
         return (
             "SpatialRoughSetResult("
