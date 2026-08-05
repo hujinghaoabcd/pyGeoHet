@@ -64,21 +64,33 @@ Nominal-target spatial information systems; focal-object local regions; exact mu
 
 **Status:** implementation and final CI complete in PR #9. The paper Figure 1 local values, `D`, `SE` and refinement monotonicity are reproduced. Published Baltimore/Cincinnati cases and a pinned gdverse compatibility table remain validation debt.
 
-### Stage 6B - Information-consistency SSH
+### Stage 6B - Information-consistency SSH (`0.0.10`)
 
 Nominal `IN-SSH` by normalized mutual information and continuous `IC-SSH` by stratum-weighted arctangent-normalized relative entropy; corrected seeded permutation inference; common histogram support and explicit density contracts.
 
-**Status:** implementation and full cross-platform CI complete in PR #10. Hand-calculated nominal and continuous fixtures, shared-edge contracts, corrected seeded permutations, common-sample workflows, public exports and the model manual are complete. Static `sshicm` candidate tables and a published-case reproduction remain validation debt.
+**Status:** complete and merged in PR #10. Hand-calculated nominal and continuous fixtures, shared-edge contracts, corrected seeded permutations, common-sample workflows, public exports and the model manual are complete. Static `sshicm` candidate tables and a published-case reproduction remain validation debt.
 
 ### Stage 6C - Spatially weighted mutual information
 
 Spatial probability adjustment, weighted entropy and mutual information only after the complete 2026 paper equations, implementation evidence and a numerical fixture are pinned.
 
-**Status:** evidence-gated; no provisional public API.
+**Status:** evidence audit complete and implementation blocked. The accessible official source confirms only the high-level sequence of discretization, spatial-autocorrelation probability adjustment and entropy/mutual-information calculation. The exact adjustment, spatial support, discretization, normalization, interaction and inference equations are not pinned; no authoritative code or numerical fixture was found. No provisional API or version bump is permitted. See `docs/references/swmi-evidence-audit.md`.
 
 ## Stage 7 - Multivariate stratification and contribution (`0.5.0`)
 
-GOZH, LESH/Shapley contribution allocation, OMGD univariate and clustering-based multivariate stratification, and search-complexity controls.
+### Stage 7A - GOZH evidence and numerical contract
+
+Audit progressive geographical-zone optimization, merge and stopping rules, individual and interactive determinants, scale and search complexity, source licences, and published numerical cases before implementation.
+
+**Status:** next active batch after the Stage 6C evidence-gate PR is merged.
+
+### Stage 7B - LESH and Shapley contribution
+
+Separate multivariate-zone construction from contribution allocation; freeze coalition values, baseline, exact/approximate Shapley routes, direct and interaction interpretation, and uncertainty evidence.
+
+### Stage 7C - OMGD multivariate stratification and scale
+
+Univariate and clustering-based multivariate stratification; factor-combination search; spatial-scale detector; deterministic search budgets and external author-code fixtures.
 
 ## Stage 8 - Local and structural SSH (`0.6.0`)
 
