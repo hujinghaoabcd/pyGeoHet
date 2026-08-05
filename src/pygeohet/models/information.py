@@ -418,7 +418,7 @@ def _resolve_bin_edges(
         method = _canonical_histogram_method(bins)
         bin_count = _automatic_bin_count(target, method)
         edges = np.linspace(minimum, maximum, bin_count + 1, dtype=float)
-        label = method
+        label: str = method
     elif isinstance(bins, bool):
         raise ValueError("bins must be a method name, integer or edge sequence")
     elif isinstance(bins, (int, np.integer)):
