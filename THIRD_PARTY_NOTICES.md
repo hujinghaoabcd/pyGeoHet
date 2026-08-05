@@ -71,3 +71,14 @@ Licences of future source archives must be audited before code-level adaptation.
 ## IDSA Stage 5B source boundary
 
 Stage 5B reviewed Song and Wu (2021), uploaded gdverse `R/idsa.R` and `R/pid_idsa.R`, and maintained sdsfun `R/fuzzyoverlay.R`, `R/vector_toolkits.R` and `R/spvar.R`. These GPL-family sources define formulas, workflow expectations and comparison targets. pyGeoHet independently implements sample alignment, tuple zone identities, canonical ordinal encoding, spatial components, candidate search, immutable results and permutation inference. It does not copy source line by line and does not call R, gdverse or sdsfun at runtime.
+
+
+## SRS-GD and Stage 6 information-source boundary
+
+Stage 6A reviewed Bai et al. (2022), *Spatial rough set-based geographical detectors for nominal target variables*, and uploaded gdverse wrappers, tests and `src/roughset.cpp`. The paper is the primary estimand. The reviewed source is used to understand software contracts and construct compatibility questions, but differs from the paper in focal-object inclusion, neighbour indexing, multifeature matching and zero-positive-region handling.
+
+pyGeoHet independently implements prepared binary adjacency validation, complete-case alignment across both matrix axes, exact tuple equivalence classes, local positive regions, immutable evidence and paired inference. It does not copy or translate the reviewed C++ line by line and does not call gdverse or R at runtime.
+
+Stage 6B evidence includes Bai et al. (2023), *Information Consistency-Based Measures for Spatial Stratified Heterogeneity*, and maintained `stscl/sshicm` source pinned during the audit to commit `76b6c2879353716f2632c4f5cbb13bef3f6c8305`. That source is used to verify formulas and future static outputs, not as a runtime backend.
+
+The 2026 SWMI paper is recent and no authoritative executable reference has yet been pinned. No SWMI code or API will be introduced until the complete probability-weighting equations, null procedure and at least one independent numerical output are available.

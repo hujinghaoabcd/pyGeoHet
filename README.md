@@ -2,7 +2,7 @@
 
 **pyGeoHet** is a research-oriented Python toolkit for spatially stratified heterogeneity (SSH) analysis. It covers the classical Geographical Detector workflow and extends it with auditable discretization, spatial-scale comparison, multiscale search, robust change-point detection and spatial-variance decomposition.
 
-> **Status - Stage 5B implemented:** q-statistic, the four classical detectors, integrated `GeoDetector`, six continuous-variable stratification methods, univariate `OPGD`, prepared-support spatial-scale OPGD, multiscale discretization (`MSD`), robust discretization, `RGD`, `RID`, spatial variance, PSD, CPSD, PSMD and `SPADE` are available. Fuzzy interaction zones and IDSA are now available; Stage 6 will address categorical and information-consistency SSH.
+> **Status - Stage 6A implemented:** classical GeoDetector, OPGD, spatial-scale comparison, MSD, RGD/RID, SPADE, IDSA and paper-aligned SRS-GD are available. Stage 6B will add nominal and continuous information-consistency SSH; SWMI remains evidence-gated.
 
 ## Installation for development
 
@@ -234,6 +234,35 @@ print(result.best.result.summary())
 
 `theta` is response PSD under fuzzy zones. `phi` measures the retained spatial information of canonical ordinal factor codes. `PID = theta / phi`. Permutation inference rebuilds response-derived memberships and zones on every shuffle. Exhaustive subset search is available for small factor sets.
 
+
+## Nominal targets and SRS-GD
+
+SRS-GD evaluates a nominal target through local rough-set approximation. Every local region contains the focal object and its prepared binary neighbours. Objects are indiscernible only when all selected feature values agree, and a local equivalence class contributes to the positive region only when it contains one target category.
+
+```python
+from pygeohet import SRSGeoDetector, spatial_rough_set_measure
+
+single = spatial_rough_set_measure(
+    nominal_target,
+    factors[["land_use"]],
+    adjacency,
+)
+print(single.summary())
+print(single.local_frame())
+
+result = SRSGeoDetector(baseline="land_use").fit(
+    nominal_target,
+    factors,
+    adjacency,
+)
+print(result.factor.to_frame())
+print(result.ecological.to_frame())
+print(result.interaction.to_frame())
+```
+
+`D` is mean local approximation quality. `SE` is Shannon entropy of normalized local qualities; larger `SE` means local explanatory power is more even and spatial heterogeneity is lower. The core does not construct adjacency from geometry. Islands, symmetry, missing rows, focal-object inclusion and exact tuple refinement are explicit contracts.
+
+
 ## Public interfaces
 
 ```python
@@ -246,6 +275,7 @@ from pygeohet import (
     RID,
     SPADE,
     IDSA,
+    SRSGeoDetector,
     q_statistic,
     spatial_variance,
     power_spatial_determinant,
@@ -254,6 +284,10 @@ from pygeohet import (
     fuzzy_overlay,
     power_interactive_determinant,
     optimize_spatial_discretization,
+    spatial_rough_set_measure,
+    srs_factor_detector,
+    srs_ecological_detector,
+    srs_interaction_detector,
     stratify,
     evaluate_stratification,
     optimize_stratification,
@@ -271,6 +305,7 @@ from pygeohet import (
     rid,
     spade,
     idsa,
+    srsgd,
 )
 ```
 
@@ -290,6 +325,8 @@ from pygeohet import (
 - fuzzy zones preserve factor-stratum identity and expose tie decisions;
 - PID retains theta, phi, membership, zone and subset-search evidence;
 - response-derived fuzzy zones are recomputed under IDSA permutation;
+- SRS-GD nominal targets, local regions, exact tuple indiscernibility and positive regions remain explicit;
+- adjacency symmetry, focal-object inclusion and islands are never silently inferred;
 - model-complexity selection is explicit rather than hidden inside numerical kernels;
 - external R, Python, QGIS, notebook and GIS implementations are never called at runtime;
 - project status, validation records and handoff are merge gates.
@@ -298,7 +335,7 @@ from pygeohet import (
 
 The classical workflow reproduces the NTD factor q/p-values, interaction labels and risk-significance counts. MSD matches an independent exhaustive search. Robust segmentation matches an independent brute-force oracle and verifies B=q on selected labels.
 
-Stage 5A has hand-computed spatial-variance tests and an externally checked categorical NTD PSD path. Stage 5B adds manual fuzzy AND/OR memberships, explicit ties, direct theta/phi decomposition, canonical-code invariance, response-overlay recomputation under permutation, CPSD candidate selection, greedy/exhaustive subset searches and missing-row reconstruction. IDSA remains implemented and provisional until pinned external PID fixtures and a published-case reproduction are complete.
+Stage 5A has hand-computed spatial-variance tests and an externally checked categorical NTD PSD path. Stage 5B adds manual fuzzy memberships, direct theta/phi decomposition and auditable IDSA search. Stage 6A reproduces the SRS-GD paper Figure 1 local qualities, `D` and `SE`, verifies exact tuple-refinement monotonicity, and tests adjacency permutation, islands, missing axes and discrete-input guards. SRS-GD remains implemented and provisional until published Baltimore/Cincinnati reproductions and a pinned compatibility table are complete.
 
 See:
 
@@ -309,6 +346,8 @@ See:
 - [`docs/models/robust-rgd-rid.md`](docs/models/robust-rgd-rid.md)
 - [`docs/models/spade.md`](docs/models/spade.md)
 - [`docs/models/idsa.md`](docs/models/idsa.md)
+- [`docs/models/srsgd.md`](docs/models/srsgd.md)
+- [`docs/references/stage6-information-ssh-audit.md`](docs/references/stage6-information-ssh-audit.md)
 - [`docs/references/spade-idsa-code-audit.md`](docs/references/spade-idsa-code-audit.md)
 - [`docs/references/idsa-code-audit.md`](docs/references/idsa-code-audit.md)
 - [`VALIDATION_MATRIX.md`](VALIDATION_MATRIX.md)

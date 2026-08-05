@@ -1,5 +1,34 @@
 # Changelog
 
+## 0.0.9 - 2026-08-05
+
+### Added
+
+- paper-aligned spatial rough-set numerical core for nominal targets;
+- prepared binary adjacency validation with explicit symmetry and island evidence;
+- local regions containing the focal object and its supplied neighbours;
+- exact tuple-based local indiscernibility and decision-consistent positive regions;
+- immutable `SpatialRoughSetResult` with local quality, region sizes, `D` and `SE`;
+- public `spatial_rough_set_measure()` and SRS factor, ecological and interaction detectors;
+- integrated `SRSGeoDetector` / `srsgd` workflow;
+- paired common-location inference and reproducible paper-style subsampling;
+- Figure 1 hand-calculated local-quality, `D`, `SE` and monotonicity fixtures;
+- row-and-adjacency permutation, island, missing-axis and discrete-input tests;
+- Stage 6 evidence audit, SRS-GD model manual, public example and API regression protection.
+
+### Changed
+
+- package development version advanced to `0.0.9`;
+- CI runs nine public examples;
+- Stage 6 is split into 6A SRS-GD, 6B information consistency and evidence-gated 6C SWMI;
+- the published SRS-GD estimand is primary when reviewed reference C++ behaviour is ambiguous;
+- multifeature indiscernibility requires equality on every feature rather than any-coordinate matching;
+- adjacency diagonal values are ignored and the focal object is added exactly once;
+- geometry-to-adjacency construction remains an explicit upstream responsibility;
+- final CI passed on Ubuntu, Windows and macOS with Python 3.11, 3.12 and 3.13;
+- Ruff, Black, mypy, nine examples, wheel build and source-distribution build passed;
+- Stage 6B information-consistency SSH becomes the next active batch.
+
 ## 0.0.8 - 2026-08-05
 
 ### Added

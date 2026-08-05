@@ -254,8 +254,12 @@ print(result.interaction.to_frame())
 `D` is mean local approximation quality. `SE` is Shannon entropy of normalized local qualities; larger `SE` means local explanatory power is more even and spatial heterogeneity is lower. The core does not construct adjacency from geometry. Islands, symmetry, missing rows, focal-object inclusion and exact tuple refinement are explicit contracts.
 """
 if "## Nominal targets and SRS-GD" not in readme:
-    readme = readme.replace("## Public interfaces", srs_section + "\n\n## Public interfaces")
-readme = readme.replace("    IDSA,\n    q_statistic,", "    IDSA,\n    SRSGeoDetector,\n    q_statistic,", 1)
+    readme = readme.replace(
+        "## Public interfaces", srs_section + "\n\n## Public interfaces"
+    )
+readme = readme.replace(
+    "    IDSA,\n    q_statistic,", "    IDSA,\n    SRSGeoDetector,\n    q_statistic,", 1
+)
 readme = readme.replace(
     "    optimize_spatial_discretization,\n    stratify,",
     "    optimize_spatial_discretization,\n    spatial_rough_set_measure,\n    srs_factor_detector,\n    srs_ecological_detector,\n    srs_interaction_detector,\n    stratify,",
@@ -306,7 +310,9 @@ result = SRSGeoDetector(baseline="land_use").fit(
 """
 if "## 名义型目标变量与 SRS-GD" not in zh:
     zh = zh.replace("## 公共接口", zh_section + "\n\n## 公共接口")
-zh = zh.replace("    IDSA,\n    q_statistic,", "    IDSA,\n    SRSGeoDetector,\n    q_statistic,", 1)
+zh = zh.replace(
+    "    IDSA,\n    q_statistic,", "    IDSA,\n    SRSGeoDetector,\n    q_statistic,", 1
+)
 zh = zh.replace(
     "    optimize_spatial_discretization,\n    stratify,",
     "    optimize_spatial_discretization,\n    spatial_rough_set_measure,\n    srs_factor_detector,\n    srs_ecological_detector,\n    srs_interaction_detector,\n    stratify,",

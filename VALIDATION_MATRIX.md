@@ -52,6 +52,7 @@ Each model family must reproduce at least one documented paper or official-softw
 | PSMD | exact mean of accepted CPSD levels | reference workflow audited; static table pending | invalid-level retention, minimum accepted levels and seeded permutations | pending | implemented, provisional |
 | Integrated SPADE | categorical PSD plus continuous PSMD composition | NTD categorical path checked | mixed factor typing and deterministic seeds | partial NTD | implemented, provisional |
 | IDSA fuzzy overlay and PID | manual labels and direct theta/phi equality | fixture pending | ties, normalization, permutations, subset search and missing rows | pending | implemented, provisional |
+| SRS-GD | Figure 1 local quality, D and SE | paper/source audit; external compatibility table pending | tuple monotonicity, adjacency permutation, islands, missing axes and nominal guards | Baltimore/Cincinnati pending | implemented, provisional |
 
 ## NTD fixtures
 
@@ -106,3 +107,17 @@ Remaining work:
 | Integrated IDSA | greedy and exhaustive subset search | gdverse final-output fixture pending | joint missing sample, bounded search and failure retention | pending | implemented, provisional |
 
 Stage 5B still requires a pinned gdverse/sdsfun environment, a static fuzzy-zone table, external theta/phi/PID outputs, comparison of maximum-CPSD and LOESS selectors, a published IDSA reproduction, and selection-stability experiments. No full external-validation claim is made before those records exist.
+
+## Stage 6A validation state and gaps
+
+| Method | Analytical | Cross-language/static | Simulation/edge cases | Published case | Status |
+|---|---:|---:|---:|---:|---|
+| Local rough-set measure | Figure 1 local regions, positive regions and quality | primary paper fixture; gdverse discrepancy audit | diagonal invariance, row/adjacency permutation, islands and missing axes | pending | implemented, provisional |
+| Average local power `D` | hand mean `0.7325757575757575` for `a1` | independent paper transcription | exact refinement monotonicity and nominal-input guards | pending | implemented, provisional |
+| Spatial entropy `SE` | hand entropy `3.245554302578003` for `a1` | independent paper transcription | normalized entropy and undefined all-zero contract | pending | implemented, provisional |
+| SRS factor detector | one-sample local-quality inference | gdverse factor output pending | common sample, seeded subset and public API tests | Baltimore/Cincinnati pending | implemented, provisional |
+| SRS ecological detector | paired local-quality difference | Welch compatibility table pending | equal/unequal factors and common-location sampling | Baltimore/Cincinnati pending | implemented, provisional |
+| SRS interaction detector | `{a1,a2}` D/SE and nonnegative gain | gdverse interaction output pending | exact tuple refinement, entropy direction and zero gain | Baltimore/Cincinnati pending | implemented, provisional |
+| Integrated SRSGeoDetector | factor/ecological/interaction composition | external workflow fixture pending | three-factor Figure 1 workflow | pending | implemented, provisional |
+
+Stage 6A follows the published spatial rough-set estimand. Known differences in the reviewed reference C++ implementation are documented rather than hidden. Remaining work includes pinned gdverse input/output fixtures, published Baltimore and Cincinnati reproductions, larger nominal simulations, neighbourhood sensitivity analysis and inference that accounts for dependence among overlapping local regions.
