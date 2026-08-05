@@ -151,3 +151,36 @@ PSD and PSMD permutation tests shuffle the response while holding the supplied w
 ## D038 - IDSA is not classical tuple intersection
 
 The reviewed IDSA workflow constructs fuzzy interaction zones from normalized response-risk memberships associated with factor strata. Stage 5B must preserve source factor and stratum identity with collision-safe labels and explicit tie rules. Classical Cartesian tuple overlay cannot be substituted for fuzzy AND/OR merely because both produce categorical zones.
+
+
+## D039 - Fuzzy zones preserve source identity
+
+IDSA fuzzy zones are stored as `(factor_name, original_stratum_label)` tuples. Concatenated text labels are prohibited because factor names and stratum labels may contain the same separators and collide.
+
+## D040 - Fuzzy memberships use one global risk scale
+
+For all supplied factors, response means are calculated within every factor stratum and normalized together by `(risk - global_min) / (global_max - global_min)`. Fuzzy AND selects the minimum current membership and fuzzy OR the maximum. Equal global risks make the membership scale undefined and raise an error.
+
+## D041 - Fuzzy ties are explicit
+
+The reference-compatible default selects the first supplied factor among memberships tied within `membership_tolerance`. `last` is an explicit alternative. Tied observations are counted and retained in the result.
+
+## D042 - Fixed PID uses canonical ordinal codes
+
+The IDSA information component requires ordered discretized explanatory factors. Each finite numeric factor is mapped by sorted unique value to canonical codes `1,...,K`. This prevents harmless shifts or positive rescaling of external class labels from changing the result. Unordered nominal labels are not silently assigned an order.
+
+## D043 - PID components remain separately auditable
+
+`theta` is response PSD under fuzzy zones. `phi` is `1 - sum_i(within_i) / sum_i(total_i)` from the spatial-variance decompositions of all canonical discretized factors under the same zones. `PID = theta / phi`. Zero information denominator or zero `phi` is an explicit failure; values are not clipped to an assumed range.
+
+## D044 - Response-derived zones are recomputed under permutation
+
+IDSA response permutations recalculate factor-stratum risks, memberships, fuzzy zones, theta, phi and PID. Invalid permuted zone systems are counted. Holding the observed response-derived overlay fixed is not the default null.
+
+## D045 - Continuous IDSA selection is transparent
+
+Continuous factors are discretized by maximizing CPSD across an explicit method-by-level grid. CPSD ties prefer fewer actual and requested strata, then earlier method order. The reference LOESS stopping heuristic is not claimed until a pinned external table is available.
+
+## D046 - IDSA subset search is bounded and auditable
+
+Greedy search follows iterative addition from the strongest individual CPSD factor and stops when PID no longer improves. Exhaustive search is available for small factor sets and is limited by `max_combinations`. Every attempted subset and failure remains public. Final permutation inference is not described as fully selection-adjusted.

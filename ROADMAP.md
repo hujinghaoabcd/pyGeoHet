@@ -48,17 +48,19 @@ Prepared dense spatial-weight contracts; weighted spatial variance; PSD for cate
 
 The implementation keeps geometry processing and weight construction upstream. It does not silently choose a CRS, centroid, distance metric, neighbourhood, normalization or symmetrization rule.
 
-**Status:** implemented in PR #7. The categorical PSD path matches the pinned gdverse NTD reference at six decimal places. Continuous published-case reproduction, static CPSD/PSMD tables, sparse weights and uncertainty analysis remain validation debt.
+**Status:** complete and merged in PR #7. The categorical PSD path matches the pinned gdverse NTD reference at six decimal places. Continuous published-case reproduction, static CPSD/PSMD tables, sparse weights and uncertainty analysis remain validation debt.
 
-### Stage 5B - Fuzzy overlay and IDSA (`0.0.8` target)
+### Stage 5B - Fuzzy overlay and IDSA (`0.0.8`)
 
 Collision-safe fuzzy factor-stratum labels; response-risk membership normalization; explicit fuzzy AND/OR and deterministic ties; spatial interactive power `theta`; information-retention component `phi`; `PID = theta / phi`; continuous-factor discretization strategy; pairwise and multivariate IDSA audit tables; independent manual fixtures and reference-case reproduction.
 
-**Status:** next active batch after Stage 5A merge. Classical tuple intersection must not be substituted for fuzzy interaction zones.
+**Status:** implementation and final CI complete in PR #8; merge is the final Stage 5 action. Analytical tests and source audits are complete. Pinned external PID fixtures, LOESS-selector comparison and a published IDSA case remain validation debt.
 
 ## Stage 6 - Categorical and information-consistency SSH (`0.4.0`)
 
 Spatial rough-set GD for nominal targets; continuous and nominal information-consistency measures; permutation inference; SWMI after primary-source verification.
+
+**Status:** next active stage after PR #8 is merged.
 
 ## Stage 7 - Multivariate stratification and contribution (`0.5.0`)
 

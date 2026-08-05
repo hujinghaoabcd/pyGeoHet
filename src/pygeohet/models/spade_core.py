@@ -162,14 +162,18 @@ def psd_clean(
 ) -> PowerSpatialDeterminantResult:
     """Calculate PSD for an already aligned complete sample."""
 
-    labels_array = np.asarray(strata, dtype=object)
-    labels = tuple(pd.unique(pd.Series(labels_array, dtype=object)))
+    labels_array = np.asarray(strata, dtype=object).reshape(-1)
+    label_codes, unique_labels = pd.factorize(
+        pd.Series(labels_array, dtype=object),
+        sort=False,
+    )
+    if bool((label_codes < 0).any()):
+        raise InvalidDataError("spatial strata must not contain missing labels")
+    labels = tuple(unique_labels.tolist())
     if len(labels) < 2:
         raise InvalidDataError("at least two spatial strata are required")
 
-    counts: list[int] = []
-    for label in labels:
-        counts.append(int(np.count_nonzero(labels_array == label)))
+    counts = [int(np.count_nonzero(label_codes == code)) for code in range(len(labels))]
     too_small = [
         (label, count)
         for label, count in zip(labels, counts, strict=True)
@@ -201,8 +205,8 @@ def psd_clean(
 
     contributions: list[SpatialStratumVariance] = []
     within = 0.0
-    for label, count in zip(labels, counts, strict=True):
-        indices = np.flatnonzero(labels_array == label)
+    for code, (label, count) in enumerate(zip(labels, counts, strict=True)):
+        indices = np.flatnonzero(label_codes == code)
         local_value, _, local_audit = _spatial_variance_clean(
             y[indices],
             weights[np.ix_(indices, indices)].copy(),

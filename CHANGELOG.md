@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.0.8 - 2026-08-05
+
+### Added
+
+- collision-safe fuzzy AND/OR zones through `fuzzy_overlay()`;
+- global min-max normalization of factor-stratum response risks;
+- explicit first/last membership tie policies and tied-row evidence;
+- fixed-discretization `power_interactive_determinant()` with `PID = theta / phi`;
+- canonical ordinal encoding for externally supplied discrete class codes;
+- CPSD-guided `optimize_spatial_discretization()` with complete candidate tables;
+- integrated `IDSA` / `idsa` with greedy and bounded exhaustive subset search;
+- response-permutation inference that recomputes fuzzy memberships and zones;
+- immutable fuzzy-risk, overlay, PID, discretization and combination results;
+- analytical fuzzy-label, component, invariance, search and missing-data tests;
+- IDSA example, model manual and detailed paper/source audit.
+
+### Changed
+
+- package development version advanced to `0.0.8`;
+- public API now exports fuzzy overlay, PID, spatial discretization and IDSA interfaces;
+- CI runs eight public examples;
+- continuous-factor selection uses explicit maximum CPSD with deterministic simplicity ties;
+- reference LOESS selection remains a separate unimplemented compatibility estimator;
+- Stage 6 categorical and information-consistency SSH becomes the next active stage.
+
 ## 0.0.7 - 2026-08-05
 
 ### Added

@@ -66,3 +66,8 @@ The ecological detector has incompatible historical software conventions. pyGeoH
 Initial anchors include Wang et al. (2010), Cao, Ge, and Wang (2013), Wang, Zhang, and Fu (2016), Wang and Xu (2017), Cang and Luo (2018), Song et al. (2020), Meng et al. (2021), Song and Wu (2021), Zhang, Song, and Wu (2022), and later method papers listed in `MODEL_INVENTORY.md`.
 
 Licences of future source archives must be audited before code-level adaptation. Lack of a clear licence means the source may be read for behavioural understanding but must not be copied or translated line by line.
+
+
+## IDSA Stage 5B source boundary
+
+Stage 5B reviewed Song and Wu (2021), uploaded gdverse `R/idsa.R` and `R/pid_idsa.R`, and maintained sdsfun `R/fuzzyoverlay.R`, `R/vector_toolkits.R` and `R/spvar.R`. These GPL-family sources define formulas, workflow expectations and comparison targets. pyGeoHet independently implements sample alignment, tuple zone identities, canonical ordinal encoding, spatial components, candidate search, immutable results and permutation inference. It does not copy source line by line and does not call R, gdverse or sdsfun at runtime.

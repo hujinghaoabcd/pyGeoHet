@@ -1,6 +1,22 @@
 """Integrated model workflows."""
 
 from pygeohet.models.geodetector import GeoDetector, geodetector
+from pygeohet.models.idsa import (
+    IDSA,
+    fuzzy_overlay,
+    idsa,
+    optimize_spatial_discretization,
+    power_interactive_determinant,
+)
+from pygeohet.models.idsa_results import (
+    FuzzyOverlayResult,
+    FuzzyRiskLevel,
+    IDSACombinationResult,
+    IDSAResult,
+    InteractiveSpatialDeterminantResult,
+    SpatialDiscretizationCandidate,
+    SpatialDiscretizationOptimizationResult,
+)
 from pygeohet.models.opgd import OPGD, OPGDResult, opgd
 from pygeohet.models.robust import (
     RGD,
@@ -40,7 +56,13 @@ from pygeohet.models.spatial_scale import (
 
 __all__ = [
     "CompensatedSpatialDeterminantResult",
+    "FuzzyOverlayResult",
+    "FuzzyRiskLevel",
     "GeoDetector",
+    "IDSA",
+    "IDSACombinationResult",
+    "IDSAResult",
+    "InteractiveSpatialDeterminantResult",
     "MultilevelSpatialCandidate",
     "MultilevelSpatialDeterminantResult",
     "OPGD",
@@ -55,6 +77,8 @@ __all__ = [
     "RobustOptimizationResult",
     "SPADE",
     "SPADEResult",
+    "SpatialDiscretizationCandidate",
+    "SpatialDiscretizationOptimizationResult",
     "SpatialScaleCandidateResult",
     "SpatialScaleOPGD",
     "SpatialScaleOPGDResult",
@@ -62,10 +86,14 @@ __all__ = [
     "SpatialStratumVariance",
     "compare_spatial_scales",
     "compensated_spatial_determinant",
+    "fuzzy_overlay",
     "geodetector",
+    "idsa",
     "multilevel_spatial_determinant",
     "opgd",
     "optimize_robust_discretization",
+    "optimize_spatial_discretization",
+    "power_interactive_determinant",
     "power_spatial_determinant",
     "rgd",
     "rid",
