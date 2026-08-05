@@ -15,10 +15,5 @@ def test_stage5b_symbols_are_available_from_top_level_package() -> None:
         "power_interactive_determinant",
     }
 
-    missing_attributes = sorted(
-        name for name in expected if not hasattr(pygeohet, name)
-    )
-    missing_exports = sorted(name for name in expected if name not in pygeohet.__all__)
-
-    assert missing_attributes == []
-    assert missing_exports == []
+    assert not expected.difference(vars(pygeohet))
+    assert not expected.difference(pygeohet.__all__)
