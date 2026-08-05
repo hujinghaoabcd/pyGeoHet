@@ -30,7 +30,9 @@ pyGeoHet/
 │   │   ├── spade_results.py     immutable SPADE-family results
 │   │   ├── spade.py             PSMD and integrated SPADE workflow
 │   │   ├── idsa_results.py      immutable fuzzy-overlay and PID results
-│   │   └── idsa.py              fuzzy overlay, PID and IDSA search
+│   │   ├── idsa.py              fuzzy overlay, PID and IDSA search
+│   │   ├── srsgd_results.py     immutable local rough-set evidence
+│   │   └── srsgd.py             SRS factor, ecological and interaction workflows
 │   └── py.typed                 inline typing marker
 ├── tests/
 │   ├── fixtures/reference/      static/provenance-only external records
@@ -41,6 +43,8 @@ pyGeoHet/
 │   ├── test_robust.py           brute-force, rank, duplicate-x, RGD/RID tests
 │   ├── test_spade.py            variance, PSD, CPSD, PSMD and workflow tests
 │   ├── test_idsa.py             fuzzy overlay, PID and IDSA search tests
+│   ├── test_srsgd.py            Figure 1, adjacency and nominal-target tests
+│   ├── test_public_api.py       documented top-level API regression tests
 │   └── test_*.py                classical analytical, edge and workflow tests
 ├── examples/
 │   ├── 01_factor_detector.py
@@ -50,13 +54,14 @@ pyGeoHet/
 │   ├── 05_multiscale_discretization.py
 │   ├── 06_robust_detectors.py
 │   ├── 07_spade.py
-│   └── 08_idsa.py
+│   ├── 08_idsa.py
+│   └── 09_srsgd.py
 ├── tools/
 │   ├── validate_ntd_reference.py
 │   └── validate_ntd_spade_reference.py
 ├── docs/
 │   ├── theory/                  formulas and numerical conventions
-│   ├── models/                  classic through IDSA manuals
+│   ├── models/                  classic through SRS-GD manuals
 │   ├── references/              paper/source-code audits
 │   ├── validation/              published/reference case reports
 │   └── development/             testing and handoff policies
@@ -76,3 +81,6 @@ Stage 5A introduces a reusable `spatial` package and separates the SPADE numeric
 Dense spatial weights are the current public contract. Sparse matrices, coordinate-to-weight builders and geometry adapters should be added as optional layers only after their numerical and dependency contracts are frozen.
 
 Directories for information, multivariate, local and temporal-lagged methods are created only when implementation begins. Planned public names remain in the roadmap until working code, tests and documentation exist.
+
+
+Stage 6A adds SRS-GD as a dedicated nominal-target model family. It consumes a prepared binary adjacency matrix and does not reuse variance-based q, spatial PSD or fuzzy PID. Stage 6B information-consistency methods will remain in separate modules after their entropy and density contracts are frozen.

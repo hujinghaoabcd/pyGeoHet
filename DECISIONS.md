@@ -184,3 +184,36 @@ Continuous factors are discretized by maximizing CPSD across an explicit method-
 ## D046 - IDSA subset search is bounded and auditable
 
 Greedy search follows iterative addition from the strongest individual CPSD factor and stops when PID no longer improves. Exhaustive search is available for small factor sets and is limited by `max_combinations`. Every attempted subset and failure remains public. Final permutation inference is not described as fully selection-adjusted.
+
+
+## D047 - SRS-GD targets nominal decisions
+
+SRS-GD is a separate estimator for nominal or deliberately discretized target variables. It is not classical q applied to category codes. Noninteger continuous targets or features are rejected rather than silently coerced.
+
+## D048 - Local regions always include the focal object
+
+For focal object `x`, the primary paper defines `C(x)` as its binary neighbours union `{x}`. Input diagonal values are therefore ignored and the focal object is added exactly once. Self-only island regions are rejected by default because they create trivially perfect local quality.
+
+## D049 - Multifeature indiscernibility uses exact tuples
+
+Objects are locally indiscernible under a feature set only when every named feature agrees. Collision-safe tuples implement this equivalence relation. Any-coordinate matching is not used because it violates the paper definition and can destroy refinement monotonicity.
+
+## D050 - Local positive regions require decision consistency
+
+Within each focal local region, an equivalence class belongs to the positive region only when all objects in that class share one target category. Local quality is positive-region size divided by local-region size; no-positive-region cases receive zero rather than an invented degree-based value.
+
+## D051 - Average power and spatial entropy remain distinct
+
+`D` is the arithmetic mean of local approximation qualities. `SE` is Shannon entropy of those qualities after normalization by their sum. Larger `SE` means more even local explanatory power and therefore lower spatial heterogeneity. When every local quality is zero, `SE` is undefined and returned as `None`.
+
+## D052 - SRS comparisons are paired on common focal objects
+
+SRS ecological and interaction inference compares local-quality values evaluated at the same focal objects. Paired Student tests are the primary convention. A random focal-object subset is optional and seeded; all complete focal objects are used by default.
+
+## D053 - Paper estimand outranks ambiguous reference operations
+
+The reviewed gdverse C++ path differs from Bai et al. (2022) in focal-object inclusion, neighbour indexing, multifeature matching and zero-positive-region handling. pyGeoHet implements the published estimand independently and records compatibility values separately rather than reproducing ambiguous source behaviour silently.
+
+## D054 - Information-consistency methods require separate contracts
+
+Stage 6B nominal IN-SSH uses normalized mutual information. Continuous IC-SSH uses stratum-weighted, arctangent-normalized relative entropy. Neither is implemented by reusing q, SRS-GD, PSD or PID. Histogram support, bin edges, zero-density handling, constant targets and corrected permutation p-values must be frozen before merge.

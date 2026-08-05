@@ -2,9 +2,9 @@
 
 **Project:** pyGeoHet  
 **Date:** 2026-08-05  
-**Completed stage:** Stage 5B of 10 - fuzzy overlay and IDSA  
-**Next active stage:** Stage 6 - categorical and information-consistency SSH  
-**Development version:** 0.0.8
+**Completed stage:** Stage 6A of 10 - spatial rough set geographical detectors  
+**Next active stage:** Stage 6B - information-consistency SSH  
+**Development version:** 0.0.9
 
 ## Completed
 
@@ -15,18 +15,18 @@
 - exact and coarse-to-fine MSD;
 - exact robust change-point discretization, RGD and RID;
 - prepared spatial-weight validation, spatial variance, PSD, CPSD, PSMD and SPADE;
-- collision-safe fuzzy AND/OR interaction zones;
-- global factor-stratum risk normalization with explicit constant-risk failure;
-- fixed-discretization `PID = theta / phi`;
-- canonical ordinal encoding for discretized explanatory factors;
-- CPSD-guided continuous-factor discretization with complete candidate evidence;
-- greedy and bounded exhaustive IDSA factor-combination search;
-- conditional permutation inference that recomputes response-derived fuzzy zones;
-- immutable fuzzy membership, PID, discretization, combination and integrated IDSA results;
-- tuple-label regression protection in the shared PSD core;
-- top-level public API regression protection for Stage 5B symbols;
-- source audits covering the IDSA paper, uploaded gdverse and maintained sdsfun code;
-- durable handoff and validation tracking.
+- collision-safe fuzzy interaction zones, fixed PID and integrated IDSA;
+- paper-aligned spatial rough-set model for nominal target variables;
+- local regions defined as focal object plus prepared binary neighbours;
+- exact multifeature tuple indiscernibility and local positive regions;
+- local approximation quality, average explanatory power `D` and spatial entropy `SE`;
+- SRS factor, ecological and interaction detectors;
+- paired inference on common focal objects and seeded paper-style subsampling;
+- explicit adjacency symmetry, island, missing-data and nominal-input contracts;
+- immutable SRS evidence and integrated `SRSGeoDetector` workflow;
+- Figure 1 hand-calculated SRS-GD fixture and monotonicity validation;
+- paper/source discrepancy audit separating the published estimand from ambiguous reference C++ behaviour;
+- public API regression protection, model manual, example and Stage 6 evidence plan.
 
 ## Current public surface
 
@@ -40,6 +40,7 @@ from pygeohet import (
     RID,
     SPADE,
     IDSA,
+    SRSGeoDetector,
     q_statistic,
     spatial_variance,
     power_spatial_determinant,
@@ -48,6 +49,10 @@ from pygeohet import (
     fuzzy_overlay,
     power_interactive_determinant,
     optimize_spatial_discretization,
+    spatial_rough_set_measure,
+    srs_factor_detector,
+    srs_ecological_detector,
+    srs_interaction_detector,
     stratify,
     optimize_stratification,
     multiscale_discretize,
@@ -60,59 +65,67 @@ from pygeohet import (
     rid,
     spade,
     idsa,
+    srsgd,
 )
 ```
 
-## Stage 5B numerical contract
+## Stage 6A numerical contract
 
-- fuzzy membership is min-max normalization of all factor-stratum response means;
-- fuzzy AND selects the minimum current membership and fuzzy OR the maximum;
-- zone identity is `(factor_name, original_stratum_label)`, never a concatenated string;
-- membership ties use an explicit first- or last-factor policy;
-- equal risk at every factor-stratum makes membership undefined and raises an error;
-- fixed PID factors are treated as ordered discretizations and canonically encoded as `1,...,K`;
-- `theta` is response PSD under the fuzzy zones;
-- `phi` is one minus the summed within-zone spatial variance of all discretized factors divided by their summed global spatial variance;
-- `PID = theta / phi`, with explicit zero-denominator failure;
-- fuzzy zones must satisfy the Stage 5A minimum-size and internal-weight contracts;
-- continuous-factor candidates are selected by maximum CPSD with deterministic simplicity ties;
-- greedy search follows iterative factor addition, while exhaustive search is explicitly bounded;
-- response permutations recompute risks, memberships, fuzzy zones, theta, phi and PID;
-- one joint complete-case sample is used in integrated IDSA and both weight-matrix axes are subset together;
-- no R, gdverse, sdsfun, sf or spdep call occurs at runtime.
+- the target and explanatory features are nominal or deliberately discretized;
+- a prepared finite binary square adjacency matrix is required;
+- diagonal entries are ignored and the focal object is added exactly once to each local region;
+- symmetric adjacency is required by default;
+- islands are rejected by default because self-only regions have trivially perfect local quality;
+- multifeature indiscernibility requires equality on every feature and uses collision-safe tuples;
+- a local equivalence class enters the positive region only when it contains one target category;
+- local quality is positive-region size divided by local-region size;
+- `D` is the mean local quality;
+- `SE` is Shannon entropy of normalized local qualities and is undefined when all local qualities are zero;
+- adding explanatory features cannot reduce local quality or `D` apart from numerical tolerance;
+- one complete-case mask is applied to the target, all factors and both adjacency axes;
+- factor comparisons use paired local-quality vectors on common focal objects;
+- geometry, CRS, contiguity and distance choices remain upstream responsibilities;
+- no R, gdverse, spatial geometry package or reference C++ code is called at runtime.
 
 ## Validation state
 
-The classical workflow remains validated against the NTD reference case. The pinned categorical SPADE route remains externally checked. Stage 5B currently has analytical and property validation:
+Stage 6A currently includes:
 
-- manually derived fuzzy AND and OR labels;
-- exact global min-max memberships;
-- explicit first/last tie behaviour;
-- constant-risk and missing-data failures;
-- direct equality of reported PID with `theta / phi`;
-- invariance to shifted and positively rescaled ordinal class codes;
-- deterministic recomputation of fuzzy zones under permutation;
-- maximum-CPSD candidate and simplicity-tie tests;
-- greedy and exhaustive subset-search tests;
-- joint missing-row reconstruction in final labels;
-- collision-safe tuple strata accepted by the shared PSD core;
-- documented Stage 5B symbols verified at the package top level.
+- exact transcription of the paper Figure 1 information system and adjacency matrix;
+- hand-derived local-region sizes, positive-region sizes and local qualities;
+- `a1` result `D = 0.7325757575757575` and `SE = 3.245554302578003`;
+- `{a1,a2}` result `D = 0.8143939393939393` and `SE = 3.3720204818904733`;
+- exact tuple-refinement monotonicity;
+- focal-object inclusion independent of input diagonal values;
+- joint row and adjacency permutation invariance;
+- explicit island rejection and opt-in self-only regions;
+- missing-row removal from both adjacency axes and original-row reconstruction;
+- rejection of undiscretized continuous targets and factors;
+- symmetric-adjacency enforcement and explicit directed relaxation;
+- seeded subsampling reproducibility;
+- integrated factor, ecological and interaction workflows;
+- top-level public API protection.
 
-Final CI for PR #8 passed on Ubuntu, Windows and macOS with Python 3.11, 3.12 and 3.13. Ruff, Black, mypy, all eight public examples, wheel build and source-distribution build also passed.
+The full Stage 6A CI passed on Ubuntu, Windows and macOS with Python 3.11, 3.12 and 3.13. Ruff, Black, mypy, all nine public examples, wheel build and source-distribution build also passed.
 
-Stage 5B is **implemented, provisional** pending pinned external fuzzy-zone and PID fixtures and a published multivariable IDSA reproduction.
+Stage 6A is **implemented, provisional** pending published Baltimore/Cincinnati case reproductions and a separately pinned compatibility table for the reviewed gdverse implementation. The paper-aligned result is the primary estimand; known source discrepancies are not hidden.
 
 ## Deliberately deferred
 
-- silent assignment of order to arbitrary nominal categories;
-- unpinned LOESS compatibility selection for CPSD class counts;
-- automatic spatial-weight construction from geometry;
-- sparse-weight and large-N IDSA optimization;
-- fully selection-adjusted p-values after discretization and subset search;
-- simultaneous uncertainty for weights, discretization and interaction selection;
-- Stage 6 nominal-response, information-consistency and SWMI methods;
+- automatic adjacency construction from geometry;
+- sparse and large-graph SRS-GD optimization;
+- spatial-dependence-adjusted inference for overlapping local regions;
+- unpaired Welch compatibility inference unless required by a pinned table;
+- silent use of reference C++ indexing and any-coordinate matching behaviour;
+- Stage 6B information-consistency estimators until histogram and entropy contracts are frozen;
+- Stage 6C SWMI until the complete 2026 primary-source formulas and a numerical reference are available;
 - later multivariate, local, regression, observation-bias and temporal extensions.
 
 ## Immediate next task
 
-Stage 6 begins with an evidence audit for SRS-GD, SSHIC/SSHIN and SWMI. Before implementation, freeze nominal-response estimands, spatial rough-set neighbourhoods, information-consistency formulas, permutation nulls, missing-category handling and external fixtures. These methods must remain separate from variance-based q, PSD and PID.
+Stage 6B implements information-consistency SSH in two independent layers:
+
+1. `IN-SSH` for nominal targets using normalized mutual information;
+2. `IC-SSH` for continuous targets using stratum-weighted, arctangent-normalized relative entropy.
+
+Before code merge, freeze constant-target behaviour, common histogram support, bin-edge construction, zero-density handling, minimum stratum size, corrected permutation p-values and static outputs from a pinned `stscl/sshicm` revision. These estimators must remain separate from q, SRS-GD, PSD and PID.

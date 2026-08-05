@@ -54,13 +54,27 @@ The implementation keeps geometry processing and weight construction upstream. I
 
 Collision-safe fuzzy factor-stratum labels; response-risk membership normalization; explicit fuzzy AND/OR and deterministic ties; spatial interactive power `theta`; information-retention component `phi`; `PID = theta / phi`; continuous-factor discretization strategy; pairwise and multivariate IDSA audit tables; independent manual fixtures and reference-case reproduction.
 
-**Status:** implementation and final CI complete in PR #8; merge is the final Stage 5 action. Analytical tests and source audits are complete. Pinned external PID fixtures, LOESS-selector comparison and a published IDSA case remain validation debt.
+**Status:** complete and merged in PR #8. Analytical tests and source audits are complete. Pinned external PID fixtures, LOESS-selector comparison and a published IDSA case remain validation debt.
 
 ## Stage 6 - Categorical and information-consistency SSH (`0.4.0`)
 
-Spatial rough-set GD for nominal targets; continuous and nominal information-consistency measures; permutation inference; SWMI after primary-source verification.
+### Stage 6A - Spatial rough-set geographical detectors (`0.0.9`)
 
-**Status:** next active stage after PR #8 is merged.
+Nominal-target spatial information systems; focal-object local regions; exact multifeature indiscernibility; local positive regions; average local explanatory power `D`; spatial entropy `SE`; factor, ecological and interaction detectors; paired inference and immutable local evidence.
+
+**Status:** implementation and final CI complete in PR #9. The paper Figure 1 local values, `D`, `SE` and refinement monotonicity are reproduced. Published Baltimore/Cincinnati cases and a pinned gdverse compatibility table remain validation debt.
+
+### Stage 6B - Information-consistency SSH
+
+Nominal `IN-SSH` by normalized mutual information and continuous `IC-SSH` by stratum-weighted arctangent-normalized relative entropy; corrected seeded permutation inference; common histogram support and explicit density contracts.
+
+**Status:** next active batch after PR #9 merge.
+
+### Stage 6C - Spatially weighted mutual information
+
+Spatial probability adjustment, weighted entropy and mutual information only after the complete 2026 paper equations, implementation evidence and a numerical fixture are pinned.
+
+**Status:** evidence-gated; no provisional public API.
 
 ## Stage 7 - Multivariate stratification and contribution (`0.5.0`)
 
