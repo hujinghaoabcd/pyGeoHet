@@ -1,1 +1,0 @@
-Temporary Stage 6A cleanup trigger, revision 4. Remove before merge.
