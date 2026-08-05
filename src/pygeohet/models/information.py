@@ -111,9 +111,7 @@ def _prepare_information_data(
 
     if target_kind == "continuous":
         try:
-            numeric = pd.to_numeric(target_clean, errors="raise").to_numpy(
-                dtype=float
-            )
+            numeric = pd.to_numeric(target_clean, errors="raise").to_numpy(dtype=float)
         except (TypeError, ValueError) as exc:
             raise InvalidDataError("continuous target must be numeric") from exc
         if not bool(np.isfinite(numeric).all()):
@@ -142,11 +140,11 @@ def _validate_strata(strata: np.ndarray, min_stratum_size: int) -> None:
     counts = Counter(strata.tolist())
     if not counts:
         raise InvalidDataError("strata must not be empty")
-    too_small = {label: count for label, count in counts.items() if count < min_stratum_size}
+    too_small = {
+        label: count for label, count in counts.items() if count < min_stratum_size
+    }
     if too_small:
-        details = ", ".join(
-            f"{label!r}: {count}" for label, count in too_small.items()
-        )
+        details = ", ".join(f"{label!r}: {count}" for label, count in too_small.items())
         raise SmallStratumError(
             f"strata smaller than min_stratum_size={min_stratum_size}: {details}"
         )
@@ -248,9 +246,7 @@ def _permutation_summary(
     exceedances = int(np.count_nonzero(null_values >= observed - tolerance))
     p_value = float((1 + exceedances) / (len(null_values) + 1))
     null_mean = float(np.mean(null_values))
-    null_sd = (
-        float(np.std(null_values, ddof=1)) if len(null_values) > 1 else 0.0
-    )
+    null_sd = float(np.std(null_values, ddof=1)) if len(null_values) > 1 else 0.0
     return p_value, null_mean, null_sd
 
 
@@ -487,9 +483,7 @@ def _continuous_components(
         kl_divergence = float(
             np.sum(
                 probabilities[positive]
-                * np.log(
-                    probabilities[positive] / global_probabilities[positive]
-                )
+                * np.log(probabilities[positive] / global_probabilities[positive])
             )
         )
         if kl_divergence < 0.0 and abs(kl_divergence) <= 1e-14:

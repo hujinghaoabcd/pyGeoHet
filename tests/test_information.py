@@ -125,8 +125,7 @@ def test_continuous_separated_strata_match_hand_calculation() -> None:
         for contribution in result.contributions
     )
     assert sum(
-        contribution.weighted_contribution
-        for contribution in result.contributions
+        contribution.weighted_contribution for contribution in result.contributions
     ) == pytest.approx(result.IC)
 
 
@@ -232,7 +231,9 @@ def test_information_workflow_uses_one_joint_complete_sample() -> None:
 
     assert result.dropped_count == 1
     assert result.used_indices == (0, 1, 2, 3, 4, 5, 7)
-    assert all(item.used_indices == result.used_indices for item in result.factors.values())
+    assert all(
+        item.used_indices == result.used_indices for item in result.factors.values()
+    )
     assert result["perfect"].IN > result["mixed"].IN
     assert list(result.to_frame()["factor"])[0] == "perfect"
 
