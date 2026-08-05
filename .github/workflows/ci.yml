@@ -25,37 +25,14 @@ jobs:
         with:
           python-version: "3.11"
       - run: python -m pip install ruff black
-      - name: Replace fragile tuple-index assertion
+      - name: Verify tuple-index regression is fixed
         run: |
           python - <<'PY'
           from pathlib import Path
 
-          path = Path("tests/test_srsgd.py")
-          text = path.read_text(encoding="utf-8")
-          start_marker = '    frame = result.to_frame().set_index("added_features")\n'
-          end_marker = '    assert a3["heterogeneity_change"] == "unchanged"\n'
-          start = text.find(start_marker)
-          end = text.find(end_marker, start)
-          if start < 0 or end < 0:
-              raise SystemExit("expected test markers were not found")
-          end += len(end_marker)
-          replacement = '''    by_added = {
-              comparison.added_features: comparison
-              for comparison in result.comparisons
-          }
-
-          a2 = by_added[("a2",)]
-          assert a2.power_gain == pytest.approx(
-              0.8143939393939393 - 0.7325757575757575
-          )
-          assert a2.heterogeneity_change == "decreased"
-
-          a3 = by_added[("a3",)]
-          assert a3.power_gain == pytest.approx(0.0)
-          assert a3.p_value == pytest.approx(1.0)
-          assert a3.heterogeneity_change == "unchanged"
-          '''
-          path.write_text(text[:start] + replacement + text[end:], encoding="utf-8")
+          text = Path("tests/test_srsgd.py").read_text(encoding="utf-8")
+          if "by_added = {" not in text:
+              raise SystemExit("tuple-index regression test has not been fixed")
           PY
       - run: ruff check --fix src tests examples tools
       - run: black src tests examples tools
