@@ -56,6 +56,7 @@ Each model family must reproduce at least one documented paper or official-softw
 | Nominal IN-SSH | perfect/null extremes and hand contingency calculation | pinned `sshicm` source audited; static table pending | relabeling, constant target, missing scope and corrected seeded permutations | pending | implemented, provisional |
 | Continuous IC-SSH | fixed-bin `KL=log(2)` example and zero-divergence case | pinned `sshicm` source audited; static table pending | affine invariance, five bin methods, fixed-edge permutations, support and small-stratum failures | pending | implemented, provisional |
 | InformationConsistency workflow | scalar estimators composed on one joint sample | external multi-factor table pending | factor ordering, common missing mask and public API tests | pending | implemented, provisional |
+| SWMI evidence gate | official metadata, abstract and workflow claims audited | no authoritative code or static output found | formula, support, discretization and inference contracts unresolved | publisher cases not numerically reproducible | blocked; no implementation |
 
 ## NTD fixtures
 
@@ -135,3 +136,18 @@ Stage 6A follows the published spatial rough-set estimand. Known differences in 
 
 Stage 6B deliberately differs from the reviewed source where that source mixes logarithm bases, uses uncorrected `exceedances/B` p values or creates incompatible global and stratum histogram supports. Remaining work is to pin static candidate and final-output tables from the audited revision, reproduce a published application, add larger null/power simulations, and quantify sensitivity to histogram selection. No fully external-validation claim is made before those records exist.
 
+## Stage 6C SWMI evidence-gate result
+
+The official source confirms only a workflow of variable discretization, spatial-autocorrelation-based probability adjustment, and entropy/mutual-information calculation. The audit could not pin the exact adjustment, spatial support, discretization search, normalized score, multivariable grouping, interaction or null procedure.
+
+No authoritative repository, supplementary archive or machine-readable numerical output was found by exact title, DOI, PII, acronym and author searches. The publisher states that data are available on request. A secondary summary and figure captions are not a numerical oracle.
+
+Consequently:
+
+- analytical validation cannot be defined without inventing equations;
+- cross-language/static validation has no source output;
+- simulation targets cannot be tied to the published estimand;
+- the NO2 and vegetation cases cannot yet be reproduced;
+- no code, API placeholder or version bump is allowed.
+
+The complete reopening checklist is in `docs/references/swmi-evidence-audit.md`.

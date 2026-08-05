@@ -2,7 +2,7 @@
 
 **pyGeoHet** is a research-oriented Python toolkit for spatially stratified heterogeneity (SSH) analysis. It covers the classical Geographical Detector workflow and extends it with auditable discretization, spatial-scale comparison, multiscale search, robust change-point detection and spatial-variance decomposition.
 
-> **Status - Stage 6B implemented:** classical GeoDetector, OPGD, spatial-scale comparison, MSD, RGD/RID, SPADE, IDSA, paper-aligned SRS-GD, nominal IN-SSH and continuous IC-SSH are available. Stage 6C SWMI remains evidence-gated.
+> **Status - Stage 6B implemented:** classical GeoDetector, OPGD, spatial-scale comparison, MSD, RGD/RID, SPADE, IDSA, paper-aligned SRS-GD, nominal IN-SSH and continuous IC-SSH are available. The Stage 6C SWMI evidence audit is complete and implementation remains blocked; Stage 7A GOZH is the next active batch.
 
 ## Installation for development
 
@@ -396,6 +396,7 @@ See:
 - [`docs/models/srsgd.md`](docs/models/srsgd.md)
 - [`docs/models/information-consistency.md`](docs/models/information-consistency.md)
 - [`docs/references/stage6-information-ssh-audit.md`](docs/references/stage6-information-ssh-audit.md)
+- [`docs/references/swmi-evidence-audit.md`](docs/references/swmi-evidence-audit.md)
 - [`docs/references/spade-idsa-code-audit.md`](docs/references/spade-idsa-code-audit.md)
 - [`docs/references/idsa-code-audit.md`](docs/references/idsa-code-audit.md)
 - [`VALIDATION_MATRIX.md`](VALIDATION_MATRIX.md)

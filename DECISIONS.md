@@ -238,3 +238,19 @@ Permutation inference shuffles the target relative to fixed supplied strata. Con
 
 `InformationConsistency` applies one complete-case mask to the target and every supplied factor before evaluating factor-specific IN or IC values. This differs from independent factor-wise deletion and preserves direct comparability. The result retains common original indices and factor-specific decomposition evidence.
 
+## D060 - SWMI remains blocked without its probability-adjustment equation
+
+The accessible 2026 source confirms a high-level sequence but does not expose the exact spatial-autocorrelation probability adjustment. Ordinary mutual information, normalized mutual information, entropograms, medical-image SWMI, q, SRS-GD, PSD, PID and IC/IN-SSH are not substitutes.
+
+## D061 - Evidence-gated methods receive no public placeholders
+
+A blocked method has no empty module, class, function, result type, import or version bump. Its evidence audit belongs in documentation until a complete estimand, boundary contract and numerical oracle are pinned.
+
+## D062 - SWMI reopening requires equations and numerical provenance
+
+Implementation requires the full primary equations, spatial-support and discretization contracts, adjusted marginal and joint probabilities, score normalization, multivariable grouping, inference procedure, one manual oracle and one author/publisher numerical output with version, licence and checksum provenance.
+
+## D063 - Stage 7 is separated into GOZH, contribution and OMGD batches
+
+GOZH zone optimization, LESH/Shapley contribution allocation and OMGD multivariate stratification/scale are different estimands and search problems. They are audited and implemented in separate batches; a shared multivariate label does not justify a combined optimizer or result type.
+

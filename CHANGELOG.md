@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased - Stage 6C evidence audit
+
+### Added
+
+- a dedicated SWMI evidence-gate audit with known facts, unresolved equations, search record, implementation gate and reopening procedure;
+- an explicit Stage 7A/7B/7C split for GOZH, LESH/Shapley and OMGD.
+
+### Changed
+
+- SWMI is recorded as implementation-blocked rather than merely planned;
+- no SWMI code, placeholder API or version change is introduced;
+- Stage 7A GOZH evidence and numerical-contract review becomes the next active batch.
+
 ## 0.0.10 - 2026-08-05
 
 ### Added
