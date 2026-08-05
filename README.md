@@ -2,7 +2,7 @@
 
 **pyGeoHet** is a research-oriented Python toolkit for spatially stratified heterogeneity (SSH) analysis. It covers the classical Geographical Detector workflow and extends it with auditable discretization, spatial-scale comparison, multiscale search, robust change-point detection and spatial-variance decomposition.
 
-> **Status - Stage 6A implemented:** classical GeoDetector, OPGD, spatial-scale comparison, MSD, RGD/RID, SPADE, IDSA and paper-aligned SRS-GD are available. Stage 6B will add nominal and continuous information-consistency SSH; SWMI remains evidence-gated.
+> **Status - Stage 6B implemented:** classical GeoDetector, OPGD, spatial-scale comparison, MSD, RGD/RID, SPADE, IDSA, paper-aligned SRS-GD, nominal IN-SSH and continuous IC-SSH are available. Stage 6C SWMI remains evidence-gated.
 
 ## Installation for development
 
@@ -263,6 +263,46 @@ print(result.interaction.to_frame())
 `D` is mean local approximation quality. `SE` is Shannon entropy of normalized local qualities; larger `SE` means local explanatory power is more even and spatial heterogeneity is lower. The core does not construct adjacency from geometry. Islands, symmetry, missing rows, focal-object inclusion and exact tuple refinement are explicit contracts.
 
 
+## Information-consistency SSH
+
+Stage 6B adds two distributional SSH estimators that remain separate from variance-based q and local rough-set SRS-GD.
+
+```python
+import pandas as pd
+from pygeohet import (
+    InformationConsistency,
+    continuous_information_consistency,
+    nominal_information_consistency,
+)
+
+nominal = nominal_information_consistency(
+    nominal_target,
+    nominal_strata,
+    permutations=999,
+    random_state=42,
+)
+print(nominal.contingency_frame())
+
+continuous = continuous_information_consistency(
+    continuous_target,
+    continuous_strata,
+    bins="sturges",
+    permutations=999,
+    random_state=42,
+)
+print(continuous.contributions_frame())
+print(continuous.histogram_frame())
+
+workflow = InformationConsistency(
+    target_kind="continuous",
+    bins="sturges",
+).fit(continuous_target, factor_frame)
+print(workflow.to_frame())
+```
+
+Nominal `IN = I(Y;S) / H(Y)`. Continuous `IC` is the stratum-share-weighted `atan(KL(P_h || P)) / (pi/2)`. All entropy terms use natural logarithms consistently. Continuous strata and the global target use one common histogram support and shared edges. Permutation inference shuffles the target relative to fixed strata and uses `(1 + exceedances) / (B + 1)`.
+
+
 ## Public interfaces
 
 ```python
@@ -276,6 +316,7 @@ from pygeohet import (
     SPADE,
     IDSA,
     SRSGeoDetector,
+    InformationConsistency,
     q_statistic,
     spatial_variance,
     power_spatial_determinant,
@@ -288,6 +329,9 @@ from pygeohet import (
     srs_factor_detector,
     srs_ecological_detector,
     srs_interaction_detector,
+    nominal_information_consistency,
+    continuous_information_consistency,
+    information_consistency,
     stratify,
     evaluate_stratification,
     optimize_stratification,
@@ -327,6 +371,9 @@ from pygeohet import (
 - response-derived fuzzy zones are recomputed under IDSA permutation;
 - SRS-GD nominal targets, local regions, exact tuple indiscernibility and positive regions remain explicit;
 - adjacency symmetry, focal-object inclusion and islands are never silently inferred;
+- nominal information consistency retains entropy and contingency evidence;
+- continuous information consistency uses one shared histogram support and edge sequence;
+- information-consistency permutations use fixed supplied strata and corrected pseudo-p values;
 - model-complexity selection is explicit rather than hidden inside numerical kernels;
 - external R, Python, QGIS, notebook and GIS implementations are never called at runtime;
 - project status, validation records and handoff are merge gates.
@@ -335,7 +382,7 @@ from pygeohet import (
 
 The classical workflow reproduces the NTD factor q/p-values, interaction labels and risk-significance counts. MSD matches an independent exhaustive search. Robust segmentation matches an independent brute-force oracle and verifies B=q on selected labels.
 
-Stage 5A has hand-computed spatial-variance tests and an externally checked categorical NTD PSD path. Stage 5B adds manual fuzzy memberships, direct theta/phi decomposition and auditable IDSA search. Stage 6A reproduces the SRS-GD paper Figure 1 local qualities, `D` and `SE`, verifies exact tuple-refinement monotonicity, and tests adjacency permutation, islands, missing axes and discrete-input guards. SRS-GD remains implemented and provisional until published Baltimore/Cincinnati reproductions and a pinned compatibility table are complete.
+Stage 5A has hand-computed spatial-variance tests and an externally checked categorical NTD PSD path. Stage 5B adds manual fuzzy memberships, direct theta/phi decomposition and auditable IDSA search. Stage 6A reproduces the SRS-GD paper Figure 1 local qualities, `D` and `SE`, verifies exact tuple-refinement monotonicity, and tests adjacency permutation, islands, missing axes and discrete-input guards. Stage 6B adds hand-computed nominal entropy/MI and continuous KL examples, perfect and null extremes, label and affine invariance, shared-edge checks, five automatic histogram rules, seeded fixed-edge permutations, common-sample workflows and explicit failure contracts. SRS-GD and information consistency remain implemented and provisional until their published/static external reproductions are complete.
 
 See:
 
@@ -347,6 +394,7 @@ See:
 - [`docs/models/spade.md`](docs/models/spade.md)
 - [`docs/models/idsa.md`](docs/models/idsa.md)
 - [`docs/models/srsgd.md`](docs/models/srsgd.md)
+- [`docs/models/information-consistency.md`](docs/models/information-consistency.md)
 - [`docs/references/stage6-information-ssh-audit.md`](docs/references/stage6-information-ssh-audit.md)
 - [`docs/references/spade-idsa-code-audit.md`](docs/references/spade-idsa-code-audit.md)
 - [`docs/references/idsa-code-audit.md`](docs/references/idsa-code-audit.md)

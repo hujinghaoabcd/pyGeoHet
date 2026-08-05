@@ -53,6 +53,9 @@ Each model family must reproduce at least one documented paper or official-softw
 | Integrated SPADE | categorical PSD plus continuous PSMD composition | NTD categorical path checked | mixed factor typing and deterministic seeds | partial NTD | implemented, provisional |
 | IDSA fuzzy overlay and PID | manual labels and direct theta/phi equality | fixture pending | ties, normalization, permutations, subset search and missing rows | pending | implemented, provisional |
 | SRS-GD | Figure 1 local quality, D and SE | paper/source audit; external compatibility table pending | tuple monotonicity, adjacency permutation, islands, missing axes and nominal guards | Baltimore/Cincinnati pending | implemented, provisional |
+| Nominal IN-SSH | perfect/null extremes and hand contingency calculation | pinned `sshicm` source audited; static table pending | relabeling, constant target, missing scope and corrected seeded permutations | pending | implemented, provisional |
+| Continuous IC-SSH | fixed-bin `KL=log(2)` example and zero-divergence case | pinned `sshicm` source audited; static table pending | affine invariance, five bin methods, fixed-edge permutations, support and small-stratum failures | pending | implemented, provisional |
+| InformationConsistency workflow | scalar estimators composed on one joint sample | external multi-factor table pending | factor ordering, common missing mask and public API tests | pending | implemented, provisional |
 
 ## NTD fixtures
 
@@ -121,3 +124,14 @@ Stage 5B still requires a pinned gdverse/sdsfun environment, a static fuzzy-zone
 | Integrated SRSGeoDetector | factor/ecological/interaction composition | external workflow fixture pending | three-factor Figure 1 workflow | pending | implemented, provisional |
 
 Stage 6A follows the published spatial rough-set estimand. Known differences in the reviewed reference C++ implementation are documented rather than hidden. Remaining work includes pinned gdverse input/output fixtures, published Baltimore and Cincinnati reproductions, larger nominal simulations, neighbourhood sensitivity analysis and inference that accounts for dependence among overlapping local regions.
+
+## Stage 6B validation state and gaps
+
+| Method | Analytical | Cross-language/static | Simulation/edge cases | Published case | Status |
+|---|---:|---:|---:|---:|---|
+| Nominal IN-SSH | `IN=1`, `IN=0`, and a hand-calculated partial table | `stscl/sshicm` commit pinned; static outputs pending | category relabeling, zero entropy, missing policy and corrected seeded permutations | pending | implemented, provisional |
+| Continuous IC-SSH | separated fixed-bin strata with `KL=log(2)` and identical distributions with `IC=0` | histogram/relative-entropy source audited; static outputs pending | shared support, explicit edges, five automatic rules, affine invariance, small strata and fixed-edge permutations | pending | implemented, provisional |
+| Multi-factor workflow | direct scalar/workflow equality on one joint sample | external candidate ranking pending | common complete cases, factor ordering and functional/class APIs | pending | implemented, provisional |
+
+Stage 6B deliberately differs from the reviewed source where that source mixes logarithm bases, uses uncorrected `exceedances/B` p values or creates incompatible global and stratum histogram supports. Remaining work is to pin static candidate and final-output tables from the audited revision, reproduce a published application, add larger null/power simulations, and quantify sensitivity to histogram selection. No fully external-validation claim is made before those records exist.
+

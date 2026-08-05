@@ -45,7 +45,7 @@ Stage 5A independently implements:
 
 The package does not depend at runtime on R, gdverse, sdsfun, sf, spdep, geopandas or a geometry engine. Coordinate/geometry-to-weight construction remains an upstream responsibility.
 
-The IDSA source audit identified fuzzy response-risk membership zones that differ from classical tuple intersection. Stage 5B will implement those formulas independently with collision-safe labels and explicit tie rules. No provisional IDSA API is exported before that work is complete. See `docs/references/spade-idsa-code-audit.md`.
+The IDSA source audit identified fuzzy response-risk membership zones that differ from classical tuple intersection. Stage 5B implements those formulas independently with collision-safe labels, explicit tie rules and immutable evidence. See `docs/references/spade-idsa-code-audit.md`.
 
 ## Validation data
 
@@ -79,6 +79,6 @@ Stage 6A reviewed Bai et al. (2022), *Spatial rough set-based geographical detec
 
 pyGeoHet independently implements prepared binary adjacency validation, complete-case alignment across both matrix axes, exact tuple equivalence classes, local positive regions, immutable evidence and paired inference. It does not copy or translate the reviewed C++ line by line and does not call gdverse or R at runtime.
 
-Stage 6B evidence includes Bai et al. (2023), *Information Consistency-Based Measures for Spatial Stratified Heterogeneity*, and maintained `stscl/sshicm` source pinned during the audit to commit `76b6c2879353716f2632c4f5cbb13bef3f6c8305`. That source is used to verify formulas and future static outputs, not as a runtime backend.
+Stage 6B evidence includes Bai et al. (2023), *Information Consistency-Based Measures for Spatial Stratified Heterogeneity*, and maintained `stscl/sshicm` source pinned during the audit to commit `76b6c2879353716f2632c4f5cbb13bef3f6c8305`. That source is used to verify formulas and future static outputs, not as a runtime backend. pyGeoHet independently implements consistent natural-log entropy, shared-support histograms and corrected permutation p values rather than reproducing known source conventions mechanically.
 
 The 2026 SWMI paper is recent and no authoritative executable reference has yet been pinned. No SWMI code or API will be introduced until the complete probability-weighting equations, null procedure and at least one independent numerical output are available.

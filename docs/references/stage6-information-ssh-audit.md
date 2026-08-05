@@ -180,7 +180,7 @@ I_N(d,s)=\frac{I(d;s)}{H(d)}
 
 The maintained source factorizes both target and strata, computes empirical marginal and joint probabilities, and estimates significance by permuting the target relative to fixed strata.
 
-Important edge cases to freeze before coding:
+Frozen pyGeoHet contracts:
 
 - `H(d)=0` for a constant nominal target;
 - one stratum or one observation;
@@ -208,7 +208,7 @@ The arctangent maps the nonnegative relative entropy to `[0,1)`. The maintained 
 - permutation p-value correction;
 - sensitivity tables over bin choices.
 
-No continuous IC-SSH code should be merged until direct hand calculations and a static `sshicm` candidate table are available.
+The implementation is supported by direct hand calculations. Static `sshicm` candidate and final-output tables remain external-validation debt and are not required at runtime.
 
 ## Stage 6C SWMI boundary
 
@@ -242,3 +242,49 @@ The 2026 SWMI paper reports that it discretizes geographical variables, adjusts 
 ### Stage 6C
 
 Implementation begins only after a complete primary-source contract and at least one independent numerical reference are obtained.
+
+## Stage 6B implemented contract
+
+pyGeoHet independently implements:
+
+- nominal `IN = I(target; strata) / H(target)` with natural logarithms used consistently;
+- explicit zero-target-entropy failure;
+- continuous `IC = sum_h p_h * atan(KL(P_h || P)) / (pi/2)`;
+- one complete-target support and one shared bin edge sequence;
+- Sturges, square-root, Rice, Scott and Freedman-Diaconis automatic counts;
+- explicit equal-width integer counts and complete custom edge sequences;
+- omission of zero stratum-probability KL terms without pseudocount smoothing;
+- a common complete-case sample for multi-factor comparisons;
+- target permutations relative to fixed strata and fixed continuous edges;
+- corrected pseudo-p values `(1 + exceedances) / (B + 1)`;
+- immutable contingency, histogram, contribution, sample and null evidence.
+
+The reviewed source is not copied or called at runtime. pyGeoHet does not reproduce mixed entropy bases, uncorrected p values, or density comparisons built on incompatible supports.
+
+## Stage 6B analytical fixtures
+
+Nominal tests include perfect determination (`IN=1`), independence (`IN=0`) and a four-observation partial table with
+
+```text
+H(Y)     = log(2)
+H(Y | S) = 0.75 * H_binary(2/3)
+IN       = 1 - H(Y | S) / H(Y)
+```
+
+The continuous separated-strata fixture uses global probabilities `(0.5, 0.5)`. Each stratum has `KL=log(2)`, giving
+
+```text
+IC = atan(log(2)) / (pi/2)
+```
+
+Identical stratum distributions produce zero KL divergence and `IC=0`.
+
+## Stage 6B remaining evidence debt
+
+- generate static input, candidate and final-output tables from the pinned `stscl/sshicm` revision;
+- record exact source/package build metadata and tolerances;
+- reproduce at least one published application;
+- add larger nominal and continuous null/power simulations;
+- quantify histogram-method and bin-count sensitivity;
+- examine permutation validity under spatial dependence and selected stratifications.
+
