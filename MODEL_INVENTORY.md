@@ -32,7 +32,7 @@ This development-facing inventory distinguishes source evidence, planned impleme
 | Spatial interaction | IDSA / PID | spatially informed interactive determinant | IDSA paper; gdverse `idsa`/`pid_idsa`; sdsfun | implemented with fixed PID, CPSD discretization and subset search; external case pending | 5B |
 | Categorical | SRS-GD | nominal target and local rough-set power | Bai et al. (2022); uploaded gdverse source | paper-aligned implementation with Figure 1 fixture; external cases pending | 6A |
 | Information | IC-SSH / IN-SSH | continuous and nominal distribution consistency across strata | 2023 paper; pinned stscl/sshicm source | implemented with shared-support histograms, normalized MI and corrected permutations; external fixture pending | 6B |
-| Spatial information | SWMI | spatially weighted mutual information | 2026 paper; no authoritative implementation pinned | evidence-gated; no API until full formulas and fixture are verified | 6C |
+| Spatial information | SWMI | spatial-autocorrelation-adjusted probability and mutual information | 2026 primary paper metadata and abstract; no complete equations/code fixture pinned | evidence audit complete; implementation blocked and no API | 6C |
 | Multivariate | GOZH | optimized multi-factor geographical zones | gdverse | planned | 7 |
 | Explanation | LESH | Shapley allocation in multivariate zones | gdverse | planned | 7 |
 | Multivariate | OMGD | optimal 3+ factor clustering and scale | author Python repository | planned | 7 |

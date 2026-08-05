@@ -1,17 +1,17 @@
-# HANDOFF - pyGeoHet Stage 6B baseline
+# HANDOFF - pyGeoHet Stage 6C evidence-gate baseline
 
 Date: 2026-08-05
 
 ## 1. Authoritative continuation source
 
-After PR #10 is merged, fetch the latest `main` branch of `hujinghaoabcd/pyGeoHet`. Do not reconstruct information consistency from chat messages, old ZIP archives or neighbouring entropy methods.
+After the Stage 6C documentation PR is merged, fetch the latest `main` branch of `hujinghaoabcd/pyGeoHet`. Do not reconstruct SWMI or GOZH from chat messages, search snippets or neighbouring model names.
 
 Read in order:
 
 1. `HANDOFF_NEXT_CONVERSATION.md`;
 2. `PROJECT_STATUS.md`;
 3. `DECISIONS.md`;
-4. `docs/models/information-consistency.md`;
+4. `docs/references/swmi-evidence-audit.md`;
 5. `docs/references/stage6-information-ssh-audit.md`;
 6. `VALIDATION_MATRIX.md`;
 7. `MODEL_INVENTORY.md`;
@@ -19,88 +19,83 @@ Read in order:
 9. `THIRD_PARTY_NOTICES.md`;
 10. `PROJECT_STRUCTURE.md`.
 
-## 2. Completed Stage 6B baseline
+## 2. Stable implementation baseline
 
-Version `0.0.10` adds:
+Version `0.0.10` contains the completed Stage 6B implementation:
 
-- `nominal_information_consistency()`;
-- `continuous_information_consistency()`;
-- `InformationConsistency` and `information_consistency()`;
-- immutable nominal contingency and entropy evidence;
-- immutable continuous histogram and KL-contribution evidence;
-- common-sample multi-factor results;
-- Sturges, square-root, Rice, Scott and Freedman-Diaconis bin rules;
-- explicit integer and custom-edge support;
-- corrected seeded permutation inference;
-- ten public examples and top-level API protection;
-- analytical, invariance, missing-data, support and failure tests;
-- model manual and expanded Stage 6 evidence audit.
+- nominal IN-SSH;
+- continuous IC-SSH;
+- shared-support histogram contracts;
+- corrected seeded permutations;
+- common-sample multi-factor workflows;
+- immutable evidence and ten public examples.
 
-## 3. Non-negotiable Stage 6B decisions
+The final Stage 6B CI passed on Ubuntu, Windows and macOS with Python 3.11, 3.12 and 3.13, plus Ruff, Black, mypy, all examples, wheel and sdist builds. Merge commit: `6e9a96368f9b1421045fbb6a6fda7c5d37859980`.
 
-- IN-SSH and IC-SSH are separate from q, SRS-GD, PSD and PID.
-- `IN = I(Y;S) / H(Y)` with one logarithm convention.
-- a constant nominal target makes IN undefined.
-- `IC = sum_h p_h * atan(KL(P_h || P)) / (pi/2)`.
-- global and stratum continuous histograms use one shared support and edge sequence.
-- explicit edges must cover the complete target.
-- zero stratum-probability KL terms are omitted without pseudocount smoothing.
-- the target is permuted relative to fixed supplied strata.
-- continuous permutation keeps the observed edges fixed.
-- pseudo-p values use `(1 + exceedances) / (B + 1)`.
-- all factors in one workflow use one joint complete-case sample.
-- no external R/C++ implementation is invoked at runtime.
+## 3. Stage 6C audit conclusion
 
-## 4. Validation evidence
+The official 2026 SWMI source supports only this high-level sequence:
 
-Nominal fixtures cover:
+1. discretize geographical variables;
+2. adjust probabilities with spatial-autocorrelation strength;
+3. calculate entropy and mutual information from adjusted probabilities.
 
-```text
-perfect consistency: IN = 1
-independence:        IN = 0
-partial table:       IN = 1 - 0.75 * H_binary(2/3) / log(2)
-```
+The complete paper equations, author code, supplement and numerical fixture are not pinned. The exact probability adjustment, spatial support, discretization, score normalization, multivariable grouping, interaction and inference procedures remain unknown.
 
-Continuous fixtures cover:
+Therefore there is deliberately no:
 
-```text
-separated two-bin strata: KL_h = log(2)
-IC = atan(log(2)) / (pi/2)
-identical distributions: IC = 0
-```
+- `swmi()`;
+- `SWMI` class;
+- result placeholder;
+- package export;
+- empty module;
+- inferred formula;
+- version bump.
 
-Tests also cover label relabeling, affine target transformation, five automatic bin methods, explicit edges, small strata, constant targets, fixed-edge seeded permutations, corrected p-value bounds, one joint missing-data sample and public exports.
+Do not replace the missing method with ordinary mutual information, the entropogram, medical-image SWMI, q, SRS-GD, PSD, PID or IC/IN-SSH.
 
-The implementation CI passed across Ubuntu, Windows and macOS with Python 3.11, 3.12 and 3.13 before final documentation cleanup. The final clean branch must pass Ruff, Black, mypy, all ten examples, wheel and sdist builds before merge.
+## 4. SWMI reopening gate
 
-## 5. Validation debt
+Require all of the following before code:
 
-- pin static `stscl/sshicm` candidate and final-output tables;
-- record exact build metadata, input hashes and tolerances;
-- reproduce a published information-consistency application;
-- add larger null and power simulations;
-- quantify histogram-method and bin-count sensitivity;
-- study spatial-dependence-aware and selection-aware inference.
+- complete primary equations;
+- exact probability adjustment;
+- spatial-weight and neighbourhood contract;
+- discretization and group-selection algorithm;
+- score normalization and boundary cases;
+- inference or resampling procedure;
+- one hand-calculable example;
+- one author/publisher numerical output;
+- code/data provenance, licence and checksums.
 
-## 6. Next stage decision
+## 5. Next active batch - Stage 7A GOZH audit
 
-### Stage 6C - SWMI evidence gate
+Audit the Geographically Optimal Zones-based Heterogeneity model independently of LESH/Shapley and OMGD.
 
-Do not implement SWMI from an abstract, secondary summary or partial formula. Proceed only after pinning:
+Required questions:
 
-- the complete probability adjustment;
-- entropy and mutual-information equations;
-- spatial-weight and discretization contracts;
-- interaction and null procedures;
-- at least one independent numerical output.
+- What is the initial geographical partition?
+- Which merge, split, reassignment or search moves are admissible?
+- What objective is optimized at each step?
+- How are minimum zone size and finely divided zones controlled?
+- What is the stopping rule?
+- Are individual and interactive determinants calculated globally or per optimized zone?
+- How are spatial support, neighbourhood and scale represented?
+- How are ties and failed candidates retained?
+- What is the computational complexity and search budget?
+- Which author/reference implementation and licence can be pinned?
+- Which published table can serve as a static fixture?
 
-If those requirements cannot be met, record the evidence gap and move to Stage 7 without creating a provisional SWMI public name.
+Do not start implementation until a symbol table, pseudocode, boundary table and at least one manual/numerical oracle exist.
 
-### Stage 7A - GOZH audit
+## 6. Later Stage 7 batches
 
-The first implementable Stage 7 batch should audit GOZH zone optimization, stopping/merging rules, factor and interaction outputs, search complexity and external fixtures. Keep GOZH, LESH/Shapley and OMGD as separate numerical contracts.
+- Stage 7B: LESH/Shapley coalition values and contribution allocation.
+- Stage 7C: OMGD multivariate stratification and spatial-scale search.
 
-## 7. Required checks
+A common “multivariate” label does not make these methods one estimand.
+
+## 7. Required checks for the evidence-gate PR
 
 ```bash
 python -m pip install -e ".[test]"
@@ -121,4 +116,4 @@ python examples/10_information_consistency.py
 python -m build
 ```
 
-Every merge must leave status, validation, changelog, inventory, roadmap, structure, notices and handoff documents consistent with the code.
+Every merge leaves status, validation, changelog, inventory, roadmap, decisions, notices and handoff documents consistent with the code and evidence state.
